@@ -4,6 +4,7 @@ const SubCategorySchema=new Schema({
     subcategory_id:{
         type:Number,
         required:true,
+        unique:true
     },
     subcategory_name:{
         type:String,
