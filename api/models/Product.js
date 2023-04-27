@@ -11,9 +11,17 @@ const ProductSchema=new Schema({
         type:String,
         required:true
     },
+    seller_id:{
+        type:Number,
+        default:0
+    },
     slug:{
         type:String,
         required:true
+    },
+    brand:{
+        type:String,
+        default:"Not Branded"
     },
     mrp:{
        type:Number,

@@ -26,13 +26,14 @@ const CategorySchema=new Schema({
     },
     slug:{
         type:String,
-        required:true
+        required:true,
+        lowercase:true
     },
     subcategories:{
         type:[SubCategorySchema],
         required:true
     },
-      // photo:{
+    //   photo:{
     //     data:Buffer,
     //     contentType:String
     // }

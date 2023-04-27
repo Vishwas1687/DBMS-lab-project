@@ -1,18 +1,31 @@
 const express=require('express')
-const { model } = require('mongoose')
+const formidable=require('express-formidable')
 const router=express.Router()
 
-// router.post('/create-category',createCategoryController)
+const {createCategoryController,
+    updateCategoryController,deleteCategoryController,
+    getAllCategoriesController,
+     getSingleCategoryController, createSubCategoryController,
+    updateSubCategoryController,deleteSubCategoryController}=require('../controllers/categoryController')
 
-// router.put('/update-category',updateCategoryController)
+router.post('/create-category',createCategoryController)
 
-// router.delete('/delete-category',deleteCategoryController)
+router.put('/update-category/:slug',updateCategoryController)
 
-// router.get('/get-category/:slug',getSingleCategoryController)
+router.delete('/delete-category/:slug',deleteCategoryController)
+
+router.get('/get-category/:slug',getSingleCategoryController)
+
+router.put('/get-category/:slug/:subcategory_id/edit',updateSubCategoryController)
+
+router.delete('/get-category/:slug/:subcategory_id/delete',deleteSubCategoryController)
+
+router.post('/get-category/:slug/new',createSubCategoryController)
+
+router.get('/get-all-categories',getAllCategoriesController)
+
+// router.get('/get-photo/:slug',getPhotoController)
 
 
-// router.delete('/delete-category',deleteCategoryController)
-
-// router.get('/get-category/:slug',getSingleCategoryController)
 module.exports=router
 
