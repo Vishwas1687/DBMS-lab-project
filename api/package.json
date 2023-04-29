@@ -18,8 +18,13 @@
     "formidable": "^2.1.1",
     "mongoose": "^7.0.5",
     "morgan": "^1.10.0",
+<<<<<<< HEAD
     "react-bootstrap": "^2.7.4",
     "slugify": "^1.6.6"
+=======
+    "slugify": "^1.6.6",
+    "uuid": "^9.0.0"
+>>>>>>> 59f0633cc5d25762221a4c50c56af8ef4473e907
   },
   "devDependencies": {
     "dotenv": "^16.0.3",
