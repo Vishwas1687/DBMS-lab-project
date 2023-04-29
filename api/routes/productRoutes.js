@@ -38,4 +38,6 @@ router.get('/get-related-products-of-the-subcategory/:slug',getRelatedProductsCo
 
 // router.get('/get-photo/:slug',getPhotoController)
 
+//
+
 module.exports=router
