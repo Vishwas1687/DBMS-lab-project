@@ -1,62 +1,48 @@
-import "./App.css";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { Navbar } from "./components/navbar";
-import { Shop } from "./pages/shop/shop";
-import { Contact } from "./pages/contact";
-import { Cart } from "./pages/cart/cart";
-import { ShopContextProvider } from "./context/shop-context";
-import { SearchBar } from "./components/searchbar";
-import {ImageSlider} from "./components/ImageSlider";
+import { Routes, Route } from "react-router-dom";
+import HomePage from "./pages/HomePage";
+import About from "./pages/About";
+import Contact from "./pages/Contact";
+import Policy from "./pages/Policy";
+import PageNotFound from "./pages/PageNotFound";
+import Register from "./pages/Auth/Register";
+import Login from "./pages/Auth/Login";
+import Dashboard from "./pages/user/Dashboard";
+import PrivateRoute from "./components/Routes/Private";
+import AdminRoute from "./components/Routes/AdminRoute";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import CreateCategory from "./pages/admin/CreateCategory";
+import CreateProduct from "./pages/admin/CreateProduct";
+import Users from "./pages/admin/Users";
+
+
+
 
 function App() {
-
-  const slides = [
-    { url: "https://dealroup.com/wp-content/uploads/2020/05/Grocery-Offers.jpg", title: "rice" },
-    { url: "https://img.freepik.com/premium-psd/vegetable-grocery-delivery-promotion-web-banner-instagram-social-media-post-template_502896-62.jpg", title: "boat" },
-    { url: "https://st3.depositphotos.com/7341970/33687/v/1600/depositphotos_336878556-stock-illustration-grocery-shopping-promotional-sale-advertisement.jpg", title: "forest" },
-    { url: "https://blogger.googleusercontent.com/img/a/AVvXsEgYfPkQhIhftLH0uCFDB8uQUzSR6yl7DWtRdmdONETTZkcHr0u5atbrx5yOBPw0iBgpNWhELFTjHCdp1BZg_uVkApVFoaQS7bC20bwp38SaTaPG8hlz_Q78V2F9JlY-HD_BEg3pjMLKRpj3J4q05PBZiN_voeMBvWOOXrETJTmfnf__BoyW64mzLv3h=s16000", title :"offer"},
-    { url: "https://dailyshopp.in/dailyshop/assets/images/hot_product/grceries_Banner.png", title: "grocery"}
-  ];
-  const containerStyles = {
-    width: "1500px",
-    height: "600px",
-    margin: "0 auto",
-  };
   return (
-    <div className="App">
-      <div className="logo">
-        
-      </div>
-      <ShopContextProvider>
-      
-        <Router>
-          <Navbar />
-          <br></br>
-          <SearchBar />
-          <br></br>
+    <>
+    <Routes>
 
-          <div style={containerStyles}>
-        <ImageSlider slides={slides} />
-      </div>
-          <Routes>
-            <Route path="/" element={<Shop />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/cart" element={<Cart />} />
-          </Routes>
-        </Router>
+      <Route path = "/" element = {<HomePage />} />
+      <Route path = "/dashboard" element = {<PrivateRoute />}>
+        <Route path = "-" element = {<Dashboard />} />
+      </Route>
 
-        
+      <Route path = "/dashboard" element = {<AdminRoute />}>
+        <Route path = "admin" element = {<AdminDashboard />} />
+        <Route path = "admin/create-category" element = {<CreateCategory />} />
+        <Route path = "admin/create-product" element = {<CreateProduct />} />
+        <Route path = "admin/users" element = {<Users />} />
+      </Route>
+      <Route path = "/register" element = {<Register />} />
+      <Route path = "/login" element = {<Login />} />
 
-        
-        
-      </ShopContextProvider>
+      <Route path = "/about" element = {<About />} />
+      <Route path = "/contact" element = {<Contact />} />
+      <Route path = "/policy" element = {<Policy />} />
+      <Route path = "/*" element = {<PageNotFound />} />
 
-      
-        
-      
-
-      
-    </div>
+    </Routes>
+    </>
   );
 }
 
