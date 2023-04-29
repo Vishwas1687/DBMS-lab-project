@@ -183,7 +183,7 @@ const deleteProductController=async(req,res)=>{
 
 const getAllProductsController=async(req,res)=>{
      try{
-        const products=await ProductModel.find({}).populate('category')
+        const products=await ProductModel.find({}).populate('category').populate('subcategory')
 
         res.send({
             message:'All products are fetched',
@@ -441,7 +441,110 @@ const deleteWeightController=async(req,res)=>{
          })
     }
 }
+
+const getProductsByBrandController=async(req,res)=>{
+    try{
+         const {brand,subcategory,slug}=req.params
+         if(!brand)
+         return res.send({message:'Brand does not exist'})
+         if(!subcategory)
+         return res.send({message:'Enter subcategory name'})
+         if(!slug)
+         return res.send({message:'Slug is not entered'})
+
+         let products=await ProductModel.find({brand,subcategory}).populate('category')
+
+         products=products.filter((pro)=>pro.slug!==slug)
+
+         res.send({
+            message:`Products successfully fetched`,
+            success:true,
+            products
+         })
+    }catch(error)
+    {
+         return res.send({
+            message:'Something went wrong',
+            success:false,
+            error:error.message
+         })
+    }
+}
+
+const getRelatedProductsController=async(req,res)=>{
+    try{
+        const {slug}=req.params
+        if(!slug)
+        res.send({message:'Enter the slug'})
+
+        const existingProduct=await ProductModel.findOne({slug})
+
+        if(!existingProduct)
+        return res.send(
+            {message:'Product does not exist',
+            success:false
+             }
+          )
+
+        const subcategory=existingProduct.subcategory
+        let products=await ProductModel.find({subcategory})
+        products=products.filter((pro)=>pro.slug!==slug)
+
+        res.send({
+            message:'Related products of the products fetched',
+            success:true,
+            products
+        })
+    }catch(error)
+    {
+         res.send({
+            message:'Something went wrong',
+            success:false,
+            error:error.message
+         })
+    }
+}
+
+const getProductsBySearchController=async(req,res)=>{
+    try{
+         const {search}=req.params
+         if(!search)
+         res.send({message:'Search is not entered'})
+
+         const products=await ProductModel.find({
+            $or:[
+                {
+                    tags:{$in:[search]},
+                },
+                {
+                    product_name:{$regex:search,$options:'i'}
+                }
+            ]})
+
+          if(products.length==0)
+          {
+            return res.send({
+                message:'No products found',
+                success:true
+            })
+          }
+
+          res.send({
+            message:'Product successfully fetched',
+            success:true,
+            products
+          })
+    }catch(error)
+    {
+        res.send({
+            message:'Something went wrong',
+            success:false,
+            error:error.message
+        })
+    }
+}
 module.exports={createProductController,updateProductController,
             deleteProductController,getAllProductsController,getSingleProductController,
         getProductsBySubCategoryController,createWeightsController,
-        updateWeightController,deleteWeightController}
+        updateWeightController,deleteWeightController,getProductsByBrandController,
+        getRelatedProductsController,getProductsBySearchController}
