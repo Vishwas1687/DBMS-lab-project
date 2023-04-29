@@ -1,5 +1,6 @@
 const mongoose=require('mongoose')
 const CategoryModel=require('./Category')
+const SubCategoryModel = require('./Category');
 const uuid = require('uuid')
 // const BrandModel=require('./Brand')
 // const SellerModel=require('./Seller')
@@ -32,7 +33,7 @@ const WeightsSchema=new Schema({
 })
 const ProductSchema=new Schema({
     product_id:{
-        type: Number,
+        type: String,
         default: () => uuid.v4().replace(/-/g, '').slice(0, 4)
     },
     product_name:{
