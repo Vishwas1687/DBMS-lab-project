@@ -5,7 +5,7 @@ const morgan=require('morgan')
 // const authRoutes=require('./routes/authRoutes');
 // const orderRoutes=require('./routes/orderRoutes');
 const categoryRoutes=require('./routes/categoryRoutes');
-// const productRoutes=require('./routes/productRoutes');
+const productRoutes=require('./routes/productRoutes');
 
 // const connectDB=require('./config/db');
 const mongoose = require('mongoose');
@@ -26,7 +26,7 @@ app.use(morgan('dev'))
 app.use(cors({credentials:true,origin:'http://localhost:3000'}))
 //routes
 // app.use('/api/auth',authRoutes)
-// app.use('/api/products',productRoutes)
+app.use('/api/products',productRoutes)
 // app.use('/api/orders',orderRoutes)
 app.use('/api/categories',categoryRoutes)
 const PORT=process.env.PORT||5000;
