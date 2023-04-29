@@ -1,10 +1,11 @@
 import React from 'react'
 import Layout from '../../components/Layout/Layout'
 import AdminMenu from '../../components/AdminMenu'
+import Dashboard from '../user/Dashboard'
 
 const Users = () => {
   return (
-    <Layout>
+    <Layout title = {"Dashboard-All Users"}>
         <div className='container-fluid m-3 p-3' >
 
         <div className='row'>

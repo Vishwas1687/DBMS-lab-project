@@ -13,6 +13,8 @@ import AdminDashboard from "./pages/admin/AdminDashboard";
 import CreateCategory from "./pages/admin/CreateCategory";
 import CreateProduct from "./pages/admin/CreateProduct";
 import Users from "./pages/admin/Users";
+import Orders from "./pages/user/Orders";
+import Profile from "./pages/user/Profile";
 
 
 
@@ -24,7 +26,10 @@ function App() {
 
       <Route path = "/" element = {<HomePage />} />
       <Route path = "/dashboard" element = {<PrivateRoute />}>
-        <Route path = "-" element = {<Dashboard />} />
+        <Route path = "user" element = {<Dashboard />} />
+        <Route path = "user/orders" element = {<Orders/>} />
+        <Route path = "user/profile" element = {<Profile />} />
+        
       </Route>
 
       <Route path = "/dashboard" element = {<AdminRoute />}>
