@@ -3,8 +3,7 @@ const {model,Schema} =mongoose;
 const SubCategorySchema=new Schema({
     subcategory_id:{
         type:Number,
-        required:true,
-        unique:true
+        required:true
     },
     subcategory_name:{
         type:String,
@@ -40,5 +39,5 @@ const CategorySchema=new Schema({
     // }
 
 })
-
+module.exports=model('SubCategory',SubCategorySchema)
 module.exports=model('Category',CategorySchema)

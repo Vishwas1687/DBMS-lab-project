@@ -188,7 +188,7 @@ const updateSubCategoryController = async (req, res) => {
       return res.send({message:'Enter subcategory name'});
     }
     const category=await CategoryModel.findOne({slug})
-    const existingSubCategory=category.subcategories.filter((subcat)=>subcat.subcategory_id===subcategory_id)
+    const existingSubCategory=category.subcategories.filter((subcat)=>subcat.subcategory_id===parseInt(subcategory_id))
     if(!existingSubCategory)
     {
         return res.send({
@@ -262,7 +262,7 @@ const createSubCategoryController=async(req,res)=>{
         if(!category)
         return res.send({message:'Category does not exist'})
         
-        const existingSubCategory=category.subcategories.filter((subcat)=>subcat.subcategory_id===subcategory_id)
+        const existingSubCategory=category.subcategories.filter((subcat)=>subcat.subcategory_id===parseInt(subcategory_id))[0]
         if(existingSubCategory)
         {
             return res.send({
