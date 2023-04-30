@@ -1,6 +1,6 @@
 const mongoose=require('mongoose')
 const CategoryModel=require('./Category')
-const SubCategoryModel = require('./Category');
+const BrandModel=require('./Brand')
 const uuid = require('uuid')
 // const BrandModel=require('./Brand')
 // const SellerModel=require('./Seller')
@@ -58,15 +58,10 @@ const ProductSchema=new Schema({
         lowercase:true
     },
     brand:{
-        type:String,
-        default:"Not Branded"
+        type:mongoose.ObjectId,
+        ref:'Brand',
+        required:true
     },
-
-    // brand:{
-    //     type:mongoose.ObjectId,
-    //     ref:'Brand',
-    //     required:true
-    // },
     total_reviews:{
         type:Number,
         default:0
