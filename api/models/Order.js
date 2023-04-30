@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
-const { Schema } = mongoose;
-
+const { Schema,model } = mongoose;
+const uuid=require('uuid')
 
 const FeedbackSchema = new Schema({
   user: {
@@ -43,7 +43,7 @@ const FeedbackSchema = new Schema({
   },
   flag_reason: {
   type: String,
-  enum: ['inappropriate', 'spam', 'offensive', 'product_quality', 'product_availability', 'delivery_time', 'customer_service', 'not_satisfied_product'],
+  enum: ['inappropriate', 'spam', 'offensive', 'product_quality', 'delivery_time', 'customer_service', 'not_satisfied_product'],
   default: null
 }
 }, { timestamps: true });
@@ -51,16 +51,15 @@ const FeedbackSchema = new Schema({
 const OrderSchema = new Schema({
   order_id: {
     type: String,
-    required: true,
-    unique: true
+    default: ()=> uuid.v4().replace(/-/g,'').slice(0,5)
   },
-  customer_id: {
+  customer: {
     type: mongoose.ObjectId,
     ref: 'User',
     required: true
   },
   items: [{
-    product_id: {
+    product: {
       type: mongoose.ObjectId,
       ref: 'Product',
       required: true
@@ -69,11 +68,19 @@ const OrderSchema = new Schema({
       type: Number,
       required: true
     },
+    weight:{
+        type:Number,
+        required:true
+    },
+    weight_units:{
+        type:String,
+        required:true
+    },
     price: {
       type: Number,
       required: true
     },
-    feedback:FeedBackSchema,
+    feedback:FeedbackSchema,
     feedback_given:{
         type:Boolean,
         default:false
@@ -81,28 +88,19 @@ const OrderSchema = new Schema({
   }],
   status: {
     type: String,
-    enum: ['placed', 'shipped', 'delivered', 'cancelled'],
+    enum: ['placed', 'processing', 'shipped', 'delivered', 'cancelled'],
     default: 'placed'
   },
-  shipping_address: {
-    type: String,
-    required: true
-  },
-  payment_method: {
-    type: String,
-    enum: ['cash on delivery', 'credit card', 'debit card', 'net banking'],
-    required: true
-  },
-  payment_status: {
-    type: String,
-    enum: ['pending', 'completed'],
-    default: 'pending'
+//   shipping_address: {
+//     type: mongoose.ObjectId,
+//     ref:'Address',
+//     required: true
+//   },
+  shipping_address:{
+    type:String,
+    required:true
   },
   total_amount: {
-    type: Number,
-    required: true
-  },
-  shipping_charge: {
     type: Number,
     required: true
   },
@@ -121,16 +119,18 @@ const OrderSchema = new Schema({
   }
 });
 
-module.exports = mongoose.model('Order', OrderSchema);
+OrderSchema.path('items.feedback').required(false)
 
-const Order = require('./models/Order');
+module.exports = model('Order', OrderSchema);
 
-Order.findOne({ order_id: 'your_order_id' })
-  .populate('items.product_id')
-  .exec((err, order) => {
-    if (err) {
-      console.log('Error occurred while populating products: ', err);
-    } else {
-      console.log('Order with populated products: ', order);
-    }
-  });
+// const Order = require('./models/Order');
+
+// Order.findOne({ order_id: 'your_order_id' })
+//   .populate('items.product_id')
+//   .exec((err, order) => {
+//     if (err) {
+//       console.log('Error occurred while populating products: ', err);
+//     } else {
+//       console.log('Order with populated products: ', order);
+//     }
+//   });

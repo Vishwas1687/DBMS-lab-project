@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 const jwt=require('jsonwebtoken')
-const UserModel = require('../models/Users');
+const UserModel = require('../models/User');
 
 const registerController = async (req, res) => {
   try {
@@ -88,6 +88,7 @@ const loginController=async(req,res)=>{
    res.status(200).send({
     success:true,
     user:{
+        _id:existingUser._id,
         username:existingUser.username,
         email:email,
         addresses:existingUser.addresses,

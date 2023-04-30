@@ -91,4 +91,5 @@ const UserSchema = new Schema({
 UserSchema.path('addresses').required(false);
 UserSchema.path('recommended_products').required(false);
 
+module.exports= model('Address',AddressSchema)
 module.exports = model('User', UserSchema);
