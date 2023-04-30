@@ -1,9 +1,7 @@
 const mongoose=require('mongoose')
 const CategoryModel=require('./Category')
-const BrandModel=require('./Brand')
 const uuid = require('uuid')
-// const BrandModel=require('./Brand')
-// const SellerModel=require('./Seller')
+
 const {model,Schema} =mongoose;
 const WeightsSchema=new Schema({
     weight_id:{
