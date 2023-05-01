@@ -23,6 +23,15 @@ const createCategoryController=async(req,res)=>{
         })
     }
 
+      for (const subcategory of subcategories) {
+      if (!subcategory.subcategory_id) {
+        return res.send({ message: 'Subcategory id is not entered' });
+      }
+      if (!subcategory.subcategory_name) {
+        return res.send({ message: 'Subcategory name is not entered' });
+      }
+    } 
+    
     const newCategory=await new CategoryModel({
         category_id:category_id,
         slug:slugify(category_name),
@@ -32,6 +41,8 @@ const createCategoryController=async(req,res)=>{
      
     // newCategory.photo.data=fs.readFileSync(photo.path)
     // newCategory.photo.contentType=photo.type
+
+
 
     await newCategory.save()
 

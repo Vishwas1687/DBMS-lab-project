@@ -1,55 +1,49 @@
-import { Routes, Route } from "react-router-dom";
-import HomePage from "./pages/HomePage";
-import About from "./pages/About";
-import Contact from "./pages/Contact";
-import Policy from "./pages/Policy";
-import PageNotFound from "./pages/PageNotFound";
-import Register from "./pages/Auth/Register";
-import Login from "./pages/Auth/Login";
-import Dashboard from "./pages/user/Dashboard";
-// import PrivateRoute from "./components/Routes/Private";
-// import AdminRoute from "./components/Routes/AdminRoute";
-import AdminDashboard from "./pages/admin/AdminDashboard";
-import ManageCategory from "./pages/admin/ManageCategory";
-import CreateProduct from "./pages/admin/CreateProduct";
-import Users from "./pages/admin/Users";
-import Orders from "./pages/user/Orders";
-import Profile from "./pages/user/Profile";
-import CreateCategory from "./pages/admin/CreateCategory";
-
-
-
+import "./App.css";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Navbar } from "./components/navbar";
+import { Shop } from "./pages/shop/shop";
+import { Contact } from "./pages/contact";
+import { Cart } from "./pages/cart/cart";
+import { ShopContextProvider } from "./context/shop-context";
+import { SearchBar } from "./components/searchbar";
+import {ImageSlider} from "./components/ImageSlider";
 
 function App() {
   return (
-    <>
-    <Routes>
-
-      <Route path = "/" element = {<HomePage />} />
+    <div className="App">
+      <div className="logo">
+        
+      </div>
+      <ShopContextProvider>
       
-      <Route path = "/user" element = {<Dashboard />} />
-      <Route path = "/user/orders" element = {<Orders/>} />
-      <Route path = "/user/profile" element = {<Profile />} />
+        <Router>
+          <Navbar />
+          <br></br>
+          <SearchBar />
+          <br></br>
+
+          <div style={containerStyles}>
+        <ImageSlider slides={slides} />
+      </div>
+          <Routes>
+            <Route path="/" element={<Shop />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/cart" element={<Cart />} />
+          </Routes>
+        </Router>
+
+        
+
+        
+        
+      </ShopContextProvider>
+
+      
         
       
 
       
-      <Route path = "/admin" element = {<AdminDashboard />} />
-      <Route path = "/admin/manage-category" element = {<ManageCategory />} />
-      <Route path = "/admin/create-product" element = {<CreateProduct />} />
-      <Route path = "/admin/users" element = {<Users />} />
-      <Route path = "/admin/create-category" element={<CreateCategory/>}></Route>
-      
-      <Route path = "/register" element = {<Register />} />
-      <Route path = "/login" element = {<Login />} />
-
-      <Route path = "/about" element = {<About />} />
-      <Route path = "/contact" element = {<Contact />} />
-      <Route path = "/policy" element = {<Policy />} />
-      <Route path = "/*" element = {<PageNotFound />} />
-
-    </Routes>
-    </>
+    </div>
   );
 }
 

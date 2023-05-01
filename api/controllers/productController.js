@@ -28,7 +28,7 @@ const createProductController=async(req,res)=>{
     if(!tags)
     return res.send({message:'Enter the tags'})
 
-    const existingProduct=await ProductModel.findOne({product_name})
+    const existingProduct=await ProductModel.findOne({product_name}).populate('brand')
     if(existingProduct)
     {
         return res.send({
@@ -104,7 +104,7 @@ const updateProductController=async(req,res)=>{
     if(!slug)
     return res.send({message:'Enter the slug'})
 
-    const existingProduct=await ProductModel.findOne({slug})
+    const existingProduct=await ProductModel.findOne({slug}).populate('brand')
     if(!existingProduct)
     {
         return res.send({
@@ -127,7 +127,7 @@ const updateProductController=async(req,res)=>{
         product_name:product_name,
         slug:slugify(product_name),
         seller_id:seller_id,
-        brand:brand,
+        brand:brand.brand_name,
         total_reviews:total_reviews,
         rating:rating,
         total_ratings:total_ratings,
@@ -183,7 +183,7 @@ const deleteProductController=async(req,res)=>{
 
 const getAllProductsController=async(req,res)=>{
      try{
-        const products=await ProductModel.find({}).populate('category')
+        const products=await ProductModel.find({}).populate('category').populate('brand')
 
         res.send({
             message:'All products are fetched',
@@ -203,7 +203,7 @@ const getAllProductsController=async(req,res)=>{
 const getSingleProductController=async(req,res)=>{
     try{
         const {slug}=req.params
-        const existingProduct=await ProductModel.findOne({slug}).populate('category')
+        const existingProduct=await ProductModel.findOne({slug}).populate('category').populate('brand')
         if(!existingProduct)
         {
             return res.send({
@@ -249,7 +249,7 @@ const getProductsBySubCategoryController=async(req,res)=>{
             })
           }
 
-          const products=await ProductModel.find({subcategory:subcategory.subcategory_name}).populate('category')
+          const products=await ProductModel.find({subcategory:subcategory.subcategory_name}).populate('category').populate('brand')
 
           if(!products)
           {
@@ -357,7 +357,7 @@ const updateWeightController=async(req,res)=>{
        if(!slug)
        return res.send({message:'Enter the slug'})
 
-       const existingProduct=await ProductModel.findOne({slug}).populate('weights')
+       const existingProduct=await ProductModel.findOne({slug})
        if(!existingProduct)
        {
         return res.send({
@@ -441,7 +441,110 @@ const deleteWeightController=async(req,res)=>{
          })
     }
 }
+
+const getProductsByBrandController=async(req,res)=>{
+    try{
+         const {brand,subcategory,slug}=req.params
+         if(!brand)
+         return res.send({message:'Brand does not exist'})
+         if(!subcategory)
+         return res.send({message:'Enter subcategory name'})
+         if(!slug)
+         return res.send({message:'Slug is not entered'})
+
+         let products=await ProductModel.find({brand,subcategory}).populate('category').populate('brand')
+
+         products=products.filter((pro)=>pro.slug!==slug)
+
+         res.send({
+            message:`Products successfully fetched`,
+            success:true,
+            products
+         })
+    }catch(error)
+    {
+         return res.send({
+            message:'Something went wrong',
+            success:false,
+            error:error.message
+         })
+    }
+}
+
+const getRelatedProductsController=async(req,res)=>{
+    try{
+        const {slug}=req.params
+        if(!slug)
+        res.send({message:'Enter the slug'})
+
+        const existingProduct=await ProductModel.findOne({slug}).populate('brand')
+
+        if(!existingProduct)
+        return res.send(
+            {message:'Product does not exist',
+            success:false
+             }
+          )
+
+        const subcategory=existingProduct.subcategory
+        let products=await ProductModel.find({subcategory})
+        products=products.filter((pro)=>pro.slug!==slug)
+
+        res.send({
+            message:'Related products of the products fetched',
+            success:true,
+            products
+        })
+    }catch(error)
+    {
+         res.send({
+            message:'Something went wrong',
+            success:false,
+            error:error.message
+         })
+    }
+}
+
+const getProductsBySearchController=async(req,res)=>{
+    try{
+         const {search}=req.params
+         if(!search)
+         res.send({message:'Search is not entered'})
+
+         const products=await ProductModel.find({
+            $or:[
+                {
+                    tags:{$in:[search]},
+                },
+                {
+                    product_name:{$regex:search,$options:'i'}
+                }
+            ]}).populate('category').populate('brand')
+
+          if(products.length==0)
+          {
+            return res.send({
+                message:'No products found',
+                success:true
+            })
+          }
+
+          res.send({
+            message:'Product successfully fetched',
+            success:true,
+            products
+          })
+    }catch(error)
+    {
+        res.send({
+            message:'Something went wrong',
+            success:false,
+            error:error.message
+        })
+    }
+}
 module.exports={createProductController,updateProductController,
             deleteProductController,getAllProductsController,getSingleProductController,
         getProductsBySubCategoryController,createWeightsController,
-        updateWeightController,deleteWeightController}
+        updateWeightController,deleteWeightController,getProductsByBrandController,
+        getRelatedProductsController,getProductsBySearchController}

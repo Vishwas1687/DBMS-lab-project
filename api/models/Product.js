@@ -1,8 +1,7 @@
 const mongoose=require('mongoose')
 const CategoryModel=require('./Category')
 const uuid = require('uuid')
-// const BrandModel=require('./Brand')
-// const SellerModel=require('./Seller')
+
 const {model,Schema} =mongoose;
 const WeightsSchema=new Schema({
     weight_id:{
@@ -32,7 +31,7 @@ const WeightsSchema=new Schema({
 })
 const ProductSchema=new Schema({
     product_id:{
-        type: Number,
+        type: String,
         default: () => uuid.v4().replace(/-/g, '').slice(0, 4)
     },
     product_name:{
@@ -57,15 +56,10 @@ const ProductSchema=new Schema({
         lowercase:true
     },
     brand:{
-        type:String,
-        default:"Not Branded"
+        type:mongoose.ObjectId,
+        ref:'Brand',
+        required:true
     },
-
-    // brand:{
-    //     type:mongoose.ObjectId,
-    //     ref:'Brand',
-    //     required:true
-    // },
     total_reviews:{
         type:Number,
         default:0
