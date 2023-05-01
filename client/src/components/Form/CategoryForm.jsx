@@ -5,6 +5,13 @@ const CategoryForm = ({ handleSubmit, value, setValue }) => {
     <>
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
+        <input
+            type="text"
+            className="form-control"
+            placeholder="Enter new category id"
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+          />
           <input
             type="text"
             className="form-control"
