@@ -1,5 +1,5 @@
 import React from "react";
-import Footer from "./Footer";
+// import Footer from "./Footer";
 import Header from "./Header";
 
 const Layout = ({ children }) => {
@@ -7,7 +7,7 @@ const Layout = ({ children }) => {
     <div>
       <Header />
       <main style={{ minHeight: "70vh" }}>{children}</main>
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 };

@@ -3,11 +3,10 @@ import axios from "axios";
 import Layout from "../../components/Layout/Layout";
 import AdminMenu from "../../components/AdminMenu";
 
-const CreateCategory = () => {
+const CreateCategory = ({ categoryId, categoryName }) => {
   const [formData, setFormData] = useState({
-    category_id: "",
-    category_name: "",
-    subcategories: "",
+    category_id: categoryId || "",
+    category_name: categoryName || "",
   });
 
   const handleChange = (e) => {
@@ -26,7 +25,6 @@ const CreateCategory = () => {
         setFormData({
           category_id: "",
           category_name: "",
-          subcategories: "",
         });
       } else {
         alert(data.message);
@@ -38,15 +36,17 @@ const CreateCategory = () => {
 
   return (
     <Layout title={"Dashboard-Create Category"}>
+      <br></br>
       <div className="container-fluid">
         <div className="row">
           <div className="col-md-2">
             <AdminMenu />
           </div>
-          <div className="col-md-10">
+          <div className="col-md-10 create-category-section">
             <h1>Create Category</h1>
+            <br></br>
             <form onSubmit={handleSubmit}>
-              <div className="form-group">
+              <div className="form-group text-left">
                 <label htmlFor="category_id">Category ID</label>
                 <input
                   type="text"
@@ -58,7 +58,8 @@ const CreateCategory = () => {
                   onChange={handleChange}
                 />
               </div>
-              <div className="form-group">
+              <br></br>
+              <div className="form-group text-left">
                 <label htmlFor="category_name">Category Name</label>
                 <input
                   type="text"
@@ -70,17 +71,7 @@ const CreateCategory = () => {
                   onChange={handleChange}
                 />
               </div>
-              <div className="form-group">
-                <label htmlFor="subcategories">Subcategories</label>
-                <textarea
-                  className="form-control"
-                  id="subcategories"
-                  name="subcategories"
-                  placeholder="Enter subcategories (separated by comma)"
-                  value={formData.subcategories}
-                  onChange={handleChange}
-                />
-              </div>
+              <br></br>
               <button type="submit" className="btn btn-primary">
                 Create
               </button>
@@ -88,6 +79,15 @@ const CreateCategory = () => {
           </div>
         </div>
       </div>
+      <style jsx>{`
+        .form-group text-left {
+          padding-top: 50px;
+          text-align: center;
+        }
+        .form-control{
+          width:500px
+        }
+      `}</style>
     </Layout>
   );
 };

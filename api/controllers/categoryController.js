@@ -9,8 +9,8 @@ const createCategoryController=async(req,res)=>{
     return res.send({message:'Category id is not entered'})
     if(!category_name)
     return res.send({message:'Category name is not entered'})
-    if(!subcategories)
-    return res.send({message:'Enter the list of subcategories for the category'})
+    // if(!subcategories)
+    // return res.send({message:'Enter the list of subcategories for the category'})
     // if(!photo)
     // return res.send({message:'Sub category photo should be entered'})
 
@@ -27,7 +27,7 @@ const createCategoryController=async(req,res)=>{
         category_id:category_id,
         slug:slugify(category_name),
         category_name:category_name,
-        subcategories:subcategories,
+        // subcategories:subcategories,
     })
      
     // newCategory.photo.data=fs.readFileSync(photo.path)

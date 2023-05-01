@@ -3,11 +3,13 @@ import Layout from "./../../components/Layout/Layout";
 import AdminMenu from "./../../components/AdminMenu";
 import toast from "react-hot-toast";
 import axios from "axios";
-import { message } from "antd";
-
+import {  message } from "antd";
+import { Modal } from "antd";
+import CategoryForm from "../../components/Form/CategoryForm";
 const ManageCategory = () => {
   const [categories, setCategories] = useState([]);
   const [name, setName] = useState("");
+  const [id, setId] = useState("");
   const [visible, setVisible] = useState(false);
   const [selected, setSelected] = useState(null);
   const [updatedName, setUpdatedName] = useState("");
@@ -17,7 +19,7 @@ const ManageCategory = () => {
     try {
       const { data } = await axios.post(
         "http://localhost:5000/api/categories/create-category",
-        { category_name: name }
+        { category_id:id,category_name: name }
       );
       if (data.success) {
         toast.success(`${data.name} is created`);
@@ -35,8 +37,8 @@ const ManageCategory = () => {
     e.preventDefault();
     try {
       const { data } = await axios.put(
-        `http://localhost:5000/api/categories/update-category/${ category_name }`,
-        
+        `http://localhost:5000/api/categories/update-category/${slug}`,
+        { category_name }
       );
       if (data?.success) {
         toast.success(`${category_name} is updated`);
@@ -161,6 +163,18 @@ const ManageCategory = () => {
 </table>
 
                         </div>
+                        <Modal
+  onCancel={() => setVisible(false)}
+  footer={null}
+  visible={visible}
+>
+  <CategoryForm
+    value={updatedName}
+    setValue={setUpdatedName}
+    handleSubmit={(e) => handleUpdate(selected, e)}
+  />
+</Modal>
+
                     </div>
                 </div>
             </div>
