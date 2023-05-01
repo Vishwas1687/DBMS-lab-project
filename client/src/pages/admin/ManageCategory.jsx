@@ -35,8 +35,8 @@ const ManageCategory = () => {
     e.preventDefault();
     try {
       const { data } = await axios.put(
-        `http://localhost:5000/api/categories/update-category/${slug}`,
-        { category_name }
+        `http://localhost:5000/api/categories/update-category/${ category_name }`,
+        
       );
       if (data?.success) {
         toast.success(`${category_name} is updated`);
