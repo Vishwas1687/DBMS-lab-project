@@ -26,8 +26,7 @@ const CategorySchema=new Schema({
     },
     slug:{
         type:String,
-        required:true,
-        lowercase:true
+        required:true
     },
     subcategories:{
         type:[SubCategorySchema],
