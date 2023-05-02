@@ -13,6 +13,11 @@ const FeedbackSchema = new Schema({
     ref: 'Product',
     required: true,
   },
+  order: {
+     type: mongoose.ObjectId,
+     ref: '',
+     required: true,
+  },
   rating: {
     type: Number,
     required: true,
@@ -117,10 +122,11 @@ const OrderSchema = new Schema({
   reason_for_cancellation: {
     type: String
   }
-});
+},{timestamps:true});
 
 OrderSchema.path('items.feedback').required(false)
 
+module.exports=model('Feedback',FeedbackSchema)
 module.exports = model('Order', OrderSchema);
 
 // const Order = require('./models/Order');
