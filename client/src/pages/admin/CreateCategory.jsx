@@ -4,11 +4,28 @@ import Layout from "../../components/Layout/Layout";
 import AdminMenu from "../../components/AdminMenu";
 
 const CreateCategory = ({ categoryId, categoryName }) => {
+  const [subCategories,setSubcategories]=useState([{
+      subcategory_id:"",subcategory_name:""
+    }])
   const [formData, setFormData] = useState({
     category_id: categoryId || "",
     category_name: categoryName || "",
   });
 
+
+  const handleAddSubCategory=()=>{
+    return setSubcategories([...subCategories,{
+      subcategory_id:"",subcategory_name:""
+    }])
+  }
+ 
+  const handleSubCategoryChange=(index,field,value)=>{
+    
+     const newSubCategories=[...subCategories]
+     newSubCategories[index][field]=value
+     setSubcategories(newSubCategories)
+  }
+  
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -16,9 +33,14 @@ const CreateCategory = ({ categoryId, categoryName }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      const formDataWithSubcategories={
+        category_id:formData.category_id,
+        category_name:formData.category_name,
+        subcategories:subCategories
+      }
       const { data } = await axios.post(
         "http://localhost:5000/api/categories/create-category",
-        formData
+        formDataWithSubcategories
       );
       if (data?.success) {
         alert(`${formData.category_name} is added`);
@@ -26,6 +48,9 @@ const CreateCategory = ({ categoryId, categoryName }) => {
           category_id: "",
           category_name: "",
         });
+        setSubcategories([{
+      subcategory_id:"",subcategory_name:""
+    }])
       } else {
         alert(data.message);
       }
@@ -72,6 +97,41 @@ const CreateCategory = ({ categoryId, categoryName }) => {
                 />
               </div>
               <br></br>
+              {subCategories.map((subcat,index)=>{
+                return (
+                  <>
+                    <div className="form-group text-left">
+                    <label>{`Subcategory id ${index+1}`}</label>
+                    <input
+                    type="text"
+                    className="form-control"
+                    name="subcategory_id"
+                    placeholder="Enter subcategory id"
+                    value={subCategories[index].subcategory_id}
+                    onChange={(e)=>{handleSubCategoryChange(index,"subcategory_id",e.target.value)}}
+                    />
+                    </div>
+                    <br></br>
+                    <div className="form-group text-left">
+                    <label>{`Subcategory name ${index+1}`}</label>
+                    <input
+                    type="text"
+                    className="form-control"
+                    name="subcategory_name"
+                    placeholder="Enter subcategory name"
+                    value={subCategories[index].subcategory_name}
+                    onChange={(e)=>{handleSubCategoryChange(index,"subcategory_name",e.target.value)}}
+                    />
+                    </div>
+                    <br></br>
+                  </>
+                )
+              })}
+              
+              <button type="button" onClick={handleAddSubCategory}>Create sub category</button>
+               <br></br>
+               <br></br>
+
               <button type="submit" className="btn btn-primary">
                 Create
               </button>
