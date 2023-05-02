@@ -31,7 +31,24 @@ const CategorySchema=new Schema({
     },
     subcategories:{
         type:[SubCategorySchema],
-        required:true
+        required:true,
+        validate: [
+        {
+        validator: function (subcategories) {
+          // Iterate over all subcategories and ensure that each subcategory_id
+          // is unique within this category
+          const subcategoryIds = new Set();
+          for (const subcategory of subcategories) {
+            if (subcategoryIds.has(subcategory.subcategory_id)) {
+              return false;
+            }
+            subcategoryIds.add(subcategory.subcategory_id);
+          }
+          return true;
+        },
+        message: 'Subcategory IDs must be unique within a category',
+      },
+    ],
     },
     //   photo:{
     //     data:Buffer,
