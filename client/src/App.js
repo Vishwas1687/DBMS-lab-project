@@ -16,6 +16,7 @@ import Users from "./pages/admin/Users";
 import Orders from "./pages/user/Orders";
 import Profile from "./pages/user/Profile";
 import CreateCategory from "./pages/admin/CreateCategory";
+import ViewCategory from "./pages/admin/ViewCategory";
 
 
 
@@ -39,6 +40,7 @@ function App() {
       <Route path = "/admin/create-product" element = {<CreateProduct />} />
       <Route path = "/admin/users" element = {<Users />} />
       <Route path = "/admin/create-category" element={<CreateCategory/>}></Route>
+      <Route path = "/admin/manage-category/category/:categorySlug" element={<ViewCategory />} />
       
       <Route path = "/register" element = {<Register />} />
       <Route path = "/login" element = {<Login />} />

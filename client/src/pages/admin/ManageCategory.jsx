@@ -67,7 +67,7 @@ const ManageCategory = () => {
         toast.error(data.message);
       }
     } catch (error) {
-      toast.error("Somtihing went wrong");
+      toast.error("Something went wrong");
     }
   };
 
@@ -132,7 +132,7 @@ const ManageCategory = () => {
           >
             Delete
           </button>
-          <Link to={`/category/${c.slug}`}>
+          <Link to={`/admin/manage-category/category/${c.slug}`}>
   <button className="btn btn-info ms-2">View</button>
 </Link>
           
