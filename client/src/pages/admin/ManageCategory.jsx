@@ -3,6 +3,7 @@ import Layout from "./../../components/Layout/Layout";
 import AdminMenu from "./../../components/AdminMenu";
 import toast from "react-hot-toast";
 import axios from "axios";
+import {Link} from 'react-router-dom';
 import {  message } from "antd";
 import { Modal } from "antd";
 import CategoryForm from "../../components/Form/CategoryForm";
@@ -124,35 +125,21 @@ const ManageCategory = () => {
                             Edit
                           </button>
                           <button
-            className="btn btn-danger ms-2"
-            onClick={() => {
-              handleDelete(c.slug);
-            }}
-          >
-            Delete
-          </button>
+                         className="btn btn-danger ms-2"
+                         onClick={() => {
+                         handleDelete(c.slug);
+                          }}
+                         >
+                         Delete
+                         </button>
+                        <Link to={`/admin/get-category/${c.slug}`}>
+                            <button type="button" className="btn btn-success ms-2">
+                                View
+                            </button>
+                        </Link>
+          
         </td>
       </tr>
-      {c.subcategories.length > 0 && (
-        <tr key={`${c.slug}-subcategories`}>
-          <td colSpan="3">
-            <table className="table table-bordered">
-              <thead>
-                <tr>
-                  <th>Subcategory Name</th>
-                </tr>
-              </thead>
-              <tbody>
-                {c.subcategories.map((sub) => (
-                  <tr key={sub.slug}>
-                    <td>{sub.name}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </td>
-        </tr>
-      )}
     </>
   ))}
 
@@ -181,10 +168,6 @@ const ManageCategory = () => {
         </Layout>
     )
 }
-
-
-
-
 
 
 export default ManageCategory
