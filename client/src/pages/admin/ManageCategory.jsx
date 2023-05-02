@@ -3,6 +3,7 @@ import Layout from "./../../components/Layout/Layout";
 import AdminMenu from "./../../components/AdminMenu";
 import toast from "react-hot-toast";
 import axios from "axios";
+import {Link} from 'react-router-dom';
 import {  message } from "antd";
 import { Modal } from "antd";
 import CategoryForm from "../../components/Form/CategoryForm";
@@ -132,13 +133,12 @@ const ManageCategory = () => {
           >
             Delete
           </button>
-          <Link to={`/admin/manage-category/category/${c.slug}`}>
+        <Link to={`/admin/manage-category/category/${c.slug}`}>
   <button className="btn btn-info ms-2">View</button>
 </Link>
-          
         </td>
       </tr>
-      {/* {c.subcategories.length > 0 && (
+      {c.subcategories.length > 0 && (
         <tr key={`${c.slug}-subcategories`}>
           <td colSpan="3">
             <table className="table table-bordered">
@@ -157,7 +157,7 @@ const ManageCategory = () => {
             </table>
           </td>
         </tr>
-      )} */}
+      )}
     </>
   ))}
 
@@ -186,10 +186,6 @@ const ManageCategory = () => {
         </Layout>
     )
 }
-
-
-
-
 
 
 export default ManageCategory

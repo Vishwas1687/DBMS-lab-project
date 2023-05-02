@@ -7,6 +7,7 @@ import PageNotFound from "./pages/PageNotFound";
 import Register from "./pages/Auth/Register";
 import Login from "./pages/Auth/Login";
 import Dashboard from "./pages/user/Dashboard";
+import GetCategory from './pages/admin/Category/GetCategory.jsx'
 // import PrivateRoute from "./components/Routes/Private";
 // import AdminRoute from "./components/Routes/AdminRoute";
 import AdminDashboard from "./pages/admin/AdminDashboard";
@@ -37,11 +38,10 @@ function App() {
       
       <Route path = "/admin" element = {<AdminDashboard />} />
       <Route path = "/admin/manage-category" element = {<ManageCategory />} />
-      <Route path = "/admin/create-product" element = {<CreateProduct />} />
+      <Route path = "/admin/get-category/:slug" element = {<GetCategory />} />
       <Route path = "/admin/users" element = {<Users />} />
       <Route path = "/admin/create-category" element={<CreateCategory/>}></Route>
       <Route path = "/admin/manage-category/category/:categorySlug" element={<ViewCategory />} />
-      
       <Route path = "/register" element = {<Register />} />
       <Route path = "/login" element = {<Login />} />
 
