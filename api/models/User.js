@@ -5,7 +5,7 @@ const uuid = require('uuid')
 const AddressSchema = new Schema({
   address_id: {
     type: Number,
-    unique: true,
+    default:()=>uuid.v4().replace(/-/g,'').slice(0,2)
   },
   house_number: {
     type: Number,
