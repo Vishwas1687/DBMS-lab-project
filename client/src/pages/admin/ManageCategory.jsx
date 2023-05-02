@@ -6,6 +6,7 @@ import axios from "axios";
 import {  message } from "antd";
 import { Modal } from "antd";
 import CategoryForm from "../../components/Form/CategoryForm";
+import { Link } from "react-router-dom";
 const ManageCategory = () => {
   const [categories, setCategories] = useState([]);
   const [name, setName] = useState("");
@@ -131,9 +132,13 @@ const ManageCategory = () => {
           >
             Delete
           </button>
+          <Link to={`/category/${c.slug}`}>
+  <button className="btn btn-info ms-2">View</button>
+</Link>
+          
         </td>
       </tr>
-      {c.subcategories.length > 0 && (
+      {/* {c.subcategories.length > 0 && (
         <tr key={`${c.slug}-subcategories`}>
           <td colSpan="3">
             <table className="table table-bordered">
@@ -152,7 +157,7 @@ const ManageCategory = () => {
             </table>
           </td>
         </tr>
-      )}
+      )} */}
     </>
   ))}
 
