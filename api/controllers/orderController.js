@@ -189,7 +189,7 @@ const getOrderByUserController=async(req,res)=>{
             })
         }
         // const thirtyDaysToGo=new Date(Date.now()-30*24*60*60*1000)
-        const order=await OrderModel.find({customer:user._id,
+        const order=await OrderModel.find({customer:user._id
          }).populate('items.product').populate('customer')
         if(order.length===0)
         {
@@ -333,9 +333,16 @@ const createFeedbackController=async(req,res)=>{
 
          const feedback=feedbackProduct.feedback
 
-         const updatedOrder=await OrderModel.findOneAndUpdate({customer:user._id,order_id:order_id,
+         const updatedOrder=await OrderModel.findOneAndUpdate({customer:user._id,order_id:order_id,status:'delivered',
            "items.product":product._id},{$set:{"items.$.feedback":feedback},"items.$.feedback_given":true},{new:true})
 
+        if(!updatedOrder)
+        {
+            return res.send({
+                message:'Order is not still delivered to give feedback',
+                success:false,
+            })
+        }
          return res.send({
             message:`Feedback of the product ${product.slug} is received from the user ${user.username} for the order ${order.order_id}`,
             success:true,
@@ -351,7 +358,76 @@ const createFeedbackController=async(req,res)=>{
         })
     }
 }
+
+const getAllFeedbackOfTheProductController=async(req,res)=>{
+     try{
+          const {slug}=req.params
+          const product=await ProductModel.findOne({slug})
+          const orders=await OrderModel.find({"items.product":product._id,"items.feedback_given":true}).populate("items.product")
+          
+          const allFeedback=orders.reduce((feedbackarray,order)=>{
+            order.items.filter((item)=>{
+               feedbackarray.push(item.feedback)
+            })
+            return feedbackarray
+          },[])
+
+          if(allFeedback.length===0)
+          {
+            return res.send({
+                message:'No feedbacks for the product',
+                success:false, 
+            })
+          }
+          res.send({
+            message:'All feedback of the product received',
+            success:true,
+            allFeedback
+          })
+     }catch(error)
+     {
+         res.send({
+            message:'Something went wrong',
+            success:false,
+            error:error.message
+         })
+     }
+}
+
+const getAllFlaggedFeedbackProducts=async(req,res)=>{
+    try{
+         const orders=await OrderModel.find({"items.feedback.is_flagged":true}).populate('items.product')
+         if(orders.length===0)
+         {
+            return res.send({
+                message:'There are no flagged products',
+                success:false
+            })
+         }
+         const allProducts=orders.reduce((productarray,order)=>{
+            order.items.filter((item)=>{
+                productarray.push(item.product)
+            })
+            return productarray
+        },[])
+          
+        const uniqueProducts=new Set(allProducts)
+         res.send({
+            message:'All products that are flagged are fetched',
+            success:true,
+            uniqueProducts:Array.from(uniqueProducts)
+         })
+    }catch(error)
+    {
+         res.send({
+            message:'Something went wrong',
+            success:false,
+            error:error.message
+         })
+    }
+}
 module.exports={createOrderController,updateOrderController,
    deleteOrderController,getAllOrdersController,getSingleOrderController,
    getOrderByUserController,getPlacedOrdersController,getDeliveredOrdersController,
-     getCancelledOrdersController,createFeedbackController}
+     getCancelledOrdersController,createFeedbackController,getAllFeedbackOfTheProductController,
+    getAllFlaggedFeedbackProducts}
