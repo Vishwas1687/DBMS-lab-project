@@ -15,7 +15,7 @@ const FeedbackSchema = new Schema({
   },
   order: {
      type: mongoose.ObjectId,
-     ref: '',
+     ref: 'Order',
      required: true,
   },
   rating: {

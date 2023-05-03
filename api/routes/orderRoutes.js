@@ -5,7 +5,8 @@ const {createOrderController,updateOrderController,
       deleteOrderController,getAllOrdersController,
        getSingleOrderController,getOrderByUserController,
        getPlacedOrdersController,getDeliveredOrdersController,
-       getCancelledOrdersController,createFeedbackController}=require('../controllers/orderController')
+       getCancelledOrdersController,createFeedbackController,
+        getAllFeedbackOfTheProductController,getAllFlaggedFeedbackProducts}=require('../controllers/orderController')
 
 router.post('/create-order',createOrderController)
 
@@ -31,12 +32,18 @@ router.get('/get-cancelled-orders',getCancelledOrdersController)
 
 router.put('/get-order/:order_id/:user_id/:slug/feedback',createFeedbackController)
 
-// router.get('/get-feedback/:slug',getAllFeedbackOfTheProductController)
+router.get('/get-feedback/:slug',getAllFeedbackOfTheProductController)
 
-// router.get('/get-all-flagged-feedbacks',getAllFlaggedFeedbacks)
+// router.get('/get-all-flagged-feedback-of-the-product/:slug',getFlaggedFeedBackController)
+
+//router.get('/get-all-poor-quality-feedback-of-the-product/:slug',getPoorQualityFeedbackController)
+
+// router.get('/get-all-products-with-poor-quality',getPoorQualityProductsController)
+
+router.get('/get-all-flagged-feedback-products',getAllFlaggedFeedbackProducts)
 
 // router.get('/get-products-by-feedback-rating',getProductsByFeedbackController)
 
-// router.get('/get-all-products-flagged-as-poor-product-quality',getPoorQualityProductsController)
+// router.put('/delete-feedback-but-user-cant-enter-feedback-again/:slug',deleteFeedbackController)
 
 module.exports=router
