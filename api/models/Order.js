@@ -49,6 +49,14 @@ const FeedbackSchema = new Schema({
   flag_reason: {
   type: String,
   enum: ['inappropriate', 'spam', 'offensive', 'product_quality', 'delivery_time', 'customer_service', 'not_satisfied_product'],
+  validator:{
+    validate:async function(v)
+    {
+      const en=['inappropriate', 'spam', 'offensive', 'product_quality', 'delivery_time', 'customer_service', 'not_satisfied_product']
+      return en.includes(v)
+    },
+    message:props=>`${props.value} is not a valid flag reason`
+  },
   default: null
 }
 }, { timestamps: true });

@@ -426,8 +426,147 @@ const getAllFlaggedFeedbackProducts=async(req,res)=>{
          })
     }
 }
+
+const getFlaggedFeedBackController=async(req,res)=>{
+     try{
+          const {slug}=req.params
+          const product=await ProductModel.findOne({slug})
+          const orders=await OrderModel.find({"items.product":product._id,"items.feedback.is_flagged":true})
+
+          const allFeedback=orders.reduce((feedbackarray,order)=>{
+            order.items.filter((item)=>{
+                feedbackarray.push(item.feedback)
+            })
+            return feedbackarray
+          },[])
+
+          if(allFeedback.length===0)
+          {
+            return res.send({
+                message:'There is are no flagged feedbacks for this product',
+                success:false
+            })
+          }
+
+           res.send({
+                message:'All flagged feedbacks of the product is fetched',
+                success:true,
+                allFeedback
+            })
+     }catch(error)
+     {
+           res.send({
+                message:'Something went wrong',
+                success:false,
+                error:error.message
+            })
+     }
+}
+
+const getPoorQualityFeedbackController=async(req,res)=>{
+    try{
+          const {slug}=req.params
+          const product=await ProductModel.findOne({slug})
+          const orders=await OrderModel.find({"items.product":product._id,
+          "items.feedback.is_flagged":true,"items.feedback.flag_reason":"product_quality"})
+
+          const allFeedback=orders.reduce((feedbackarray,order)=>{
+            order.items.filter((item)=>{
+                feedbackarray.push(item.feedback)
+            })
+            return feedbackarray
+          },[])
+
+          if(allFeedback.length===0)
+          {
+            return res.send({
+                message:'There are no poor quality feedbacks for this product',
+                success:false
+            })
+          }
+
+           res.send({
+                message:'All poor quality feedbacks of the product is fetched',
+                success:true,
+                allFeedback
+            })
+     }catch(error)
+     {
+           res.send({
+                message:'Something went wrong',
+                success:false,
+                error:error.message
+            })
+     }
+}
+
+const getPoorQualityProductsController=async(req,res)=>{
+      try{
+         const orders=await OrderModel.find({"items.feedback.is_flagged":true,
+           "items.feedback.flag_reason":"product_quality"}).populate('items.product')
+         if(orders.length===0)
+         {
+            return res.send({
+                message:'There are no poor quality products',
+                success:false
+            })
+         }
+         const allProducts=orders.reduce((productarray,order)=>{
+            order.items.filter((item)=>{
+                productarray.push(item.product)
+            })
+            return productarray
+        },[])
+          
+        const uniqueProducts=new Set(allProducts)
+         res.send({
+            message:'All products that are poor quality are fetched',
+            success:true,
+            uniqueProducts:Array.from(uniqueProducts)
+         })
+    }catch(error)
+    {
+         res.send({
+            message:'Something went wrong',
+            success:false,
+            error:error.message
+         })
+    }
+}
+
+const deleteFeedbackController=async(req,res)=>{
+      try{
+          const {slug,id}=req.params
+          const product=await ProductModel.findOne({slug})
+          const order=await OrderModel.findOneAndUpdate({"items.product":product._id,
+           "items.feedback._id":id},{"items.$.feedback":null},{new:true})
+
+          if(!order)
+          {
+            return res.send({
+                message:'Order does not exist or feedback id does not exist to delete',
+                success:false,
+            })
+          }
+
+          res.send({
+            message:'Feedback deleted',
+            success:true,
+            order
+          })
+      }catch(error)
+      {
+          res.send({
+            message:'Something went wrong',
+            success:false,
+            error:error.message
+          })
+      }
+}
+
 module.exports={createOrderController,updateOrderController,
    deleteOrderController,getAllOrdersController,getSingleOrderController,
    getOrderByUserController,getPlacedOrdersController,getDeliveredOrdersController,
      getCancelledOrdersController,createFeedbackController,getAllFeedbackOfTheProductController,
-    getAllFlaggedFeedbackProducts}
+    getAllFlaggedFeedbackProducts,getFlaggedFeedBackController,getPoorQualityFeedbackController,
+     getPoorQualityProductsController,deleteFeedbackController}
