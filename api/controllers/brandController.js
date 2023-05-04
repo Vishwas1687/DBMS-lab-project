@@ -1,5 +1,5 @@
 const BrandModel=require('../models/Brand')
-
+const ProductModel=require('../models/Product')
 const createBrandController=async(req,res)=>{
     try{
         const {brand_name}=req.body
@@ -83,6 +83,17 @@ const deleteBrandController=async(req,res)=>{
             message:'Brand name does not exist',
             success:true
         })
+         const products=await ProductModel.find({category:category._id})
+        if(products)
+         {
+            await ProductModel.deleteMany({category:category._id})
+            await CategoryModel.findByIdAndDelete(category._id)
+            return res.send({
+            message:`Category ${slug} is successfully deleted and products of this category is also deleted`,
+            success:true,
+            category:category.category_name
+        })
+        }
 
         await BrandModel.findByIdAndDelete(brand._id)
 
