@@ -13,6 +13,11 @@ const FeedbackSchema = new Schema({
     ref: 'Product',
     required: true,
   },
+  order: {
+     type: mongoose.ObjectId,
+     ref: 'Order',
+     required: true,
+  },
   rating: {
     type: Number,
     required: true,
@@ -44,6 +49,14 @@ const FeedbackSchema = new Schema({
   flag_reason: {
   type: String,
   enum: ['inappropriate', 'spam', 'offensive', 'product_quality', 'delivery_time', 'customer_service', 'not_satisfied_product'],
+  validator:{
+    validate:async function(v)
+    {
+      const en=['inappropriate', 'spam', 'offensive', 'product_quality', 'delivery_time', 'customer_service', 'not_satisfied_product']
+      return en.includes(v)
+    },
+    message:props=>`${props.value} is not a valid flag reason`
+  },
   default: null
 }
 }, { timestamps: true });
@@ -117,10 +130,11 @@ const OrderSchema = new Schema({
   reason_for_cancellation: {
     type: String
   }
-});
+},{timestamps:true});
 
 OrderSchema.path('items.feedback').required(false)
 
+module.exports=model('Feedback',FeedbackSchema)
 module.exports = model('Order', OrderSchema);
 
 // const Order = require('./models/Order');

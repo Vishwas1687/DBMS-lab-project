@@ -71,7 +71,7 @@ const loginController=async(req,res)=>{
    const existingUser=await UserModel.findOne({email})
    if(!existingUser)
    {
-    return res.send(404).send({
+    return res.status(404).send({
         message:"Email does not exist",
         success:false
     })
@@ -96,7 +96,8 @@ const loginController=async(req,res)=>{
         phone_number:existingUser.phone_number,
         role:existingUser.role
     },
-    token:token
+    token:token,
+    message:'Logged In',
    })
    }catch(error){
     res.status(404).send({

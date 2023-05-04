@@ -1,9 +1,11 @@
 import React from 'react';
 import { NavLink , Link} from 'react-router-dom';
 import {ShoppingCart , ShoppingBag} from 'phosphor-react';
-
+import Dropdown from './Dropdown'
+import Modal from './Modal'
 
 const Header = () => {
+
   return (
     <>
 <nav className="navbar navbar-expand-lg bg-body-tertiary">
@@ -24,11 +26,6 @@ const Header = () => {
         GroceryHut <ShoppingBag size={32} />
       </Link>
       <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
-        <li className="nav-item">
-          <NavLink to = "/" className="nav-link active" aria-current="page" href="#">
-            Home
-          </NavLink>
-        </li>
 
         <li className="nav-item">
           <NavLink to = "/category" className="nav-link" aria-current="page">
@@ -36,14 +33,7 @@ const Header = () => {
           </NavLink>
         </li>
         <li className="nav-item">
-          <NavLink to = "/register" className="nav-link" href="#">
-            Register
-          </NavLink>
-        </li>
-        <li className="nav-item">
-          <NavLink to = "/login" className="nav-link" href="#">
-            Login
-          </NavLink>
+          <Dropdown />        
         </li>
 
         <li className="nav-item">
@@ -57,6 +47,8 @@ const Header = () => {
     </div>
   </div>
 </nav>
+  <Modal />
+
 
     </>
   )

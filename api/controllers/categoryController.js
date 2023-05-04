@@ -232,7 +232,7 @@ const deleteSubCategoryController=async(req,res)=>{
     try{
        const {subcategory_id,slug}=req.params
        const category=await CategoryModel.findOne({slug})
-       const existingSubCategory=category.subcategories.filter((subcat)=>subcat.subcategory_id===subcategory_id)
+       const existingSubCategory=category.subcategories.filter((subcat)=>subcat.subcategory_id===parseInt(subcategory_id))
        if(!existingSubCategory)
        {
             return res.send({

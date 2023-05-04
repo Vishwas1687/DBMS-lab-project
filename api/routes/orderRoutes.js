@@ -3,7 +3,12 @@ const router=express.Router()
 
 const {createOrderController,updateOrderController,
       deleteOrderController,getAllOrdersController,
-       getSingleOrderController}=require('../controllers/orderController')
+       getSingleOrderController,getOrderByUserController,
+       getPlacedOrdersController,getDeliveredOrdersController,
+       getCancelledOrdersController,createFeedbackController,
+        getAllFeedbackOfTheProductController,getAllFlaggedFeedbackProducts,
+         getFlaggedFeedBackController,getPoorQualityFeedbackController,
+        getPoorQualityProductsController,deleteFeedbackController}=require('../controllers/orderController')
 
 router.post('/create-order',createOrderController)
 
@@ -13,7 +18,7 @@ router.put('/update-order/:order_id',updateOrderController)
 
 router.get('/get-all-orders',getAllOrdersController)
 
-// router.get('/get-order-by-user/:customer_id',getOrderByUserController)
+router.get('/get-order-by-user/:customer_id',getOrderByUserController)
 
 // router.post('/get-all-orders-by-filters',getAllOrdersByFiltersController)
 
@@ -21,20 +26,26 @@ router.get('/get-all-orders',getAllOrdersController)
 
 router.get('/get-single-order/:order_id',getSingleOrderController)
 
-// router.get('/get-pending-orders',getPendingOrdersController)
+router.get('/get-placed-orders',getPlacedOrdersController)
 
-// router.get('/get-delivered-orders',getDeliveredOrdersController)
+router.get('/get-delivered-orders',getDeliveredOrdersController)
 
-// router.get('/get-cancelled-orders',getCancelledOrderController)
+router.get('/get-cancelled-orders',getCancelledOrdersController)
 
-// router.post('/get-order/:order_id/:user_id/:slug/feedback',createFeedbackController)
+router.put('/get-order/:order_id/:user_id/:slug/feedback',createFeedbackController)
 
-// router.get('/get-feedback/:slug',getAllFeedbackOfTheProductController)
+router.get('/get-feedback/:slug',getAllFeedbackOfTheProductController)
 
-// router.get('/get-all-flagged-feedbacks',getAllFlaggedFeedbacks)
+router.get('/get-all-flagged-feedback-of-the-product/:slug',getFlaggedFeedBackController)
+
+router.get('/get-all-poor-quality-feedback-of-the-product/:slug',getPoorQualityFeedbackController)
+
+router.get('/get-all-products-with-poor-quality',getPoorQualityProductsController)
+
+router.get('/get-all-flagged-feedback-products',getAllFlaggedFeedbackProducts)
 
 // router.get('/get-products-by-feedback-rating',getProductsByFeedbackController)
 
-// router.get('/get-all-products-flagged-as-poor-product-quality',getPoorQualityProductsController)
+router.put('/delete-feedback-but-user-cant-enter-feedback-again/:slug/:id',deleteFeedbackController)
 
 module.exports=router
