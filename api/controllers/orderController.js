@@ -411,7 +411,7 @@ const getAllFlaggedFeedbackProducts=async(req,res)=>{
             return productarray
         },[])
           
-        const uniqueProducts=new Set(allProducts)
+        const uniqueProducts = Array.from(new Set(allProducts)).filter(product => product !== null);
          res.send({
             message:'All products that are flagged are fetched',
             success:true,
@@ -518,7 +518,7 @@ const getPoorQualityProductsController=async(req,res)=>{
             return productarray
         },[])
           
-        const uniqueProducts=new Set(allProducts)
+        const uniqueProducts = Array.from(new Set(allProducts)).filter(product => product !== null);
          res.send({
             message:'All products that are poor quality are fetched',
             success:true,

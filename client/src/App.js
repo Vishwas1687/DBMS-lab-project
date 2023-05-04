@@ -19,9 +19,6 @@ import Profile from "./pages/user/Profile";
 import CreateCategory from "./pages/admin/CreateCategory";
 import ViewCategory from "./pages/admin/ViewCategory";
 
-
-
-
 function App() {
   return (
     <>
@@ -32,9 +29,6 @@ function App() {
       <Route path = "/user" element = {<Dashboard />} />
       <Route path = "/user/orders" element = {<Orders/>} />
       <Route path = "/user/profile" element = {<Profile />} />
-        
-      
-
       
       <Route path = "/admin" element = {<AdminDashboard />} />
       <Route path = "/admin/manage-category" element = {<ManageCategory />} />

@@ -43,3 +43,6 @@ app.listen(PORT,()=>{
     console.log(`Server running on ${development} mode on port ${PORT}`.bgCyan.white);
 })
 
+
+//now I have to show in orders that product is deleted if a product is deleted. Order should exist. 
+

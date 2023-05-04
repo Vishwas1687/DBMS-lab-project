@@ -1,6 +1,7 @@
 const slugify=require('slugify')
 const fs=require('fs')
 const CategoryModel=require('../models/Category')
+const ProductModel=require('../models/Product')
 const createCategoryController=async(req,res)=>{
     try{
     const {category_id,category_name,subcategories}=req.body
@@ -104,6 +105,19 @@ const deleteCategoryController=async(req,res)=>{
             message:'Not a valid category',
             success:false})
     }
+
+    const products=await ProductModel.find({category:category._id})
+    if(products)
+    {
+        await ProductModel.deleteMany({category:category._id})
+        await CategoryModel.findByIdAndDelete(category._id)
+        return res.send({
+        message:`Category ${slug} is successfully deleted and products of this category is also deleted`,
+        success:true,
+        category:category.category_name
+    })
+    }
+    
    await CategoryModel.findByIdAndDelete(category._id)
     res.send({
         message:`Category ${slug} is successfully deleted`,
