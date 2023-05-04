@@ -15,8 +15,11 @@ import CreateProduct from "./pages/admin/CreateProduct";
 import Users from "./pages/admin/Users";
 import Orders from "./pages/user/Orders";
 import Profile from "./pages/user/Profile";
-import CreateCategory from "./pages/admin/CreateCategory";
-import ViewCategory from "./pages/admin/ViewCategory";
+import CreateCategory from "./pages/admin/EditCategory";
+import ManageProduct from "./pages/admin/ManageProduct";
+
+// import EditCategory from "./pages/admin/EditCategory";
+import GetCategory from "./pages/admin/Category/GetCategory";
 
 
 
@@ -40,7 +43,9 @@ function App() {
       <Route path = "/admin/create-product" element = {<CreateProduct />} />
       <Route path = "/admin/users" element = {<Users />} />
       <Route path = "/admin/create-category" element={<CreateCategory/>}></Route>
-      <Route path = "/admin/manage-category/category/:categorySlug" element={<ViewCategory />} />
+      <Route path = "/admin/get-category/:slug" element={<GetCategory />} />
+      {/* <Route path = "/admin/manage-category/editcategory/:slug" element={<EditCategory />} /> */}
+      <Route path = "/admin/manage-product" element = {<ManageProduct />} />
       
       <Route path = "/register" element = {<Register />} />
       <Route path = "/login" element = {<Login />} />

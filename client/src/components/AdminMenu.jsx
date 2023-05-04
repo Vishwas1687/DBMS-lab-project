@@ -8,6 +8,11 @@ const AdminMenu = () => {
 
     <div className="list-group">
   <h4>Admin Page</h4>
+
+  <NavLink to="/admin/manage-category" className="list-group-item list-group-item-action">
+    Manage Category
+    
+  </NavLink>
   <NavLink to="/admin/create-category" className="list-group-item list-group-item-action">
     Create Category
     
@@ -15,7 +20,7 @@ const AdminMenu = () => {
   <NavLink to="/dashboard/admin/create-product" className="list-group-item list-group-item-action">
     Create Product
   </NavLink>
-  <NavLink to="/dashboard/admin/manage-product" className="list-group-item list-group-item-action">
+  <NavLink to="/admin/manage-product" className="list-group-item list-group-item-action">
     Manage Product
   </NavLink>
   <NavLink to="/dashboard/admin/users" className="list-group-item list-group-item-action">
