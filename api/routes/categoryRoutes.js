@@ -8,19 +8,21 @@ const {createCategoryController,
      getSingleCategoryController, createSubCategoryController,
     updateSubCategoryController,deleteSubCategoryController}=require('../controllers/categoryController')
 
-router.post('/create-category',createCategoryController)
+const {requiresSignIn,isAdmin}=require('../middlewares/authmiddleware')
 
-router.put('/update-category/:slug',updateCategoryController)
+router.post('/create-category',requiresSignIn,isAdmin,createCategoryController)
 
-router.delete('/delete-category/:slug',deleteCategoryController)
+router.put('/update-category/:slug',requiresSignIn,isAdmin,updateCategoryController)
+
+router.delete('/delete-category/:slug',requiresSignIn,isAdmin,deleteCategoryController)
 
 router.get('/get-category/:slug',getSingleCategoryController)
 
-router.put('/get-category/:slug/:subcategory_id/edit',updateSubCategoryController)
+router.put('/get-category/:slug/:subcategory_id/edit',requiresSignIn,isAdmin,updateSubCategoryController)
 
-router.delete('/get-category/:slug/:subcategory_id/delete',deleteSubCategoryController)
+router.delete('/get-category/:slug/:subcategory_id/delete',requiresSignIn,isAdmin,deleteSubCategoryController)
 
-router.post('/get-category/:slug/new',createSubCategoryController)
+router.post('/get-category/:slug/new',requiresSignIn,isAdmin,createSubCategoryController)
 
 router.get('/get-all-categories',getAllCategoriesController)
 
