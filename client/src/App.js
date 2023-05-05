@@ -18,10 +18,13 @@ import Orders from "./pages/user/Orders";
 import Profile from "./pages/user/Profile";
 import CreateCategory from "./pages/admin/CreateCategory";
 import ViewCategory from "./pages/admin/ViewCategory";
+import {Toaster} from 'react-hot-toast';
+import UpdateCategory from "./pages/admin/Category/UpdateCategory";
 
 function App() {
   return (
     <>
+    <Toaster/>
     <Routes>
 
       <Route path = "/" element = {<HomePage />} />
@@ -33,6 +36,7 @@ function App() {
       <Route path = "/admin" element = {<AdminDashboard />} />
       <Route path = "/admin/manage-category" element = {<ManageCategory />} />
       <Route path = "/admin/get-category/:slug" element = {<GetCategory />} />
+      <Route path = "/admin/update-category/:slug" element = {<UpdateCategory/>} />
       <Route path = "/admin/users" element = {<Users />} />
       <Route path = "/admin/create-category" element={<CreateCategory/>}></Route>
       <Route path = "/register" element = {<Register />} />
