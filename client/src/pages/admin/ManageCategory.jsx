@@ -133,7 +133,7 @@ const ManageCategory = () => {
           >
             Delete
           </button>
-          <Link to={`/admin/manage-category/category/${c.slug}`}>
+          <Link to={`/admin/get-category/${c.slug}`}>
   <button className="btn btn-info ms-2">View</button>
 </Link>
         </td>
