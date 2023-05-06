@@ -1,12 +1,19 @@
 import React from 'react'
-import { useState } from 'react';
+import { useState,useRef} from 'react';
 import axios from 'axios'
 import { NavLink , Link} from 'react-router-dom';
+import 'react-toastify/dist/ReactToastify.css';
+import toast from 'react-hot-toast'
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/auth';
 
 export default function Modal() {
 
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
+    const navigate = useNavigate();
+    const closeRef = useRef();
+    const [auth,setAuth] = useAuth();
 
     const handleSubmit = async (e) => {
     e.preventDefault();
@@ -16,26 +23,36 @@ export default function Modal() {
       password,
     };
 
-    axios.post('http://localhost:5000/api/auth/login',data)
-    .then((response) => {
-      console.log(response.data.message);
-    })
-    .catch((error)=>{
-      if (error.response){
-        console.log(error.response.data.message);
+    try {
+      const res = await axios.post('http://localhost:5000/api/auth/login',data);
+      if (res.data.success){
+        toast.success(res.data.message);
+        setAuth({
+          ...auth,
+          user: res.data.user,
+          token: res.data.token,
+        });
+        localStorage.setItem('auth',JSON.stringify(res.data));
+        closeRef.current.click();
       }else{
-        console.log('Error',error.message);
+        toast.error(res.data.message);
       }
-  })
+    }catch (error){
+      if (error.response){
+        toast.error(error.response.data.message);
+      }else{
+        console.error(error);
+      }
+    }
   };
 
   return (
-    <div className="modal fade" id="exampleModalCenter" tabIndex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div className="modal fade" id="exampleModalCenter" tabIndex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" >
   <div className="modal-dialog modal-dialog-centered" role="document">
     <div className="modal-content">
       <div className="modal-header">
         <h5 className="modal-title" id="exampleModalCenterTitle">Login</h5>
-        <button type="button" className="btn-close" data-dismiss="modal" aria-label="Close">
+        <button type="button" className="btn-close" data-dismiss='modal' aria-label="Close" ref={closeRef}>
         </button>
       </div>
       <div className="modal-body">
@@ -53,8 +70,8 @@ export default function Modal() {
   </div>
 </form>
       </div>
-      <div className="modal-footer" style={{justifyContent:'center'}}>
-        <NavLink to = "/register" className="nav-link" href="#" onClick={()=>{document.getElementById('exampleModalCenter').modal('hide')}}>
+      <div className="modal-footer" style={{justifyContent:'center'}} >
+        <NavLink to = "/register" className="nav-link" onClick={()=>{closeRef.current.click();navigate('/register');}} >
             New User? Click here to register.
           </NavLink>
         </div>

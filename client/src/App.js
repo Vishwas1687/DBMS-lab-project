@@ -22,8 +22,6 @@ import { Toaster } from "react-hot-toast";
 import ManageProduct from "./pages/admin/ManageProduct";
 
 
-
-
 function App() {
   return (
     <>
