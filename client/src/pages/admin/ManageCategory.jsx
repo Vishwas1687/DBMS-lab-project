@@ -4,6 +4,8 @@ import AdminMenu from "./../../components/AdminMenu";
 import toast from "react-hot-toast";
 import axios from "axios";
 import {Link} from 'react-router-dom';
+import Modal from "antd/es/modal/Modal";
+import CategoryForm from "../../components/Form/CategoryForm";
 
 const ManageCategory = () => {
   const [categories, setCategories] = useState([]);
