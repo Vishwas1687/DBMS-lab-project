@@ -17,9 +17,12 @@ import Users from "./pages/admin/Users";
 import Orders from "./pages/user/Orders";
 import Profile from "./pages/user/Profile";
 import CreateCategory from "./pages/admin/CreateCategory";
-import ViewCategory from "./pages/admin/ViewCategory";
-import {Toaster} from 'react-hot-toast';
-import UpdateCategory from "./pages/admin/Category/UpdateCategory";
+// import ViewCategory from "./pages/admin/ViewCategory";
+import { Toaster } from "react-hot-toast";
+import ManageProduct from "./pages/admin/ManageProduct";
+
+
+
 
 function App() {
   return (
@@ -36,9 +39,12 @@ function App() {
       <Route path = "/admin" element = {<AdminDashboard />} />
       <Route path = "/admin/manage-category" element = {<ManageCategory />} />
       <Route path = "/admin/get-category/:slug" element = {<GetCategory />} />
-      <Route path = "/admin/update-category/:slug" element = {<UpdateCategory/>} />
       <Route path = "/admin/users" element = {<Users />} />
       <Route path = "/admin/create-category" element={<CreateCategory/>}></Route>
+      {/* <Route path = "/admin/manage-category/category/:categorySlug" element={<ViewCategory />} /> */}
+      <Route path = "/admin/manage-product" element = {<ManageProduct />} /> 
+      {/* <Route path = "/admin/manage-product/product/:slug" element = {<GetProduct />} /> */}
+
       <Route path = "/register" element = {<Register />} />
       <Route path = "/login" element = {<Login />} />
 
