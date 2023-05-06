@@ -16,14 +16,8 @@ import CreateProduct from "./pages/admin/CreateProduct";
 import Users from "./pages/admin/Users";
 import Orders from "./pages/user/Orders";
 import Profile from "./pages/user/Profile";
-import CreateCategory from "./pages/admin/EditCategory";
-import ManageProduct from "./pages/admin/ManageProduct";
-import GetProduct from "./pages/admin/Product/GetProduct";
-// import ManageProduct from "./pages/admin/ManageProduct";
-
-// import EditCategory from "./pages/admin/EditCategory";
-// import GetCategory from "./pages/admin/Category/GetCategory";
-// import GetCategory from "./pages/admin/Category/GetCategory.jsx";
+import CreateCategory from "./pages/admin/CreateCategory";
+import ViewCategory from "./pages/admin/ViewCategory";
 
 
 
@@ -31,6 +25,7 @@ import GetProduct from "./pages/admin/Product/GetProduct";
 function App() {
   return (
     <>
+    <Toaster/>
     <Routes>
 
       <Route path = "/" element = {<HomePage />} />
@@ -38,13 +33,10 @@ function App() {
       <Route path = "/user" element = {<Dashboard />} />
       <Route path = "/user/orders" element = {<Orders/>} />
       <Route path = "/user/profile" element = {<Profile />} />
-        
-      
-
       
       <Route path = "/admin" element = {<AdminDashboard />} />
       <Route path = "/admin/manage-category" element = {<ManageCategory />} />
-      {/* <Route path = "/admin/get-category/:slug" element = {<GetCategory />} /> */}
+      <Route path = "/admin/get-category/:slug" element = {<GetCategory />} />
       <Route path = "/admin/users" element = {<Users />} />
       <Route path = "/admin/create-category" element={<CreateCategory/>}></Route>
       {/* <Route path = "/admin/manage-category/category/:categorySlug" element={<ViewCategory />} /> */}

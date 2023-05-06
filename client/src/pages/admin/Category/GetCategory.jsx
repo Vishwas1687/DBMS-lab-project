@@ -3,10 +3,9 @@ import Layout from "./../../../components/Layout/Layout";
 import AdminMenu from "./../../../components/AdminMenu";
 import toast from 'react-hot-toast';
 import axios from "axios";
-import {Link,useParams} from 'react-router-dom';
-import {  message } from "antd";
+import {useParams} from 'react-router-dom';
 import { Modal } from "antd";
-import CategoryForm from "../../../components/Form/CategoryForm";
+
 
 const GetCategory = () => {
     const [cat,setCat]=useState({})
@@ -25,12 +24,13 @@ const GetCategory = () => {
                 if(data?.success)
                 {
                    setCat(data.category)
+                   toast.success(data.message)
                 }
                 else{
-                  
+                  toast.error(data.message)
                 }
             } catch (error) {
-                
+                toast.error('Something went wrong')
             }
         };
    
@@ -103,7 +103,7 @@ const GetCategory = () => {
 
     return (
       
-    <Layout title={"DashBoard - Manage Category"}>
+    <Layout title={"DashBoard - Get Category"}>
       <div className="container-fluid m-3 p-3 dashboard">
         <div className="row">
           <div className="col-md-3 p-5">

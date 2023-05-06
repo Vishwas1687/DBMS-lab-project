@@ -1,6 +1,7 @@
 const slugify=require('slugify')
 const fs=require('fs')
 const CategoryModel=require('../models/Category')
+const ProductModel=require('../models/Product')
 const createCategoryController=async(req,res)=>{
     try{
     const {category_id,category_name,subcategories}=req.body
@@ -104,6 +105,19 @@ const deleteCategoryController=async(req,res)=>{
             message:'Not a valid category',
             success:false})
     }
+
+    const products=await ProductModel.find({category:category._id})
+    if(products)
+    {
+        await ProductModel.deleteMany({category:category._id})
+        await CategoryModel.findByIdAndDelete(category._id)
+        return res.send({
+        message:`Category ${slug} is successfully deleted and products of this category is also deleted`,
+        success:true,
+        category:category.category_name
+    })
+    }
+    
    await CategoryModel.findByIdAndDelete(category._id)
     res.send({
         message:`Category ${slug} is successfully deleted`,
@@ -232,7 +246,7 @@ const deleteSubCategoryController=async(req,res)=>{
     try{
        const {subcategory_id,slug}=req.params
        const category=await CategoryModel.findOne({slug})
-       const existingSubCategory=category.subcategories.filter((subcat)=>subcat.subcategory_id===parseInt(subcategory_id))
+       const existingSubCategory=category.subcategories.filter((subcat)=>subcat.subcategory_id===parseInt(subcategory_id))[0]
        if(!existingSubCategory)
        {
             return res.send({
@@ -240,11 +254,25 @@ const deleteSubCategoryController=async(req,res)=>{
             success:false
         })
        }
+       const products=await ProductModel.find({subcategory:existingSubCategory.subcategory_name})
+       if(products)
+       {
+          const deletedCategory=await CategoryModel.findOneAndUpdate(
+          {slug},{$pull:{subcategories:{subcategory_id}}},{new:true}
+          )
+          await ProductModel.deleteMany({subcategory:existingSubCategory.subcategory_name})
+          return res.send({
+            message:`Sub category ${subcategory_id} successfully deleted and all prodcuts of that subcategory also deleted`,
+            success:true,
+            deletedCategory
+       })
+       }
+
       const deletedCategory=await CategoryModel.findOneAndUpdate(
       {slug},{$pull:{subcategories:{subcategory_id}}},{new:true}
       )
      
-           return res.send({
+            res.send({
             message:`Sub category ${subcategory_id} successfully deleted`,
             success:true,
             deletedCategory

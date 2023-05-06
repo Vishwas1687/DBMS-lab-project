@@ -4,50 +4,40 @@ import AdminMenu from "./../../components/AdminMenu";
 import toast from "react-hot-toast";
 import axios from "axios";
 import {Link} from 'react-router-dom';
-import {  message } from "antd";
-import { Modal } from "antd";
-import CategoryForm from "../../components/Form/CategoryForm";
 
 const ManageCategory = () => {
   const [categories, setCategories] = useState([]);
-const [name, setName] = useState("");
-const [id, setId] = useState("");
-const [visible, setVisible] = useState(false);
-const [selected, setSelected] = useState(null);
-const [updatedName, setUpdatedName] = useState("");
-const [subcategories, setSubcategories] = useState([]);
-const [isEditing, setIsEditing] = useState(false);
+  const [name, setName] = useState("");
+  const [id, setId] = useState("");
+  const [visible, setVisible] = useState(false);
+  const [selected, setSelected] = useState(null);
+  const [updatedName, setUpdatedName] = useState("");
 
-const handleSubmit = async ({ category_name, slug },e) => {
-  e.preventDefault();
-  try {
-    const { data } = await axios.put(
-      `http://localhost:5000/api/categories/${selected.slug}`,
-      { category_name: updatedName, subcategories: subcategories }
-    );
-    if (data.success) {
-      toast.success(`${data.category_name} updated successfully`);
-      setUpdatedName("");
-      setSubcategories([]);
-      setIsEditing(false);
-      getAllCategory();
-    } else {
-      toast.error(data.message);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const { data } = await axios.post(
+        "http://localhost:5000/api/categories/create-category",
+        { category_id:id,category_name: name }
+      );
+      if (data.success) {
+        toast.success(`${data.name} is created`);
+        setName("");
+        getAllCategory();
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      console.log(error);
     }
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-  
-  
+  };
 
   const handleUpdate = async ({ category_name, slug }, e) => {
     e.preventDefault();
     try {
       const { data } = await axios.put(
         `http://localhost:5000/api/categories/update-category/${slug}`,
-        { category_name, subcategories }
+        { category_name }
       );
       if (data?.success) {
         toast.success(`${category_name} is updated`);
@@ -123,14 +113,16 @@ const handleSubmit = async ({ category_name, slug },e) => {
                         <td>{c.category_id}</td>
                         <td>{c.category_name}</td>
                         <td>
-                        <Link to={`/admin/manage-category/editcategory/${c.slug}`}>
-  <button className="btn btn-primary ms-2">
-
-    
-
-    Edit
-  </button>
-</Link>
+                          <button
+                            className="btn btn-primary ms-2"
+                            onClick={() => {
+                              setVisible(true);
+                              setUpdatedName(c.category_name);
+                              setSelected(c);
+                            }}
+                          >
+                            Edit
+                          </button>
                           <button
             className="btn btn-danger ms-2"
             onClick={() => {
@@ -154,7 +146,17 @@ const handleSubmit = async ({ category_name, slug },e) => {
 </table>
 
                         </div>
-            
+                        <Modal
+  onCancel={() => setVisible(false)}
+  footer={null}
+  visible={visible}
+>
+  <CategoryForm
+    value={updatedName}
+    setValue={setUpdatedName}
+    handleSubmit={(e) => handleUpdate(selected, e)}
+  />
+</Modal>
 
                     </div>
                 </div>

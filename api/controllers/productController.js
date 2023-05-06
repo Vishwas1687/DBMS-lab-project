@@ -1,5 +1,6 @@
 const { response } = require('express')
 const slugify=require('slugify')
+// const OrderModel=require('../models/Order')
 const CategoryModel=require('../models/Category')
 const ProductModel=require('../models/Product')
 
@@ -166,6 +167,12 @@ const deleteProductController=async(req,res)=>{
             success:false
         })
        }
+
+    //    const orders = await OrderModel.updateMany(
+    //   { 'items.product': existingProduct._id },
+    //   { $set: { 'items.$.feedback': null } },
+    // );
+
        await ProductModel.findByIdAndDelete(existingProduct._id)
        res.send({
            message:`Product ${slug} deleted successfully`,
