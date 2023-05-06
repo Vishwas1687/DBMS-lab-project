@@ -44,6 +44,7 @@ function App() {
       {/* <Route path = "/admin/manage-category/category/:categorySlug" element={<ViewCategory />} /> */}
       <Route path = "/admin/manage-product" element = {<ManageProduct />} /> 
       {/* <Route path = "/admin/manage-product/product/:slug" element = {<GetProduct />} /> */}
+      <Route path = "/admin/create-product" element = {<CreateProduct />} />
 
       <Route path = "/register" element = {<Register />} />
       <Route path = "/login" element = {<Login />} />
