@@ -3,27 +3,41 @@ import Layout from '../../components/Layout/Layout'
 import AdminMenu from '../../components/AdminMenu'
 import { useState, useEffect } from "react";
 import axios from 'axios';
+import Form from 'react-bootstrap/Form'
 import { toast } from 'react-hot-toast';
 
-const CreateProduct = ({ productName, sellerId, brandName, totalReviews, productRating, totalRating, categoryName, subcategoryName}) => {
+const CreateProduct = () => {
 
   const [weights,setWeights]=useState([{
     weight_id:"",weight:"",weight_units:"",mrp:"",sp:"",stock:"",
   }])
+
+  const [tags,setTags]=useState([])
   const [categories, setCategories] = useState([]);
+  const [brands,setBrands]=useState([])
+  const [category,setCategory]=useState({})
+  const [index,setIndex]=useState(0)
   const [formData, setFormData] = useState({
-    product_name: productName || "",
-    seller_id: sellerId || "",
-    brand: brandName || "",
-    total_reviews: totalReviews || "",
-    rating: productRating || "",
-    total_ratings: totalRating || "",
-    category: categoryName || "",
-    subcategory: subcategoryName || "",
+    product_name: "",
+    seller_id: "",
+    brand: "",
+    total_reviews:  "",
+    rating: "",
+    total_ratings:  "",
+    category: "",
+    subcategory:"",
   });
 
+  const handleTag=(e,index)=>{
+    const newtags=[...tags]
+    newtags[index]=e.target.value
+    setTags(newtags)
+  }
+  const addTag=()=>{
+      setTags([...tags,' '])
+  }
   const handleAddWeight=()=>{
-    return setWeights([...weights,{
+   setWeights([...weights,{
       weight_id:"",weight:"",weight_units:"",mrp:"",sp:"",stock:""
     }])
   }
@@ -37,9 +51,8 @@ const CreateProduct = ({ productName, sellerId, brandName, totalReviews, product
 
  const getAllCategory = async () => {
   try {
-    const { data } = await axios.get(
-      "http://localhost:5000/api/categories/get-all-categories"
-    );
+    const { data } = await axios.get(`http://localhost:5000/api/categories/get-all-categories`);
+    console.log(data)
     if (data?.success) {
       setCategories(data?.categories);
     }
@@ -49,13 +62,53 @@ const CreateProduct = ({ productName, sellerId, brandName, totalReviews, product
   }
 };
 
+ const getAllBrands = async () => {
+  try {
+    const { data } = await axios.get(`http://localhost:5000/api/brands/get-all-brands`);
+    console.log(data)
+    if (data?.success) {
+      setBrands(data?.brands);
+    }
+  } catch (error) {
+    console.log(error);
+    toast.error("Something went wrong in getting category");
+  }
+};
+
 useEffect(() => {
   getAllCategory();
+  getAllBrands()
 }, []);
+
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+
+  const handleCategory=(e)=>{
+    const newFormData={...formData}
+    newFormData["category"]=e.target.value
+    setFormData(newFormData)
+    const newCategory=categories.find((cat)=>cat._id===e.target.value)
+    setCategory(newCategory)
+    setIndex(1)
+  }
+
+  const handleSubCategory=(e)=>{
+    const newFormData={...formData}
+    newFormData["subcategory"]=e.target.value
+    setFormData(newFormData)
+  }
+
+  const handleBrand=(e)=>{
+    const newFormData={...formData}
+    newFormData["brand"]=e.target.value
+    setFormData(newFormData)
+  }
+
+  useEffect(()=>{
+     console.log(category)
+  },[category])
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -69,7 +122,9 @@ useEffect(() => {
         total_ratings:formData.total_ratings,
         category:formData.category,
         subcategory:formData.subcategory,
-        weights:setWeights
+        weights:weights,
+        tags:tags
+
       }
       const { data } = await axios.post(
         "http://localhost:5000/api/products/create-product",
@@ -104,13 +159,13 @@ useEffect(() => {
       <br></br>
       <div className="container-fluid">
         <div className="row">
-          <div className="col-md-2">
+          <div className="col-md-3">
             <AdminMenu />
           </div>
-          <div className="col-md-10 create-category-section">
+          <div className="col-md-9 create-category-section">
             <h1>Create Product</h1>
             <br></br>
-            <form >
+            <form onSubmit={handleSubmit} className="w-75">
               <div className="form-group text-left">
                 <div className="form-group text-left">
                 <label htmlFor="product_name">Product Name</label>
@@ -142,16 +197,15 @@ useEffect(() => {
               <br></br>
               <div className="form-group text-left">
                 <label htmlFor="brand">Brand</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="brand"
-                  name="brand"
-                  placeholder="Enter brand"
-                  value={formData.brand}
-                  onChange={handleChange}
-                  
-                />
+                <br></br>
+                <select className="w-50 p-2 " onChange={(e)=>{handleBrand(e)}}>
+                {Object.keys(formData.brand).length===0 && <option value="1">None</option>}
+                {brands.map((brand) => (
+              <option key={brand._id} value={brand._id} name="brand">
+              {brand.brand_name}
+              </option>
+               ))}
+              </select>
               </div>
               <br></br>
               <div className="form-group text-left">
@@ -174,11 +228,10 @@ useEffect(() => {
                   type="text"
                   className="form-control"
                   id="ratings"
-                  name="ratings"
+                  name="rating"
                   placeholder="Enter rating"
                   value={formData.rating}
                   onChange={handleChange}
-                  
                 />
               </div>
               <br></br>
@@ -198,37 +251,35 @@ useEffect(() => {
 
               <br></br>
               <div className="form-group text-left">
-  <label htmlFor="category">Category</label>
-  <select
-    className="form-control"
-    id="category"
-    name="category"
-    value={formData.category}
-    onChange={handleChange}
-  >
-    {categories.map((category) => (
-          <option key={category._id} value={category._id}>
-            {category.name}
-          </option>
-        ))}
-  </select>
-</div>
+              <label htmlFor="category">Category</label>
+              <br></br>
+              <select className="w-50 p-2 " onChange={(e)=>{handleCategory(e)}}>
+                {Object.keys(category).length===0 && <option value="1">None</option>}
+                {categories.map((cat) => (
+              <option key={cat._id} value={cat._id} name="category">
+              {cat.category_name}
+              </option>
+               ))}
+              </select>
+              </div>
 
               <br></br>
-
-              <div className="form-group text-left">
+            {index?
+               (<div className="form-group text-left">
                 <label htmlFor="subcategory">Subcategory</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="subcategory"
-                  name="subcategory"
-                  placeholder="Enter subcategory"
-                  value={formData.subcategory}
-                  onChange={handleChange}
+                <br></br>
                   
-                />
-              </div>
+                 <select className="w-50 p-2 " onChange={(e)=>{handleSubCategory(e)}}>
+                  {Object.keys(formData.subcategory).length===0 && <option value="1">None</option>}
+                {category?.subcategories.map((subcat) => (
+              <option key={subcat._id} value={subcat.subcategory_name} name="subcategory">
+              {subcat.subcategory_name}
+              </option>
+               ))}
+              </select>
+              </div>) :"" }
+              
+              
               <br></br>
               {weights.map((weightcta,index)=>{
 
@@ -313,10 +364,21 @@ useEffect(() => {
                 )
               })}
 
-<button type="button" onClick={handleAddWeight}>Create Weight</button>
+<button type="button"  className="btn btn-primary" onClick={handleAddWeight}>Create Weight</button>
                <br></br>
                <br></br>
+              {tags.map((tag,index)=>(
+                   <div className="form-group text-left">
+                    <label>Tag {index+1}</label>
+                    <input type="text" className="form-control" name="tag" placeholder="Enter tag"
+                    value={tags[index]} onChange={(e)=>handleTag(e,index)}
+                    />
+                    </div>
+              ))}
+               <br></br>
+              <button type="button" className="btn btn-success" onClick={addTag}>Create Another Tag</button>
               
+
               </div>
               <br></br>
               <br></br>
@@ -339,7 +401,6 @@ useEffect(() => {
         }
       `}</style>
     </Layout>  
-    
     )
 }
 
