@@ -83,15 +83,13 @@ const deleteBrandController=async(req,res)=>{
             message:'Brand name does not exist',
             success:true
         })
-         const products=await ProductModel.find({category:category._id})
+         const products=await ProductModel.find({brand:brand._id})
         if(products)
          {
-            await ProductModel.deleteMany({category:category._id})
-            await CategoryModel.findByIdAndDelete(category._id)
+            await ProductModel.deleteMany({brand:brand._id})
             return res.send({
-            message:`Category ${slug} is successfully deleted and products of this category is also deleted`,
+            message:`All Products of the brand ${brand.brand_name} is deleted`,
             success:true,
-            category:category.category_name
         })
         }
 

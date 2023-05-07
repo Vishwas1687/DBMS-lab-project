@@ -88,6 +88,7 @@ const ManageProduct = () => {
               <table className="table">
                 <thead>
                   <tr>
+                    <th scope="col" className="col-md-1">Image</th>
                     <th scope="col">ID</th>
                     <th scope="col">Name</th>          
                     <th scope="col">Actions</th>
@@ -95,9 +96,16 @@ const ManageProduct = () => {
                 </thead>
                 <tbody>
                   {products.map((c) => (
-
                     <>
                     <tr key={c.slug}>
+                        <td>
+                          <img
+                        src={`http://localhost:5000/api/products/get-photo/${c.slug}`}
+                        className="card-img-top"
+                        alt={c.name}
+                        height={"50px"}
+                        />
+                        </td>
                         <td>{c.product_id}</td>
                         <td>{c.product_name}</td>
                         <td><button className="btn btn-primary ms-2">
