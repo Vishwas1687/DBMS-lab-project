@@ -12,6 +12,10 @@ const Profile = () => {
         </div>
         <div className='col-md-9'>
           <h1>Your Profile</h1>
+          <div className="card w-75 p-3">
+            <h3>Name</h3>
+            <h3>Email</h3>
+          </div>
         </div>
       </div>
       

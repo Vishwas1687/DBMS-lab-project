@@ -5,6 +5,7 @@ import { useState } from 'react';
 import '../styles/Dropdown.css'
 import { useAuth } from '../../context/auth';
 import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 export default function Dropdown() {
 
@@ -25,10 +26,10 @@ export default function Dropdown() {
       </>) :
       (<>
         <div className={`dropdown-menu positionDropdown`} >
-        <Link className="dropdown-item" to='/user/' >Dashboard</Link>
-        <div class="dropdown-divider"></div>
+        <Link className="dropdown-item" to={`/${auth?.user?.role === 1 ? 'admin' : 'user'}/`} >Dashboard</Link>
+        <div className="dropdown-divider"></div>
         <a className="dropdown-item " onClick={()=>{
-          setAuth({...auth, user:null,token:''});localStorage.removeItem('auth');navigate('/');
+          setAuth({...auth, user:null,token:''});localStorage.removeItem('auth');navigate('/');toast('Logged out!');
         }}>Logout</a>
 
       </div>

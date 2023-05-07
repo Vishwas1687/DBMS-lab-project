@@ -4,8 +4,9 @@ import axios from 'axios'
 import { NavLink , Link} from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
 import toast from 'react-hot-toast'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/auth';
+import '../styles/Modal.css'
 
 export default function Modal() {
 
@@ -15,6 +16,7 @@ export default function Modal() {
     const closeRef = useRef();
     const [auth,setAuth] = useAuth();
 
+    const location = useLocation();
     const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -33,7 +35,10 @@ export default function Modal() {
           token: res.data.token,
         });
         localStorage.setItem('auth',JSON.stringify(res.data));
+        setPassword('');
+        setEmail('');
         closeRef.current.click();
+        navigate('/');
       }else{
         toast.error(res.data.message);
       }
@@ -65,13 +70,16 @@ export default function Modal() {
     <label htmlFor="exampleInputPassword1">Password</label>
     <input type="password" value={password} onChange={(e)=>{setPassword(e.target.value)}} className="form-control my-2" id="exampleInputPassword1" placeholder="Password" />
   </div>
+  <NavLink style={{textAlign:'center'}} to="/forgot-password" className="nav-link mb-3 underline" onClick={()=>{closeRef.current.click();navigate('/forgot-password');}} >
+            Forgot Password?
+  </NavLink>
   <div className='text-center'>
   <button type="submit" className="btn btn-primary">Log In</button>
   </div>
 </form>
       </div>
       <div className="modal-footer" style={{justifyContent:'center'}} >
-        <NavLink to = "/register" className="nav-link" onClick={()=>{closeRef.current.click();navigate('/register');}} >
+        <NavLink to="/register" className="nav-link underline" onClick={()=>{closeRef.current.click();navigate('/register');}} >
             New User? Click here to register.
           </NavLink>
         </div>
