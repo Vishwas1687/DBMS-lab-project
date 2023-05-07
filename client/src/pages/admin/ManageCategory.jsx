@@ -3,7 +3,7 @@ import Layout from "./../../components/Layout/Layout";
 import AdminMenu from "./../../components/AdminMenu";
 import toast from "react-hot-toast";
 import axios from "axios";
-import {Link} from 'react-router-dom';
+import {Link,useNavigate} from 'react-router-dom';
 import Modal from "antd/es/modal/Modal";
 import CategoryForm from "../../components/Form/CategoryForm";
 
@@ -11,48 +11,8 @@ const ManageCategory = () => {
   const [categories, setCategories] = useState([]);
   const [name, setName] = useState("");
   const [id, setId] = useState("");
-  const [visible, setVisible] = useState(false);
-  const [selected, setSelected] = useState(null);
-  const [updatedName, setUpdatedName] = useState("");
+  const navigate=useNavigate()
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const { data } = await axios.post(
-        "http://localhost:5000/api/categories/create-category",
-        { category_id:id,category_name: name }
-      );
-      if (data.success) {
-        toast.success(`${data.name} is created`);
-        setName("");
-        getAllCategory();
-      } else {
-        toast.error(data.message);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const handleUpdate = async ({ category_name, slug }, e) => {
-    e.preventDefault();
-    try {
-      const { data } = await axios.put(
-        `http://localhost:5000/api/categories/update-category/${slug}`,
-        { category_name }
-      );
-      if (data?.success) {
-        toast.success(`${category_name} is updated`);
-        setSelected(null);
-        setUpdatedName("");
-        getAllCategory();
-      } else {
-        toast.error(data.message);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   const handleDelete = async (slug) => {
     try {
@@ -98,6 +58,12 @@ const ManageCategory = () => {
           </div>
           <div className="col-md-9">
             <h1>Manage Category</h1>
+
+            <button type="button" className="btn btn-primary" onClick={()=>navigate('/admin/create-category')}>
+              Create Category
+            </button>
+
+            <br></br>
             <br></br>
             <div>
               <table className="table">
@@ -119,9 +85,7 @@ const ManageCategory = () => {
                           <button
                             className="btn btn-primary ms-2"
                             onClick={() => {
-                              setVisible(true);
-                              setUpdatedName(c.category_name);
-                              setSelected(c);
+                              navigate(`/admin/update-category/${c.slug}`)
                             }}
                           >
                             Edit
@@ -149,18 +113,6 @@ const ManageCategory = () => {
 </table>
 
                         </div>
-                        <Modal
-  onCancel={() => setVisible(false)}
-  footer={null}
-  visible={visible}
->
-  <CategoryForm
-    value={updatedName}
-    setValue={setUpdatedName}
-    handleSubmit={(e) => handleUpdate(selected, e)}
-  />
-</Modal>
-
                     </div>
                 </div>
             </div>

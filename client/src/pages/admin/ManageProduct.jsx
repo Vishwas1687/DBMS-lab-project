@@ -3,11 +3,11 @@ import axios from 'axios';
 import Layout from '../../components/Layout/Layout';
 import AdminMenu from '../../components/AdminMenu';
 import { toast } from 'react-hot-toast';
-import { Link } from 'react-router-dom';
+import { Link,useNavigate } from 'react-router-dom';
 
 const ManageProduct = () => {
   const [products, setProducts] = useState([]);
-
+  const navigate=useNavigate()
 
    const getAllProducts=async()=>{
     try{
@@ -83,6 +83,11 @@ const ManageProduct = () => {
           </div>
           <div className="col-md-9">
             <h1>Manage Product</h1>
+
+            <button type="button" className="btn btn-primary" onClick={()=>navigate('/admin/create-product')}>
+              Create Product
+            </button>
+            <br></br>
             <br></br>
             <div>
               <table className="table">
