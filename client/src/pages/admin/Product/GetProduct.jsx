@@ -40,7 +40,7 @@ const GetProduct = () => {
             <h1 className="pb-3">{prod.product_name}</h1>
             <h2 className="mb-4">{`Product ID: ${prod.product_id}`}</h2>
             <div className="mb-4">
-              <img src={`http://localhost:5000/${prod.photo}`} alt={prod.product_name} style={{ maxWidth: "100%" }} />
+              <img src={`http://localhost:5000/api/products/get-photo/${prod.slug}`} alt={prod.product_name} style={{ maxWidth: "100%" }} />
             </div>
             <table className="table w-75">
               <thead>
