@@ -7,7 +7,7 @@ const {createProductController,updateProductController,
     getSingleProductController,getProductsBySubCategoryController,
     createWeightsController,updateWeightController,deleteWeightController,
     getProductsByBrandController,getRelatedProductsController,
-    getProductsBySearchController,getPhotoController}=require('../controllers/productController')
+    getProductsBySearchController,getPhotoController,getSingleWeightController}=require('../controllers/productController')
 
 router.post('/create-product',formidable(),createProductController)
 
@@ -29,6 +29,7 @@ router.put('/get-single-product/:slug/:weight_id/edit',updateWeightController)
 
 router.delete('/get-single-product/:slug/:weight_id/delete',deleteWeightController)
 
+router.get('/get-single-product/get-single-weight/:slug/:weight_id',getSingleWeightController)
 
 router.get('/get-products-based-on-brand-and-subcategory-other-than-current-product/:brand/:subcategory/:slug',getProductsByBrandController)
 
@@ -37,6 +38,8 @@ router.get('/get-related-products-of-the-subcategory/:slug',getRelatedProductsCo
 //router.get('/get-products-by-filters/:args',getProductsByFilterController)
 
 router.get('/get-photo/:slug',getPhotoController)
+
+
 
 //
 

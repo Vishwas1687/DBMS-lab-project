@@ -503,6 +503,47 @@ const getProductsByBrandController=async(req,res)=>{
     }
 }
 
+const getSingleWeightController=async(req,res)=>{
+    try{
+        const {slug,weight_id}=req.params
+        if(!slug)
+        return res.send({message:"Enter slug"})
+        if(!weight_id)
+        return res.send({message:'Enter the weight id'})
+
+        const product=await ProductModel.findOne({slug})
+        if(!product)
+        {
+            return res.send({
+                message:'Product does not exist',
+                success:false,
+            })
+        }
+
+        const weight=product.weights.filter((weight)=>weight.weight_id===parseInt(weight_id))[0]
+        if(!weight)
+        {
+            return res.send({
+                message:'Weight does not exist',
+                success:false
+            })
+        }
+
+        res.send({
+            message:"Weight information is fetched",
+            success:true,
+            weight
+        })
+    }catch(error)
+    {
+         res.send({
+            message:'Something went wrong',
+            success:false,
+            error:error.message
+         })
+    }
+}
+
 const getRelatedProductsController=async(req,res)=>{
     try{
         const {slug}=req.params
@@ -579,4 +620,5 @@ module.exports={createProductController,updateProductController,
             deleteProductController,getAllProductsController,getSingleProductController,
         getProductsBySubCategoryController,createWeightsController,
         updateWeightController,deleteWeightController,getProductsByBrandController,
-        getRelatedProductsController,getProductsBySearchController,getPhotoController}
+        getRelatedProductsController,getProductsBySearchController,getPhotoController,
+        getSingleWeightController}
