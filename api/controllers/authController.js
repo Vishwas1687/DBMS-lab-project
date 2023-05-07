@@ -22,7 +22,7 @@ const registerController = async (req, res) => {
     if(existingUser)
     {
         return res.status(201).send({
-            success:"false",
+            success:false,
             message:"User already exists"
         })
     }

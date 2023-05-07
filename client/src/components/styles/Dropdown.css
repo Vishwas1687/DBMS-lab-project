@@ -1,5 +1,9 @@
-.positionDropDown{
+.positionDropdown{
     right:2px;
     text-align: center;
     cursor:pointer;
+}
+
+.dropdown-hover:hover .positionDropdown{
+    display:block;
 }
