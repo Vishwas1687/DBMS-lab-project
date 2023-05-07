@@ -115,6 +115,7 @@ const ManageCategory = () => {
                         <td>{c.category_id}</td>
                         <td>{c.category_name}</td>
                         <td>
+                          
                           <button
                             className="btn btn-primary ms-2"
                             onClick={() => {

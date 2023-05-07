@@ -16,6 +16,7 @@ import CreateProduct from "./pages/admin/CreateProduct";
 import Users from "./pages/admin/Users";
 import Orders from "./pages/user/Orders";
 import Profile from "./pages/user/Profile";
+import UpdateCategory from './pages/admin/Category/UpdateCategory.jsx'
 import CreateCategory from "./pages/admin/CreateCategory";
 // import ViewCategory from "./pages/admin/ViewCategory";
 import { Toaster } from "react-hot-toast";
@@ -49,6 +50,7 @@ function App() {
         <Route path = "/admin/manage-product" element = {<ManageProduct />} /> 
         {/* <Route path = "/admin/manage-product/product/:slug" element = {<GetProduct />} /> */}
         <Route path = "/admin/create-product" element = {<CreateProduct />} />
+        <Route path = "/admin/update-category/:slug" element = {<UpdateCategory/>}/>
       </Route>
 
 
