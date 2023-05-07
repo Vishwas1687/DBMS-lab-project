@@ -25,6 +25,7 @@ import PrivateRoute from "./components/Routes/Private";
 import ForgotPassword from "./pages/Auth/ForgotPassword";
 import AdminRoute from "./components/Routes/AdminRoute";
 import ManageBrand from "./pages/admin/ManageBrand";
+import GetProduct from "./pages/admin/Product/GetProduct";
 
 
 function App() {
@@ -49,7 +50,7 @@ function App() {
         <Route path = "/admin/create-category" element={<CreateCategory/>}></Route>
         {/* <Route path = "/admin/manage-category/category/:categorySlug" element={<ViewCategory />} /> */}
         <Route path = "/admin/manage-product" element = {<ManageProduct />} /> 
-        {/* <Route path = "/admin/manage-product/product/:slug" element = {<GetProduct />} /> */}
+        <Route path = "/admin/manage-product/product/:slug" element = {<GetProduct />} />
         <Route path = "/admin/create-product" element = {<CreateProduct />} />
         <Route path = "/admin/update-category/:slug" element = {<UpdateCategory/>}/>
         <Route path = "/admin/manage-brand" element = {<ManageBrand />} />
