@@ -2,12 +2,15 @@ const { response } = require('express')
 const slugify=require('slugify')
 // const OrderModel=require('../models/Order')
 const CategoryModel=require('../models/Category')
+const fs=require('fs')
 const ProductModel=require('../models/Product')
 
 const createProductController=async(req,res)=>{
     try{
     const {product_name,seller_id,brand,
-        weights,category,subcategory,tags}=req.body
+        category,subcategory,tags}=req.fields
+    const weights=JSON.parse(req.fields.weights)
+    const {photo} =req.files    
     if(!product_name)
     return res.send({message:'Enter product name'})
     if(!seller_id)
@@ -22,8 +25,10 @@ const createProductController=async(req,res)=>{
     return res.send({message:'Enter subcategory'})
     if(!tags)
     return res.send({message:'Enter the tags'})
+    if(photo && photo.size > 1000000)
+    return res.send({message:'Photo should be entered'})
 
-    const existingProduct=await ProductModel.findOne({product_name}).populate('brand')
+    const existingProduct=await ProductModel.findOne({product_name}).select("-photo").populate('brand')
     if(existingProduct)
     {
         return res.send({
@@ -41,29 +46,42 @@ const createProductController=async(req,res)=>{
         })
     }
 
-    
-
     const newProduct=await new ProductModel({
         product_name:product_name,
         slug:slugify(product_name),
         seller_id:seller_id,
         brand:brand,
-        weights:weights,
         category:category,
         subcategory:subcategory,
+        weights:weights,
         tags:tags
-    }).save()
+    })
 
+    const product=newProduct
+    if(photo && photo.path){
+     newProduct.photo.data=fs.readFileSync(photo.path)
+    newProduct.photo.contentType=photo.type
+    }
+    else{
+        return res.send({
+            message:'Error in phot path',
+            success:false
+        })
+    }
+    
+
+    await newProduct.save()
     res.send({
         message:`Product ${newProduct.product_name} is created successfully`,
         success:true,
-        newProduct
+        product
     })
 
     }catch(error)
     {
+        console.log(error)
         res.send({
-            message:'Something went wrong',
+            message:'Something did go wrong',
             success:false,
             error:error.message
         })
@@ -174,7 +192,7 @@ const deleteProductController=async(req,res)=>{
 
 const getAllProductsController=async(req,res)=>{
      try{
-        const products=await ProductModel.find({}).populate('category').populate('brand')
+        const products=await ProductModel.find({}).select("-photo").populate('category').populate('brand')
 
         res.send({
             message:'All products are fetched',

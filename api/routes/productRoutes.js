@@ -9,7 +9,7 @@ const {createProductController,updateProductController,
     getProductsByBrandController,getRelatedProductsController,
     getProductsBySearchController}=require('../controllers/productController')
 
-router.post('/create-product',createProductController)
+router.post('/create-product',formidable(),createProductController)
 
 router.put('/update-product/:slug',updateProductController)
 

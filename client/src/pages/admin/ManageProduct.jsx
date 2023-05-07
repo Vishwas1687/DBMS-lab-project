@@ -9,12 +9,22 @@ const ManageProduct = () => {
   const [products, setProducts] = useState([]);
 
 
+   const getAllProducts=async()=>{
+    try{
+        const {data}=await axios.get('http://localhost:5000/api/products/all-products')
+        setProducts(data.products)
+        console.log(data)
+    }
+    catch(error)
+    {
+
+    }
+   }
+
   // Fetch products from backend on initial load
   useEffect(() => {
-    axios.get('/api/products').then((response) => {
-      setProducts(response.data);
-    });
-  }, []);
+      getAllProducts()
+    },[]);
 
   // Function to handle adding a new product
   const handleAddProduct = () => {
