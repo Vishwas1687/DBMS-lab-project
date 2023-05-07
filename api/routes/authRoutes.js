@@ -16,6 +16,14 @@ router.get('/test',requiresSignIn,isAdmin,(req,res)=>{
     res.send({message:'Protected Routes'})
 })
 
+// protected routes
 
+router.get('/user-auth',requiresSignIn,(req,res)=>{
+    res.status(200).send({ok:true});
+})
+
+router.get('/admin-auth',requiresSignIn,isAdmin,(req,res)=>{
+    res.status(200).send({ok:true});
+})
 
 module.exports=router;

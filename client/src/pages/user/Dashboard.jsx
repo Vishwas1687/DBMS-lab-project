@@ -1,10 +1,10 @@
 import React from 'react'
 import UserMenu from '../../components/Layout/UserMenu'
-// import { useAuth } from '../../context/auth'
+import { useAuth } from '../../context/auth'
 import Layout from '../../components/Layout/Layout'
-// import { useAuth } from '../../context/auth'
 
 const Dashboard = () => {
+  const [auth,setAuth] = useAuth();
   return (
     <div>
       <Layout>
@@ -15,9 +15,9 @@ const Dashboard = () => {
         </div>
         <div className='col-md-9'>
         <div className='card w-75 p-3'>
-            <h3>User Name : </h3>
-            <h3>User Email : </h3>
-            <h3>User Contact : </h3>
+            <h3>User Name : {auth?.user?.username}</h3>
+            <h3>User Email : {auth?.user?.email}</h3>
+            <h3>User Contact : {auth?.user?.phone_number}</h3>
 
           </div>
         </div>

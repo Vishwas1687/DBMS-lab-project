@@ -20,6 +20,9 @@ import CreateCategory from "./pages/admin/CreateCategory";
 // import ViewCategory from "./pages/admin/ViewCategory";
 import { Toaster } from "react-hot-toast";
 import ManageProduct from "./pages/admin/ManageProduct";
+import PrivateRoute from "./components/Routes/Private";
+import ForgotPassword from "./pages/Auth/ForgotPassword";
+import AdminRoute from "./components/Routes/AdminRoute";
 
 
 function App() {
@@ -30,22 +33,28 @@ function App() {
 
       <Route path = "/" element = {<HomePage />} />
       
-      <Route path = "/user" element = {<Dashboard />} />
-      <Route path = "/user/orders" element = {<Orders/>} />
-      <Route path = "/user/profile" element = {<Profile />} />
-      
-      <Route path = "/admin" element = {<AdminDashboard />} />
-      <Route path = "/admin/manage-category" element = {<ManageCategory />} />
-      <Route path = "/admin/get-category/:slug" element = {<GetCategory />} />
-      <Route path = "/admin/users" element = {<Users />} />
-      <Route path = "/admin/create-category" element={<CreateCategory/>}></Route>
-      {/* <Route path = "/admin/manage-category/category/:categorySlug" element={<ViewCategory />} /> */}
-      <Route path = "/admin/manage-product" element = {<ManageProduct />} /> 
-      {/* <Route path = "/admin/manage-product/product/:slug" element = {<GetProduct />} /> */}
-      <Route path = "/admin/create-product" element = {<CreateProduct />} />
+      <Route path='/user' element={<PrivateRoute />}>
+        <Route path = "" element = {<Dashboard />} />
+        <Route path = "orders" element = {<Orders/>} />
+        <Route path = "profile" element = {<Profile />} />
+      </Route>
+
+      <Route path='/admin' element={ <AdminRoute /> }>
+        <Route path = "" element = {<AdminDashboard />} />
+        <Route path = "/admin/manage-category" element = {<ManageCategory />} />
+        <Route path = "/admin/get-category/:slug" element = {<GetCategory />} />
+        <Route path = "/admin/users" element = {<Users />} />
+        <Route path = "/admin/create-category" element={<CreateCategory/>}></Route>
+        {/* <Route path = "/admin/manage-category/category/:categorySlug" element={<ViewCategory />} /> */}
+        <Route path = "/admin/manage-product" element = {<ManageProduct />} /> 
+        {/* <Route path = "/admin/manage-product/product/:slug" element = {<GetProduct />} /> */}
+        <Route path = "/admin/create-product" element = {<CreateProduct />} />
+      </Route>
+
+
 
       <Route path = "/register" element = {<Register />} />
-      <Route path = "/login" element = {<Login />} />
+      <Route path = "/forgot-password" element = {<ForgotPassword />} />
 
       <Route path = "/about" element = {<About />} />
       <Route path = "/contact" element = {<Contact />} />

@@ -19,7 +19,7 @@ const requiresSignIn=async(req,res,next)=>{
 const isAdmin=async(req,res,next)=>{
     try{
         const User=await UserModel.findById(req.user._id)
-        if(User.role!=1)
+        if(User.role !== 1)
         {
             return res.status(404).send({
                 message:'User is not the admin',

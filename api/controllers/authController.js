@@ -130,7 +130,7 @@ const forgotPasswordController=async(req,res)=>{
       if(user.answer!=answer)
       {
         return res.status(404).send({
-            message:"Not a valid user",
+            message:"Not the correct answer",
             success:false,
         })
       }
@@ -138,7 +138,7 @@ const forgotPasswordController=async(req,res)=>{
       {
         return res.status(404).send({
             success:false,
-            message:"Confirm the password"
+            message:"Passwords do not match"
         })
       }
       const hashedPassword=await bcrypt.hash(password,10);

@@ -13,7 +13,7 @@ const Orders = () => {
         <div className='col-md-9'>
           <div className='card w-75 p-3'>
             <h1>
-                ALL ORdesr
+                All Orders
             </h1>
 
           </div>
