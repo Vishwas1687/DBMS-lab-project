@@ -24,6 +24,7 @@ import ManageProduct from "./pages/admin/ManageProduct";
 import PrivateRoute from "./components/Routes/Private";
 import ForgotPassword from "./pages/Auth/ForgotPassword";
 import AdminRoute from "./components/Routes/AdminRoute";
+import ManageBrand from "./pages/admin/ManageBrand";
 
 
 function App() {
@@ -51,6 +52,7 @@ function App() {
         {/* <Route path = "/admin/manage-product/product/:slug" element = {<GetProduct />} /> */}
         <Route path = "/admin/create-product" element = {<CreateProduct />} />
         <Route path = "/admin/update-category/:slug" element = {<UpdateCategory/>}/>
+        <Route path = "/admin/manage-brand" element = {<ManageBrand />} />
       </Route>
 
 
