@@ -3,16 +3,17 @@ import Layout from '../../components/Layout/Layout'
 import AdminMenu from '../../components/AdminMenu'
 import { useState, useEffect } from "react";
 import axios from 'axios';
-import Form from 'react-bootstrap/Form'
+import {useNavigate} from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 
 const CreateProduct = () => {
-
+  const navigate=useNavigate()
   const [weights,setWeights]=useState([{
     weight_id:"",weight:"",weight_units:"",mrp:"",sp:"",stock:"",
   }])
 
   const [tags,setTags]=useState([])
+  const [loading,setLoading]=useState(true)
   const [categories, setCategories] = useState([]);
   const [brands,setBrands]=useState([])
   const [category,setCategory]=useState({})
@@ -21,9 +22,6 @@ const CreateProduct = () => {
     product_name: "",
     seller_id: "",
     brand: "",
-    total_reviews:  "",
-    rating: "",
-    total_ratings:  "",
     category: "",
     subcategory:"",
   });
@@ -51,11 +49,13 @@ const CreateProduct = () => {
 
  const getAllCategory = async () => {
   try {
+    setLoading(true)
     const { data } = await axios.get(`http://localhost:5000/api/categories/get-all-categories`);
     console.log(data)
     if (data?.success) {
       setCategories(data?.categories);
     }
+    setLoading(false)
   } catch (error) {
     console.log(error);
     toast.error("Something went wrong in getting category");
@@ -64,11 +64,12 @@ const CreateProduct = () => {
 
  const getAllBrands = async () => {
   try {
+    setLoading(true)
     const { data } = await axios.get(`http://localhost:5000/api/brands/get-all-brands`);
-    console.log(data)
     if (data?.success) {
       setBrands(data?.brands);
     }
+    setLoading(false)
   } catch (error) {
     console.log(error);
     toast.error("Something went wrong in getting category");
@@ -117,9 +118,6 @@ useEffect(() => {
         product_name:formData.product_name,
         seller_id:formData.seller_id,
         brand:formData.brand,
-        total_reviews:formData.total_reviews,
-        rating:formData.rating,
-        total_ratings:formData.total_ratings,
         category:formData.category,
         subcategory:formData.subcategory,
         weights:weights,
@@ -131,25 +129,23 @@ useEffect(() => {
         formDataWithWeights
       );
       if (data?.success) {
-        alert(`${formData.product_name} is added`);
+        toast.success(data.message);
         setFormData({
           product_name: "",
           seller_id:"",
           brand:"",
-          total_reviews:"",
-          rating:"",
-          total_ratings:"",
           category:"",
           subcategory:"",
         });
         setWeights([{
           weight_id:"",weight:"",weight_units:"",mrp:"",sp:"",stock:""
         }])
+        navigate('/admin/manage-product')
       } else {
-        alert(data.message);
+        toast.error(data.message);
       }
     } catch (error) {
-      console.log(error);
+      toast.error('Something went wrong')
     }
   };
 
@@ -163,6 +159,8 @@ useEffect(() => {
             <AdminMenu />
           </div>
           <div className="col-md-9 create-category-section">
+          {loading?(<h1>Loading.....</h1>):
+            <>
             <h1>Create Product</h1>
             <br></br>
             <form onSubmit={handleSubmit} className="w-75">
@@ -208,48 +206,7 @@ useEffect(() => {
               </select>
               </div>
               <br></br>
-              <div className="form-group text-left">
-                <label htmlFor="total_reviews">Total Reviews</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="total_reviews"
-                  name="total_reviews"
-                  placeholder="Enter total reviews"
-                  value={formData.total_reviews}
-                  onChange={handleChange}
-                  
-                />
-              </div>
-              <br></br>
-              <div className="form-group text-left">
-                <label htmlFor="ratings">Rating</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="ratings"
-                  name="rating"
-                  placeholder="Enter rating"
-                  value={formData.rating}
-                  onChange={handleChange}
-                />
-              </div>
-              <br></br>
-              <div className="form-group text-left">
-                <label htmlFor="total_ratings">Total Ratings</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="total_ratings"
-                  name="total_ratings"
-                  placeholder="Enter total ratings"
-                  value={formData.total_ratings}
-                  onChange={handleChange}
-                  
-                />
-              </div>
-
-              <br></br>
+        
               <div className="form-group text-left">
               <label htmlFor="category">Category</label>
               <br></br>
@@ -293,6 +250,7 @@ useEffect(() => {
                     className="form-control"
                     name="weight_id"
                     placeholder="Enter weight id"
+                    required="true"
                     value={weights[index].weight_id}
                     onChange={(e)=>{handleWeightChange(index,"weight_id",e.target.value)}}
                     />
@@ -306,6 +264,7 @@ useEffect(() => {
                     name="weight"
                     placeholder="Enter weight"
                     value={weights[index].weight}
+                    required="true"
                     onChange={(e)=>{handleWeightChange(index,"weight",e.target.value)}}
                     />
                     </div>
@@ -316,6 +275,7 @@ useEffect(() => {
                     type="text"
                     className="form-control"
                     name="weight_units"
+                    required="true"
                     placeholder="Enter weight units"
                     value={weights[index].weight_units}
                     onChange={(e)=>{handleWeightChange(index,"weight_units",e.target.value)}}
@@ -329,6 +289,7 @@ useEffect(() => {
                     type="text"
                     className="form-control"
                     name="mrp"
+                    required="true"
                     placeholder="Enter mrp"
                     value={weights[index].mrp}
                     onChange={(e)=>{handleWeightChange(index,"mrp",e.target.value)}}
@@ -341,6 +302,7 @@ useEffect(() => {
                     type="text"
                     className="form-control"
                     name="sp"
+                    required="true"
                     placeholder="Enter sp"
                     value={weights[index].sp}
                     onChange={(e)=>{handleWeightChange(index,"sp",e.target.value)}}
@@ -354,6 +316,7 @@ useEffect(() => {
                     type="text"
                     className="form-control"
                     name="stock"
+                    required="true"
                     placeholder="Enter stock"
                     value={weights[index].stock}
                     onChange={(e)=>{handleWeightChange(index,"stock",e.target.value)}}
@@ -370,7 +333,8 @@ useEffect(() => {
               {tags.map((tag,index)=>(
                    <div className="form-group text-left">
                     <label>Tag {index+1}</label>
-                    <input type="text" className="form-control" name="tag" placeholder="Enter tag"
+                    <input type="text" className="form-control" name="tag" 
+                    placeholder="Enter the tag" required="true"
                     value={tags[index]} onChange={(e)=>handleTag(e,index)}
                     />
                     </div>
@@ -388,7 +352,10 @@ useEffect(() => {
               </button>
 
               </form>
+           </>
+          }
           </div>
+          
         </div>
       </div>
       <style jsx>{`

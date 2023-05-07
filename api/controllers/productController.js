@@ -6,20 +6,14 @@ const ProductModel=require('../models/Product')
 
 const createProductController=async(req,res)=>{
     try{
-    const {product_name,seller_id,brand,total_reviews, total_ratings,
-        rating,weights,category,subcategory,tags}=req.body
+    const {product_name,seller_id,brand,
+        weights,category,subcategory,tags}=req.body
     if(!product_name)
     return res.send({message:'Enter product name'})
     if(!seller_id)
     return res.send({message:'Enter seller id'})
     if(!brand)
     return res.send({message:'Enter brand name'})
-    if(!total_reviews)
-    return res.send({message:'Enter total reviews'})
-    if(!rating)
-    return res.send({message:'Enter rating'})
-    if(!total_ratings)
-    return res.send({message:'Enter total ratings'})
     if(!weights)
     return res.send({message:'Enter weights'})
     if(!category)
@@ -47,14 +41,13 @@ const createProductController=async(req,res)=>{
         })
     }
 
+    
+
     const newProduct=await new ProductModel({
         product_name:product_name,
         slug:slugify(product_name),
         seller_id:seller_id,
         brand:brand,
-        total_reviews:total_reviews,
-        rating:rating,
-        total_ratings:total_ratings,
         weights:weights,
         category:category,
         subcategory:subcategory,
@@ -79,8 +72,8 @@ const createProductController=async(req,res)=>{
 
 const updateProductController=async(req,res)=>{
     try{
-    const {product_name,seller_id,brand,total_reviews, total_ratings,
-        rating,weights,category,subcategory,tags}=req.body
+    const {product_name,seller_id,brand,
+        weights,category,subcategory,tags}=req.body
     const {slug}=req.params
     if(!product_name)
     return res.send({message:'Enter product name'})
@@ -88,12 +81,6 @@ const updateProductController=async(req,res)=>{
     return res.send({message:'Enter seller id'})
     if(!brand)
     return res.send({message:'Enter brand name'})
-    if(!total_reviews)
-    return res.send({message:'Enter total reviews'})
-    if(!rating)
-    return res.send({message:'Enter rating'})
-    if(!total_ratings)
-    return res.send({message:'Enter total ratings'})
     if(!weights)
     return res.send({message:'Enter weights'})
     if(!category)
@@ -129,9 +116,6 @@ const updateProductController=async(req,res)=>{
         slug:slugify(product_name),
         seller_id:seller_id,
         brand:brand.brand_name,
-        total_reviews:total_reviews,
-        rating:rating,
-        total_ratings:total_ratings,
         weights:weights,
         category:category,
         subcategory:subcategory,
