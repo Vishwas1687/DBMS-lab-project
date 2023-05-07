@@ -11,7 +11,7 @@ const CreateProduct = () => {
   const [weights,setWeights]=useState([{
     weight_id:"",weight:"",weight_units:"",mrp:"",sp:"",stock:"",
   }])
-
+  const [photo,setPhoto]=useState("")
   const [tags,setTags]=useState([])
   const [loading,setLoading]=useState(true)
   const [categories, setCategories] = useState([]);
@@ -114,19 +114,19 @@ useEffect(() => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const formDataWithWeights={
-        product_name:formData.product_name,
-        seller_id:formData.seller_id,
-        brand:formData.brand,
-        category:formData.category,
-        subcategory:formData.subcategory,
-        weights:weights,
-        tags:tags
-
-      }
+      setLoading(true)
+      const newFormData=new FormData()
+      newFormData.append("product_name",formData.product_name)
+      newFormData.append("seller_id",formData.seller_id)
+      newFormData.append("brand",formData.brand)
+      newFormData.append("category",formData.category)
+      newFormData.append("subcategory",formData.subcategory)
+      newFormData.append("weights",JSON.stringify(weights))
+      newFormData.append("tags",tags)
+      newFormData.append("photo",photo)
       const { data } = await axios.post(
         "http://localhost:5000/api/products/create-product",
-        formDataWithWeights
+        newFormData
       );
       if (data?.success) {
         toast.success(data.message);
@@ -140,12 +140,13 @@ useEffect(() => {
         setWeights([{
           weight_id:"",weight:"",weight_units:"",mrp:"",sp:"",stock:""
         }])
+        setLoading(false)
         navigate('/admin/manage-product')
       } else {
         toast.error(data.message);
       }
     } catch (error) {
-      toast.error('Something went wrong')
+      toast.error(error)
     }
   };
 
@@ -193,6 +194,36 @@ useEffect(() => {
                 />
               </div>
               <br></br>
+
+              <div className="form-group text-left">
+                <label className="btn btn-outline-secondary col-md-7">
+                  {photo?photo.name:"Upload Photo"}
+                 <input
+                  type="file"
+                  name="photo"
+                  accept="image/*"
+                  onChange={(e)=>setPhoto(e.target.files[0])}
+                  hidden
+                 />
+                 </label>
+                 <br></br>
+                 <br></br>
+                 <br></br>
+              <div className="mb-3">
+                {photo && ( 
+                <div className="text-left">
+                  <img src={URL.createObjectURL(photo)}
+                    className="img img-responsive"
+                    alt="photo"
+                    height={"200px"}/>
+                </div>
+                 )}
+                 </div>   
+              </div>
+
+              <br></br>
+
+
               <div className="form-group text-left">
                 <label htmlFor="brand">Brand</label>
                 <br></br>
@@ -329,7 +360,6 @@ useEffect(() => {
 
 <button type="button"  className="btn btn-primary" onClick={handleAddWeight}>Create Weight</button>
                <br></br>
-               <br></br>
               {tags.map((tag,index)=>(
                    <div className="form-group text-left">
                     <label>Tag {index+1}</label>
@@ -345,12 +375,13 @@ useEffect(() => {
 
               </div>
               <br></br>
-              <br></br>
 
-              <button type="submit" className="btn btn-primary">
+              <button type="submit" className="btn btn-primary col-md-7">
                 Create
               </button>
-
+              <br></br>
+              <br></br>
+              <br></br>
               </form>
            </>
           }

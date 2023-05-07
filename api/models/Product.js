@@ -44,12 +44,6 @@ const ProductSchema=new Schema({
         default:0
     },
 
-    // seller_id:{
-    //    type:mongoose.ObjectId,
-    //    ref:"Seller",
-    //    required:true
-    // },
-
     slug:{
         type:String,
         required:true,
@@ -97,11 +91,11 @@ const ProductSchema=new Schema({
     tags:{
         type:[String],
         required:true
+    },
+      photo:{
+        data:Buffer,
+        contentType:String
     }
-      // photo:{
-    //     data:Buffer,
-    //     contentType:String
-    // }
 
 },{timestamps:true})
 
