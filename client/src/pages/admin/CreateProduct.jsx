@@ -55,6 +55,7 @@ const CreateProduct = () => {
     if (data?.success) {
       setCategories(data?.categories);
     }
+    setTags([...tags,' '])
     setLoading(false)
   } catch (error) {
     console.log(error);
@@ -359,6 +360,7 @@ useEffect(() => {
               })}
 
 <button type="button"  className="btn btn-primary" onClick={handleAddWeight}>Create Weight</button>
+               <br></br>
                <br></br>
               {tags.map((tag,index)=>(
                    <div className="form-group text-left">
