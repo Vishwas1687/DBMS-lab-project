@@ -3,7 +3,6 @@ import axios from 'axios';
 import Layout from '../../components/Layout/Layout';
 import AdminMenu from '../../components/AdminMenu';
 import { toast } from 'react-hot-toast';
-import { Link } from 'react-router-dom';
 import CategoryForm from '../../components/Form/CategoryForm';
 import Modal from 'antd/es/modal/Modal';
 
@@ -13,6 +12,8 @@ const ManageBrand = () => {
     const [visible, setVisible] = useState(false);
     const [selected, setSelected] = useState(null);
     const [updatedName, setUpdatedName] = useState("");
+    const [createVisible,setCreateVisible]=useState(false)
+    const [brand,setBrand]=useState('')
 
     // useEffect(() => {
     //     axios.get('/api/brands').then((response) => {
@@ -41,16 +42,39 @@ const ManageBrand = () => {
         getAllBrand();
       }, []);
 
+      const handleCreateBrand = async (e,brand_name) => {
+        e.preventDefault();
+        try {
+          const { data } = await axios.post(
+            `http://localhost:5000/api/brands/create-brand`,
+            { brand_name }
+          );
+          if (data?.success) {
+            toast.success(`${brand_name} is created`);
+            setCreateVisible(false)
+            setBrand('')
+            getAllBrand();
+          } else {
+            toast.error(data.message);
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      };
+
+
+
       const handleUpdateBrand = async ({brand_id, brand_name}, e) => {
         e.preventDefault();
         try {
           const { data } = await axios.put(
-            `http://localhost:5000/api/categories/update-brand/${brand_id}`,
-            { brand_name }
+            `http://localhost:5000/api/brands/update-brand/${brand_id}`,
+            { brand_name:updatedName }
           );
           if (data?.success) {
-            toast.success(`${brand_name} is updated`);
+            toast.success(`${updatedName} is updated`);
             setSelected(null);
+            setVisible(false)
             setUpdatedName("");
             getAllBrand();
           } else {
@@ -89,6 +113,10 @@ const ManageBrand = () => {
           <div className="col-md-9">
             <h1>Manage Brand</h1>
             <br></br>
+
+            <button type="button" className='btn btn-primary' onClick={()=>setCreateVisible(true)}>
+               Create Brand
+            </button>
             <div>
               <table className="table">
                 <thead>
@@ -146,6 +174,18 @@ Delete
     handleSubmit={(e) => handleUpdateBrand(selected, e)}
   />
 </Modal>
+    <Modal
+  onCancel={() => setCreateVisible(false)}
+  footer={null}
+  visible={createVisible}
+>
+  <CategoryForm
+    value={brand}
+    setValue={setBrand}
+    handleSubmit={(e) => handleCreateBrand(e,brand)}
+  />
+</Modal>
+
             </div>
     </div>
     </div>
