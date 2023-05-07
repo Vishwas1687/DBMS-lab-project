@@ -234,6 +234,29 @@ const getSingleProductController=async(req,res)=>{
     }
 }
 
+const getPhotoController=async(req,res)=>{
+    try{
+        const {slug}=req.params
+        const product=await ProductModel.findOne({slug}).select("photo")
+        if(!product.photo.data)
+        {
+            return res.send({
+                message:'Photo does not exist',
+                success:false
+            })
+        }
+        res.set("Content-type",product.photo.contentType)
+        res.send(product.photo.data)
+    }catch(error)
+    {
+       res.send({
+        message:'Something went wrong',
+        success:false,
+        error:error.message
+       })
+    }
+}
+
 const getProductsBySubCategoryController=async(req,res)=>{
     try{
          const {slug,subcategory_id}=req.params
@@ -556,4 +579,4 @@ module.exports={createProductController,updateProductController,
             deleteProductController,getAllProductsController,getSingleProductController,
         getProductsBySubCategoryController,createWeightsController,
         updateWeightController,deleteWeightController,getProductsByBrandController,
-        getRelatedProductsController,getProductsBySearchController}
+        getRelatedProductsController,getProductsBySearchController,getPhotoController}
