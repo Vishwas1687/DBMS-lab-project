@@ -84,9 +84,10 @@ const deleteBrandController=async(req,res)=>{
             success:true
         })
          const products=await ProductModel.find({brand:brand._id})
-        if(products)
+        if(products.length!==0)
          {
             await ProductModel.deleteMany({brand:brand._id})
+            await BrandModel.findByIdAndDelete(brand._id)
             return res.send({
             message:`All Products of the brand ${brand.brand_name} is deleted`,
             success:true,
@@ -103,6 +104,7 @@ const deleteBrandController=async(req,res)=>{
 
     }catch(error)
     {
+        console.log(error)
          res.send({
             message:'Something went wrong',
             success:false,
