@@ -13,8 +13,7 @@ const GetProduct = () => {
 
   const params = useParams();
 
-  useEffect(() => {
-    const getProduct = async () => {
+  const getProduct = async () => {
       try {
         const { data } = await axios.get(`http://localhost:5000/api/products/get-single-product/${params.slug}`);
         if (data?.success) {
@@ -27,8 +26,27 @@ const GetProduct = () => {
       }
     };
 
+  useEffect(() => {
     getProduct();
-  }, [params]);
+  }, [params.slug]);
+
+
+  const handleDeleteWeight = async (weight_id) => {
+    try {
+      const { data } = await axios.delete(
+        `http://localhost:5000/api/products/get-single-product/${params.slug}/${weight_id}/delete`
+      );
+      if (data?.success) {
+        toast.success(data.message);
+        getProduct()
+      } else {
+        toast.error(data?.message || "Failed to delete weight.");
+      }
+    } catch (error) {
+      toast.error("Something went wrong.");
+    }
+  };
+
 
   return (
     <Layout title="DashBoard - Manage Category">
@@ -50,6 +68,7 @@ const GetProduct = () => {
                   <th scope="col">Category</th>
                   <th scope="col">Subcategory</th>
                   <th scope="col">Tags</th>
+                  
                 </tr>
               </thead>
               <tbody>
@@ -82,7 +101,7 @@ const GetProduct = () => {
         </Link>
         </span>
 
-            <table className="table w-50">
+            <table className="table w-75">
               <thead>
                 <tr>
                   <th scope="col">Weight ID</th>
@@ -104,11 +123,13 @@ const GetProduct = () => {
                     <td>{weight.sp}</td>
                     <td>{weight.stock}</td>
                     <td><button className="btn btn-primary ms-2">
-
-    
-
-Edit
-</button></td>
+                        Edit
+                    </button>
+                    <button className="btn btn-danger ms-2" onClick={(e)=>handleDeleteWeight(weight.weight_id)
+                    }>
+                        Delete
+                    </button>
+                    </td>
                   </tr>
                 ))}
               </tbody>
