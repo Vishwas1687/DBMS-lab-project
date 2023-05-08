@@ -114,23 +114,12 @@ useEffect(()=>{
     getSingleProduct()
 },[params.slug])
 
-useEffect(()=>{
-    console.log(catObj)
-},[catObj])
 
 useEffect(()=>{
    const newCategory=categories.filter((cat)=>cat._id===category)[0]
    setCatObj(newCategory)
 },[category])
 
-
-  useEffect(()=>{
-     console.log(catObj)
-  },[catObj])
-
-  useEffect(()=>{
-     console.log(photo)
-  },[photo])
 
   const handleSubmit = async (e) => {
     e.preventDefault();
