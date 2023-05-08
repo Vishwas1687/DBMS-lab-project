@@ -17,7 +17,7 @@ const ManageProduct = () => {
     }
     catch(error)
     {
-
+        toast.error(error)
     }
    }
 
@@ -113,16 +113,14 @@ const ManageProduct = () => {
                         </td>
                         <td>{c.product_id}</td>
                         <td>{c.product_name}</td>
-                        <td><button className="btn btn-primary ms-2">
-
-    
-
-Edit
-</button>
-<button className="btn btn-danger ms-2"
-onClick={() => {
-  handleDeleteProduct(c.slug);
-}}>
+                        <td><button className="btn btn-primary ms-2"
+                         onClick={()=>navigate(`/admin/update-product/${c.slug}`)}>
+                        Edit
+                        </button>
+                        <button className="btn btn-danger ms-2"
+                        onClick={() => {
+                        handleDeleteProduct(c.slug);
+                        }}>
 
     
 
