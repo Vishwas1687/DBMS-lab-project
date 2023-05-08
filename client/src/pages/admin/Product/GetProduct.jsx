@@ -4,13 +4,13 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import Layout from "../../../components/Layout/Layout";
 import AdminMenu from "../../../components/AdminMenu";
-import { useParams } from "react-router-dom";
+import { useParams ,useNavigate} from "react-router-dom";
 import { Link } from "react-router-dom";
 
 
 const GetProduct = () => {
   const [prod, setProd] = useState({});
-
+  const navigate=useNavigate()
   const params = useParams();
 
   const getProduct = async () => {
@@ -122,7 +122,8 @@ const GetProduct = () => {
                     <td>{weight.mrp}</td>
                     <td>{weight.sp}</td>
                     <td>{weight.stock}</td>
-                    <td><button className="btn btn-primary ms-2">
+                    <td><button className="btn btn-primary ms-2" 
+                    onClick={()=>navigate(`/admin/update-weight/${prod.slug}/${weight.weight_id}`)}>
                         Edit
                     </button>
                     <button className="btn btn-danger ms-2" onClick={(e)=>handleDeleteWeight(weight.weight_id)
