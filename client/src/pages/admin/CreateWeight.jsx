@@ -1,8 +1,10 @@
-import React from 'react'
+import React,{useEffect} from 'react'
 import Layout from '../../components/Layout/Layout'
 import AdminMenu from '../../components/AdminMenu'
 import axios from 'axios'
+import {toast} from 'react-hot-toast'
 import { useState } from 'react'
+import { useParams,useNavigate} from 'react-router-dom'
 
 
 const CreateWeight = ({ weightId, weight , weightUnits , mrp, sp, stock }) => {
@@ -16,6 +18,8 @@ const CreateWeight = ({ weightId, weight , weightUnits , mrp, sp, stock }) => {
         stock: stock || "",
       });
 
+      const params=useParams()
+      const navigate=useNavigate()
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -29,11 +33,11 @@ const CreateWeight = ({ weightId, weight , weightUnits , mrp, sp, stock }) => {
             stock:formData.stock
           }
           const { data } = await axios.post(
-            "http://localhost:5000/api/products/get-single-product/:slug/create-weights",
+            `http://localhost:5000/api/products/get-single-product/${params.slug}/create-weights`,
             formDataWithWeights
           );
           if (data?.success) {
-            alert(`${formData.weight} is added`);
+            toast.success(`Weight ${formData.weight} ${formData.weight_units} is added`)
             setFormData({
               weight_id: "",
               weight: "",
@@ -42,12 +46,13 @@ const CreateWeight = ({ weightId, weight , weightUnits , mrp, sp, stock }) => {
               sp: "",
               stock: "",
             });
+            navigate(`/admin/manage-product/product/${params.slug}`)
 
           } else {
-            alert(data.message);
+            toast.error(data.message);
           }
         } catch (error) {
-          console.log(error);
+            toast.error('Something went wrong')
         }
       };
 
