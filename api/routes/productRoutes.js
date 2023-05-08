@@ -11,7 +11,7 @@ const {createProductController,updateProductController,
 
 router.post('/create-product',formidable(),createProductController)
 
-router.put('/update-product/:slug',updateProductController)
+router.put('/update-product/:slug',formidable(),updateProductController)
 
 router.delete('/delete-product/:slug',deleteProductController)
 

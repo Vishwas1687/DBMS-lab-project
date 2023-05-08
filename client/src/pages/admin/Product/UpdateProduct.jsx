@@ -1,30 +1,32 @@
 import React from 'react'
-import Layout from '../../components/Layout/Layout'
-import AdminMenu from '../../components/AdminMenu'
+import Layout from '../../../components/Layout/Layout'
+import AdminMenu from '../../../components/AdminMenu'
 import { useState, useEffect } from "react";
 import axios from 'axios';
-import {useNavigate} from 'react-router-dom';
+import {useNavigate,useParams} from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 
 const CreateProduct = () => {
   const navigate=useNavigate()
+  const params=useParams()
   const [weights,setWeights]=useState([{
     weight_id:"",weight:"",weight_units:"",mrp:"",sp:"",stock:"",
   }])
-  const [photo,setPhoto]=useState("")
+  const [photo,setPhoto]=useState(null)
   const [tags,setTags]=useState([])
   const [loading,setLoading]=useState(true)
   const [categories, setCategories] = useState([]);
   const [brands,setBrands]=useState([])
-  const [category,setCategory]=useState({})
+  const [category,setCategory]=useState('')
   const [index,setIndex]=useState(0)
-  const [formData, setFormData] = useState({
-    product_name: "",
-    seller_id: "",
-    brand: "",
-    category: "",
-    subcategory:"",
-  });
+  const [subcategory,setSubcategory]=useState('')
+  const [productName,setProductName]=useState('')
+  const [sellerId,setSellerId]=useState('')
+  const [brand,setBrand]=useState('')
+  
+  const [cat,setCat]=useState('')
+  const [catObj,setCatObj]=useState({})
+
 
   const handleTag=(e,index)=>{
     const newtags=[...tags]
@@ -32,7 +34,7 @@ const CreateProduct = () => {
     setTags(newtags)
   }
   const addTag=()=>{
-      setTags([...tags,' '])
+      setTags([...tags,''])
   }
   const handleAddWeight=()=>{
    setWeights([...weights,{
@@ -63,6 +65,8 @@ const CreateProduct = () => {
   }
 };
 
+
+
  const getAllBrands = async () => {
   try {
     setLoading(true)
@@ -77,67 +81,84 @@ const CreateProduct = () => {
   }
 };
 
+const getSingleProduct=async()=>{
+    try{
+        const {data}=await axios.get(`http://localhost:5000/api/products/get-single-product/${params.slug}`)
+        console.log(data)
+        if(data?.success)
+        {
+        setTags(data.existingProduct.tags)
+        setCategory(data.existingProduct.category._id)
+        setSubcategory(data.existingProduct.subcategory)
+        setSellerId(data.existingProduct.seller_id)
+        setBrand(data.existingProduct.brand._id)
+        setCat(data.existingProduct.category.category_name)
+        setProductName(data.existingProduct.product_name)
+        setWeights(data.existingProduct.weights)
+        toast.success(data.message)
+        }
+        
+    }catch(error)
+    {
+          toast.error('Something went wrong')
+    }
+}
+
+
 useEffect(() => {
   getAllCategory();
   getAllBrands()
 }, []);
 
+useEffect(()=>{
+    getSingleProduct()
+},[params.slug])
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+useEffect(()=>{
+    console.log(catObj)
+},[catObj])
 
-  const handleCategory=(e)=>{
-    const newFormData={...formData}
-    newFormData["category"]=e.target.value
-    setFormData(newFormData)
-    const newCategory=categories.find((cat)=>cat._id===e.target.value)
-    setCategory(newCategory)
-    setIndex(1)
-  }
+useEffect(()=>{
+   const newCategory=categories.filter((cat)=>cat._id===category)[0]
+   setCatObj(newCategory)
+},[category])
 
-  const handleSubCategory=(e)=>{
-    const newFormData={...formData}
-    newFormData["subcategory"]=e.target.value
-    setFormData(newFormData)
-  }
-
-  const handleBrand=(e)=>{
-    const newFormData={...formData}
-    newFormData["brand"]=e.target.value
-    setFormData(newFormData)
-  }
 
   useEffect(()=>{
-     console.log(category)
-  },[category])
+     console.log(catObj)
+  },[catObj])
+
+  useEffect(()=>{
+     console.log(photo)
+  },[photo])
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       setLoading(true)
       const newFormData=new FormData()
-      newFormData.append("product_name",formData.product_name)
-      newFormData.append("seller_id",formData.seller_id)
-      newFormData.append("brand",formData.brand)
-      newFormData.append("category",formData.category)
-      newFormData.append("subcategory",formData.subcategory)
+      newFormData.append("product_name",productName)
+      newFormData.append("seller_id",sellerId)
+      newFormData.append("brand",brand)
+      newFormData.append("category",category)
+      newFormData.append("subcategory",subcategory)
       newFormData.append("weights",JSON.stringify(weights))
       newFormData.append("tags",JSON.stringify(tags))
       newFormData.append("photo",photo)
-      const { data } = await axios.post(
-        "http://localhost:5000/api/products/create-product",
-        newFormData
-      );
+
+      
+
+      const { data } = await axios.put(
+  `http://localhost:5000/api/products/update-product/${params.slug}`,
+  newFormData,
+  {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  }
+);
       if (data?.success) {
         toast.success(data.message);
-        setFormData({
-          product_name: "",
-          seller_id:"",
-          brand:"",
-          category:"",
-          subcategory:"",
-        });
         setWeights([{
           weight_id:"",weight:"",weight_units:"",mrp:"",sp:"",stock:""
         }])
@@ -147,7 +168,8 @@ useEffect(() => {
         toast.error(data.message);
       }
     } catch (error) {
-      toast.error(error)
+      console.log(error)
+      toast.error('Something went wrong')
     }
   };
 
@@ -163,7 +185,7 @@ useEffect(() => {
           <div className="col-md-9 create-category-section">
           {loading?(<h1>Loading.....</h1>):
             <>
-            <h1>Create Product</h1>
+            <h1>Update Product</h1>
             <br></br>
             <form onSubmit={handleSubmit} className="w-75">
               <div className="form-group text-left">
@@ -175,8 +197,8 @@ useEffect(() => {
                   id="product_name"
                   name="product_name"
                   placeholder="Enter product name"
-                  value={formData.product_name}
-                  onChange={handleChange}
+                  value={productName}
+                  onChange={(e)=>setProductName(e.target.value)}
                   
                 />
               </div>
@@ -189,8 +211,8 @@ useEffect(() => {
                   id="seller_id"
                   name="seller_id"
                   placeholder="Enter seller id"
-                  value={formData.seller_id}
-                  onChange={handleChange}
+                  value={sellerId}
+                  onChange={(e)=>setSellerId(e.target.value)}
                   
                 />
               </div>
@@ -198,7 +220,7 @@ useEffect(() => {
 
               <div className="form-group text-left">
                 <label className="btn btn-outline-secondary col-md-7">
-                  {photo?photo.name:"Upload Photo"}
+                  Upload Photo
                  <input
                   type="file"
                   name="photo"
@@ -211,8 +233,15 @@ useEffect(() => {
                  <br></br>
                  <br></br>
               <div className="mb-3">
-                {photo && ( 
+                {!photo ? ( 
                 <div className="text-left">
+                  <img src={`http://localhost:5000/api/products/get-photo/${params.slug}`}
+                    className="img img-responsive"
+                    alt="photo"
+                    height={"200px"}/>
+                </div>
+                 ):(
+                   <div className="text-left">
                   <img src={URL.createObjectURL(photo)}
                     className="img img-responsive"
                     alt="photo"
@@ -228,9 +257,9 @@ useEffect(() => {
               <div className="form-group text-left">
                 <label htmlFor="brand">Brand</label>
                 <br></br>
-                <select className="w-50 p-2 " onChange={(e)=>{handleBrand(e)}}>
-                {Object.keys(formData.brand).length===0 && <option value="1">None</option>}
-                {brands.map((brand) => (
+                <select className="w-50 p-2 " onChange={(e)=>setBrand(e.target.value)}>
+                {Object.keys(brand).length===0 && <option value="1">None</option>}
+                {brands && brands.map((brand) => (
               <option key={brand._id} value={brand._id} name="brand">
               {brand.brand_name}
               </option>
@@ -239,38 +268,41 @@ useEffect(() => {
               </div>
               <br></br>
         
-              <div className="form-group text-left">
+               <div className="form-group text-left">
               <label htmlFor="category">Category</label>
               <br></br>
-              <select className="w-50 p-2 " onChange={(e)=>{handleCategory(e)}}>
-                {Object.keys(category).length===0 && <option value="1">None</option>}
-                {categories.map((cat) => (
-              <option key={cat._id} value={cat._id} name="category">
-              {cat.category_name}
+              <select className="w-50 p-2 " onChange={(e)=>{setCategory(e.target.value);
+                 setIndex(1)}}>
+                {categories && categories.map((c) => (
+              <option key={c._id} value={c._id} name="category" >
+              {c.category_name}
               </option>
                ))}
               </select>
               </div>
 
+               
               <br></br>
-            {index?
-               (<div className="form-group text-left">
+              <div className="form-group text-left">
                 <label htmlFor="subcategory">Subcategory</label>
-                <br></br>
+                <br></br> 
                   
-                 <select className="w-50 p-2 " onChange={(e)=>{handleSubCategory(e)}}>
-                  {Object.keys(formData.subcategory).length===0 && <option value="1">None</option>}
-                {category?.subcategories.map((subcat) => (
-              <option key={subcat._id} value={subcat.subcategory_name} name="subcategory">
+                 <select className="w-50 p-2 " onChange={(e)=>setSubcategory(e.target.value)}>
+                {!index?<option value={subcategory}>{subcategory}</option>:(<>
+                {catObj.subcategories.map((subcat) => (
+              <option key={subcat._id} value={subcat.subcategory_name} name="subcategory"
+                onClick={(e)=>setSubcategory(e.target.value)}>
               {subcat.subcategory_name}
               </option>
-               ))}
+                ))}
+               </>)} 
               </select>
-              </div>) :"" }
+              </div> 
+                
               
               
               <br></br>
-              {weights.map((weightcta,index)=>{
+              {weights && weights.map((weightcta,index)=>{
 
                 return(
                   <>
@@ -362,7 +394,7 @@ useEffect(() => {
 <button type="button"  className="btn btn-primary" onClick={handleAddWeight}>Create Weight</button>
                <br></br>
                <br></br>
-              {tags.map((tag,index)=>(
+              {tags && tags.map((tag,index)=>(
                    <div className="form-group text-left">
                     <label>Tag {index+1}</label>
                     <input type="text" className="form-control" name="tag" 
@@ -379,7 +411,7 @@ useEffect(() => {
               <br></br>
 
               <button type="submit" className="btn btn-primary col-md-7">
-                Create
+                Update
               </button>
               <br></br>
               <br></br>

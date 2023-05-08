@@ -8,8 +8,9 @@ const ProductModel=require('../models/Product')
 const createProductController=async(req,res)=>{
     try{
     const {product_name,seller_id,brand,
-        category,subcategory,tags}=req.fields
+        category,subcategory}=req.fields
     const weights=JSON.parse(req.fields.weights)
+    const tags=JSON.parse(req.fields.tags) 
     const {photo} =req.files    
     if(!product_name)
     return res.send({message:'Enter product name'})
@@ -91,7 +92,10 @@ const createProductController=async(req,res)=>{
 const updateProductController=async(req,res)=>{
     try{
     const {product_name,seller_id,brand,
-        weights,category,subcategory,tags}=req.body
+        category,subcategory}=req.fields
+    const weights=JSON.parse(req.fields.weights) 
+    const tags=JSON.parse(req.fields.tags)   
+    const {photo}=req.files    
     const {slug}=req.params
     if(!product_name)
     return res.send({message:'Enter product name'})
@@ -109,6 +113,8 @@ const updateProductController=async(req,res)=>{
     return res.send({message:'Enter the tags'})
     if(!slug)
     return res.send({message:'Enter the slug'})
+    if(!photo)
+    return res.send({message:'Enter the photo'})
 
     const existingProduct=await ProductModel.findOne({slug}).populate('brand')
     if(!existingProduct)
@@ -137,8 +143,17 @@ const updateProductController=async(req,res)=>{
         weights:weights,
         category:category,
         subcategory:subcategory,
-        tags:tags
-    })
+        photo:{
+            data:fs.readFileSync(photo.path),
+            contentType:photo.type
+        },
+        tags:tags,
+    },{new:true})
+
+     
+
+
+    await updatedProduct.save()
 
     res.send({
         message:`Product ${updatedProduct.product_name} is updated successfully`,
@@ -148,8 +163,9 @@ const updateProductController=async(req,res)=>{
 
     }catch(error)
     {
+        console.log(error)
         res.send({
-            message:'Something went wrong',
+            message:'Something did go wrong',
             success:false,
             error:error.message
         })
