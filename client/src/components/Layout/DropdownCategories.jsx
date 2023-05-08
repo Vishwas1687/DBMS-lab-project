@@ -4,13 +4,28 @@ import axios from "axios";
 import toast from "react-hot-toast"
 const DropdownCategories = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [hoveredCategory, setHoveredCategory] = useState(null);
 
-  const handleMouseEnter = () => {
-    setIsDropdownOpen(true);
+  const handleMouseEnter = async (category) => {
+    setHoveredCategory(category);
+    try {
+      const { data } = await axios.get(
+        `http://localhost:5000/api/categories/get-subcategories/${category.category_id}`
+      );
+      if (data?.success) {
+        setHoveredCategory((prevState) => ({
+          ...prevState,
+          subcategories: data.subcategories,
+        }));
+      }
+    } catch (error) {
+      console.log(error);
+    //   toast.error("Something went wrong in getting subcategories");
+    }
   };
 
   const handleMouseLeave = () => {
-    setIsDropdownOpen(false);
+    setHoveredCategory(null);
   };
 
   const [categories, setCategories] = useState([]);
@@ -36,8 +51,8 @@ const DropdownCategories = () => {
   return (
     <div
       className="nav-item dropdown"
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
+      onMouseEnter={() => setIsDropdownOpen(true)}
+      onMouseLeave={() => setIsDropdownOpen(false)}
     >
       <Link
         className="nav-link dropdown-toggle"
@@ -54,10 +69,31 @@ const DropdownCategories = () => {
         aria-labelledby="navbarDropdownMenuLink"
       >
         {categories.map((category) => (
-          <li key={category.category_id}>
-            <Link to={`/category/${category.category_id}`} className="dropdown-item">
+          <li
+            key={category.category_id}
+            onMouseEnter={() => handleMouseEnter(category)}
+            onMouseLeave={() => handleMouseLeave()}
+          >
+            <Link
+              to={`/category/${category.category_id}`}
+              className="dropdown-item"
+            >
               {category.category_name}
             </Link>
+            {hoveredCategory && hoveredCategory.category_id === category.category_id && (
+              <ul>
+                {hoveredCategory.subcategories.map((subcategory) => (
+                  <li key={subcategory.subcategory_id}>
+                    <Link
+                      to={`/subcategory/${subcategory.subcategory_id}`}
+                      className="dropdown-item"
+                    >
+                      {subcategory.subcategory_name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            )}
           </li>
         ))}
       </ul>
