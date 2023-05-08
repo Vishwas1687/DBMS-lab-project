@@ -40,6 +40,8 @@ const GetProduct = () => {
           <div className="col-md-9 p-5">
             <h1 className="pb-3">{prod.product_name}</h1>
             <h2 className="mb-4">{`Product ID: ${prod.product_id}`}</h2>
+
+            
             <table className="table w-75">
               <thead>
                 <tr>
@@ -61,7 +63,25 @@ const GetProduct = () => {
               </tbody>
             </table>
 
+            <div className="text-left">
+                 <img src={`http://localhost:5000/api/products/get-photo/${params.slug}`}
+                  className="img img-responsive"
+                    alt="photo"
+                  height={"300px"}/>
+                  
+            </div> 
+
             <h2 className="my-4">Weights</h2>
+        <span>
+        <Link to = {`/admin/get-product/create-weight/${prod.slug}`}>
+             <>
+            <div className="text-left">
+            <button className="btn btn-primary ms-2">Create Weight</button>
+             </div>
+           </>  
+        </Link>
+        </span>
+
             <table className="table w-50">
               <thead>
                 <tr>
@@ -95,17 +115,16 @@ Edit
             </table>
           </div>
         </div>
-        <Link to = {'/admin/get-product/create-weight/:slug'}>
-
+        {/* <Link to = {`/admin/get-product/create-weight/${prod.slug}`}>
+        <>
         <div className="container-fluid m-3 p-3 dashboard">
-  {/* ... */}
-  <div style={{position: 'fixed', bottom: '50px', right: '50px'}}>
-    <button className="btn btn-primary ms-2">Create Weight</button>
-  </div>
-</div>
-      
+         <div style={{position: 'fixed', bottom: '50px', right: '50px'}}>
+          <button className="btn btn-primary ms-2">Create Weight</button>
+         </div>
+         </div>
+           </>  
+        </Link> */}
 
-        </Link>
         </div>
         
     </Layout>
