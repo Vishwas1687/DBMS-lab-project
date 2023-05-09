@@ -7,7 +7,8 @@ const {createProductController,updateProductController,
     getSingleProductController,getProductsBySubCategoryController,
     createWeightsController,updateWeightController,deleteWeightController,
     getProductsByBrandController,getRelatedProductsController,
-    getProductsBySearchController,getPhotoController,getSingleWeightController}=require('../controllers/productController')
+    getProductsBySearchController,getPhotoController,getSingleWeightController
+      ,getAllProductsByFiltersController}=require('../controllers/productController')
 
 router.post('/create-product',formidable(),createProductController)
 
@@ -39,8 +40,6 @@ router.get('/get-related-products-of-the-subcategory/:slug',getRelatedProductsCo
 
 router.get('/get-photo/:slug',getPhotoController)
 
-
-
-//
+router.get('/get-all-products-based-on-filters',getAllProductsByFiltersController)
 
 module.exports=router

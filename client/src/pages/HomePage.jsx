@@ -1,13 +1,40 @@
-import React from 'react'
+import React,{useState,useEffect} from 'react'
 import Header from '../components/Layout/Header'
 import {useAuth} from '../context/auth'
 import Slider from "react-slick";
+import axios from 'axios'
+import toast from 'react-hot-toast'
+import {useNavigate} from 'react-router-dom'
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 
 const HomePage = () => {
   const [auth,setAuth] = useAuth();
+  const [products, setProducts] = useState([]);
+  const navigate=useNavigate()
+
+   const getAllProducts=async()=>{
+    try{
+        const {data}=await axios.get('http://localhost:5000/api/products/all-products')
+        // console.log(data)
+        setProducts(data.products)
+    }
+    catch(error)
+    {
+        toast.error(error)
+    }
+   }
+
+  // Fetch products from backend on initial load
+  useEffect(() => {
+      getAllProducts()
+  },[]);
+
+  useEffect(()=>{
+    console.log(products)
+  },[products])
+
 
   return (
     <div>
@@ -28,7 +55,11 @@ const HomePage = () => {
     <img src="https://img.freepik.com/free-photo/pillow-bed_74190-6104.jpg?w=1060&t=st=1683575403~exp=1683576003~hmac=845d48a31f1bd0f78f863e34f3e7cb4c845c332343a0a916afd5af591d4e3488" alt="Example image" style={{ width: "100vw", height: "60vh" }} />
   </div> */}
 </Slider>
-
+ 
+      {/* <div className='cards-list'>
+        <Card />
+        <Card />
+      </div> */}
 
     </div>
   )
