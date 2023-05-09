@@ -19,16 +19,20 @@ const SearchBar = () => {
         if (e.target.value.trim() !== ""){
             try{
                 const {data} = await axios.get(`http://localhost:5000/api/products/get-products-by-search/${e.target.value}`);
-                if (data.products) setResults(data.products);
-                else setResults([]);
+                if (data.products) 
+                {
+                    setResults(data.products);
+                } 
+                else 
+                {
+                    setResults([]);
+                }
+                
             }catch (error){
                 console.log(error);
             }
         }
     }
-
-    useEffect(() => {
-      }, [results]);
 
   return (
     <div className='search'>
@@ -38,12 +42,17 @@ const SearchBar = () => {
                 {input ? <AiOutlineClose id="clearBtn" onClick={()=>{setInput("")}}/> :  <BiSearch />}
             </div>
         </div>
-        <div className="results" style={input ? {display:'block'}: {display:'none'}}>
+        <div className="results" style={input ? {display:'block',zIndex:1}: {display:'none'}}>
             { (results.length) ? 
-                results.slice(0,10).map((product) => {
-                    return <div className='resultItem hoverEffect' key={product._id}><span className='brand'>{product.brand.brand_name}</span><span className="productName">{product.product_name}</span></div>;
-                  })
-             : <div className='resultItem'><span className='brand'>No products found...</span></div>}
+                results.slice(0,10).map((product,index) => (
+                    <div className='resultItem hoverEffect' key={index}>
+                        <span className='brand'>{product.brand.brand_name}</span>
+                        <span className="productName">{product.product_name}</span>
+                        </div>
+                ))
+             : (<div className='resultItem'>
+                <span className='brand'>No products found...</span>
+                </div>)}
         </div>
     </div>
   )
