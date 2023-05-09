@@ -228,7 +228,7 @@ const getAllProductsController=async(req,res)=>{
 const getSingleProductController=async(req,res)=>{
     try{
         const {slug}=req.params
-        const existingProduct=await ProductModel.findOne({slug}).populate('category').populate('brand')
+        const existingProduct=await ProductModel.findOne({slug}).select('-photo').populate('category').populate('brand')
         if(!existingProduct)
         {
             return res.send({
@@ -297,7 +297,7 @@ const getProductsBySubCategoryController=async(req,res)=>{
             })
           }
 
-          const products=await ProductModel.find({subcategory:subcategory.subcategory_name}).populate('category').populate('brand')
+          const products=await ProductModel.find({subcategory:subcategory.subcategory_name}).select('-photo').populate('category').populate('brand')
 
           if(!products)
           {
@@ -500,7 +500,7 @@ const getProductsByBrandController=async(req,res)=>{
          if(!slug)
          return res.send({message:'Slug is not entered'})
 
-         let products=await ProductModel.find({brand,subcategory}).populate('category').populate('brand')
+         let products=await ProductModel.find({brand,subcategory}).select('-photo').populate('category').populate('brand')
 
          products=products.filter((pro)=>pro.slug!==slug)
 
@@ -576,7 +576,7 @@ const getRelatedProductsController=async(req,res)=>{
           )
 
         const subcategory=existingProduct.subcategory
-        let products=await ProductModel.find({subcategory})
+        let products=await ProductModel.find({subcategory}).select('-photo').populate('brand').populate('category')
         products=products.filter((pro)=>pro.slug!==slug)
 
         res.send({
@@ -608,7 +608,7 @@ const getProductsBySearchController=async(req,res)=>{
                 {
                     product_name:{$regex:search,$options:'i'}
                 }
-            ]}).populate('category').populate('brand')
+            ]}).select('-photo').populate('category').populate('brand')
 
           if(products.length==0)
           {
@@ -647,14 +647,12 @@ const getAllProductsByFiltersController=async(req,res)=>{
             const minimumPrice=priceFilters[0]
             const maximumPrice=priceFilters[1]
             const priceProducts=await ProductModel.find({
-                "weights":{
-                    $elemMatch:{
-                        sp:{
+                "weights.sp":{
+                  
                             $gte:minimumPrice,
                             $lte:maximumPrice
                         }
-                        }
-                        }
+                        
                     }
             ).select('-photo').populate('category').populate('brand')
             products=products.length!==0?
@@ -712,9 +710,39 @@ const getAllProductsByFiltersController=async(req,res)=>{
         })
     }
 }
+
+const getProductsByCategoryController=async(req,res)=>{
+    try{
+        const {slug}=req.params
+        if(!slug)
+        return res.send({message:'Enter slug'})
+        const category=await CategoryModel.findOne({slug})
+        if(!category)
+        {
+            return res.send({
+                message:'Category does not exist',
+                success:false
+            })
+            
+        }
+        const products=await ProductModel.find({category:category._id}).select('-photo').populate('brand').populate('category')
+        res.send({
+            message:'Products are fetched',
+            success:true,
+            products
+        })
+    }catch(error)
+    {
+        res.send({
+            message:'Something went wrong',
+            success:false,
+            error:error.message
+        })
+    }
+}
 module.exports={createProductController,updateProductController,
             deleteProductController,getAllProductsController,getSingleProductController,
         getProductsBySubCategoryController,createWeightsController,
         updateWeightController,deleteWeightController,getProductsByBrandController,
         getRelatedProductsController,getProductsBySearchController,getPhotoController,
-        getSingleWeightController,getAllProductsByFiltersController}
+        getSingleWeightController,getAllProductsByFiltersController,getProductsByCategoryController}
