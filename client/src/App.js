@@ -27,6 +27,8 @@ import AdminRoute from "./components/Routes/AdminRoute";
 import ManageBrand from "./pages/admin/ManageBrand";
 import GetProduct from "./pages/admin/Product/GetProduct";
 import UpdateProduct from './pages/admin/Product/UpdateProduct'
+import CreateWeight from './pages/admin/CreateWeight'
+import UpdateWeight from './pages/admin/UpdateWeight'
 
 
 function App() {
@@ -55,7 +57,9 @@ function App() {
         <Route path = "/admin/update-product/:slug" element = {<UpdateProduct/>} />
         <Route path = "/admin/create-product" element = {<CreateProduct />} />
         <Route path = "/admin/update-category/:slug" element = {<UpdateCategory/>}/>
+        <Route path = "/admin/get-product/create-weight/:slug" element = {<CreateWeight/>}/>
         <Route path = "/admin/manage-brand" element = {<ManageBrand />} />
+        <Route path = '/admin/update-weight/:slug/:weight_id' element={<UpdateWeight/>}/>
       </Route>
 
 

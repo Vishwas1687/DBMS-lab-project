@@ -431,7 +431,7 @@ const updateWeightController=async(req,res)=>{
        )
 
        res.send({
-        message:`Weight ${(updatedProduct.weights.filter((w)=>w.weight===weight))[0].weight} ${(updatedProduct.weights.filter((w)=>w.weight_units===weight_units))[0].weight_units} of the product ${updatedProduct.product_name} is successfully updated`,
+        message:`Weight successfully updated`,
         success:true,
         updatedProduct
        })
@@ -548,7 +548,7 @@ const getSingleWeightController=async(req,res)=>{
         res.send({
             message:"Weight information is fetched",
             success:true,
-            weight
+            weights:weight
         })
     }catch(error)
     {
