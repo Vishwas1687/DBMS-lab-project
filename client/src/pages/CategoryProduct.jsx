@@ -8,11 +8,13 @@ import Layout from '../components/Layout/Layout'
 
 const CategoryProduct = () => {
    const [category,setCategory]=useState('')
+   const [loading,setLoading]=useState(true)
    const [priceFilters,setPriceFilters]=useState([0,100000])
    const [products,setProducts]=useState([])
    const params=useParams()
    const getCategory=async()=>{
     try{
+      setLoading(true)
        const {data}=await axios.get(`http://localhost:5000/api/categories/get-category/${params.slug}`)
        if(data.success)
        {
@@ -21,6 +23,7 @@ const CategoryProduct = () => {
        else{
         toast.error(data.message)
        }
+       setLoading(false)
     }
     catch(error)
     {
@@ -30,6 +33,7 @@ const CategoryProduct = () => {
 
    const getAllCategoryProducts=async()=>{
     try{
+      setLoading(true)
        const {data}=await axios.get(`http://localhost:5000/api/products/get-products-by-category/${params.slug}`)
        if(data.success)
        {
@@ -40,6 +44,7 @@ const CategoryProduct = () => {
        {
         toast.error(data.message)
        }
+       setLoading(false)
     }catch(error)
     {
         toast.error('Something went wrong')
@@ -49,6 +54,7 @@ const CategoryProduct = () => {
 
   const getFilterProducts=async()=>{
     try{
+      setLoading(true)
        const {data}=await axios.get('http://localhost:5000/api/products/get-all-products-based-on-filters',
        {
         params:{
@@ -57,6 +63,7 @@ const CategoryProduct = () => {
        })
        if(data.success)
        setProducts(data.products)
+       setLoading(false)
     }
     catch(error)
     {
@@ -79,8 +86,9 @@ const CategoryProduct = () => {
         <div className="row m-2">
             <div className="col-md-3 text-left p-3">
                 <h1>Filters</h1>
+                {loading?<h3>Loading...</h3>:(
                 <div className="container">
-                    <h4 className="text-primary">{category.category_name}</h4>
+                    <h4 className="text-black">{category.category_name}</h4>
                     <div className="p-1">
                        {category && category.subcategories.map((subcat,index)=>(
                        <div key={index}>
@@ -91,6 +99,7 @@ const CategoryProduct = () => {
                        ))}
                     </div>
                 </div>
+                )}
                 
                 <div className="container">
                   <h3>Price Filters</h3>
@@ -109,9 +118,13 @@ const CategoryProduct = () => {
 
             </div>
             <div className="col-md-9 text-left p-3">
-                  <h1>
+              {loading?<h1>Loading...</h1>:
+              (
+                <h1>
                     Products
                   </h1>
+              )}
+                  
             </div>
         </div>
     </Layout>
