@@ -634,14 +634,8 @@ const getProductsBySearchController=async(req,res)=>{
 }
 const getAllProductsByFiltersController=async(req,res)=>{
     try{
-        const subCategoriesFilters=JSON.parse(req.query.subCategoriesFilters)
         const priceFilters=JSON.parse(req.query.priceFilters)
-        const brandFilters=JSON.parse(req.query.brandFilters)
         let products=[]
-        if(subCategoriesFilters.length!==0)
-        {
-            products=await ProductModel.find({subcategory:{$in:subCategoriesFilters}}).select('-photo').populate('brand').populate('category')
-        }
         if(priceFilters.length!==0)
         {
             const minimumPrice=priceFilters[0]
@@ -655,19 +649,7 @@ const getAllProductsByFiltersController=async(req,res)=>{
                         
                     }
             ).select('-photo').populate('category').populate('brand')
-            products=products.length!==0?
-            products.filter((product)=>
-            priceProducts.filter((priceProd)=>priceProd._id===product._id)):priceProducts
-        }
-
-        if(brandFilters.length!==0)
-        {
-            const brandProducts=await ProductModel.find({
-                "brand.brand_name":{$in:brandFilters}
-            }).select('-photo').populate('brand').populate('category')
-            products=products.length!==0?
-            products.filter((product)=>
-            brandProducts.filter((brandProd)=>brandProd._id===product._id)):brandProducts
+            products=priceProducts
         }
 
 

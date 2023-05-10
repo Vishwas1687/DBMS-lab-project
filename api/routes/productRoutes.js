@@ -8,7 +8,8 @@ const {createProductController,updateProductController,
     createWeightsController,updateWeightController,deleteWeightController,
     getProductsByBrandController,getRelatedProductsController,
     getProductsBySearchController,getPhotoController,getSingleWeightController
-      ,getAllProductsByFiltersController,getProductsByCategoryController}=require('../controllers/productController')
+      ,getAllProductsByFiltersController,getProductsByCategoryController}
+      =require('../controllers/productController')
 
 router.post('/create-product',formidable(),createProductController)
 
@@ -37,7 +38,6 @@ router.get('/get-single-product/get-single-weight/:slug/:weight_id',getSingleWei
 router.get('/get-products-based-on-brand-and-subcategory-other-than-current-product/:brand/:subcategory/:slug',getProductsByBrandController)
 
 router.get('/get-related-products-of-the-subcategory/:slug',getRelatedProductsController)
-
 
 router.get('/get-photo/:slug',getPhotoController)
 
