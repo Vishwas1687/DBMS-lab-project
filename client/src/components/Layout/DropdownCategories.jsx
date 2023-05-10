@@ -8,20 +8,6 @@ const DropdownCategories = () => {
 
   const handleMouseEnter = async (category) => {
     setHoveredCategory(category);
-    try {
-      const { data } = await axios.get(
-        `http://localhost:5000/api/categories/get-subcategories/${category.category_id}`
-      );
-      if (data?.success) {
-        setHoveredCategory((prevState) => ({
-          ...prevState,
-          subcategories: data.subcategories,
-        }));
-      }
-    } catch (error) {
-      console.log(error);
-    //   toast.error("Something went wrong in getting subcategories");
-    }
   };
 
   const handleMouseLeave = () => {
@@ -75,7 +61,7 @@ const DropdownCategories = () => {
             onMouseLeave={() => handleMouseLeave()}
           >
             <Link
-              to={`/category/${category.category_id}`}
+              to={`/category/${category.slug}`}
               className="dropdown-item"
             >
               {category.category_name}
@@ -85,7 +71,7 @@ const DropdownCategories = () => {
                 {hoveredCategory.subcategories.map((subcategory) => (
                   <li key={subcategory.subcategory_id}>
                     <Link
-                      to={`/subcategory/${subcategory.subcategory_id}`}
+                      to={`/subcategory/${category.slug}/${subcategory.subcategory_id}`}
                       className="dropdown-item"
                     >
                       {subcategory.subcategory_name}
