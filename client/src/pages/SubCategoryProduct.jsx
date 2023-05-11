@@ -87,7 +87,7 @@ const SubCategoryProduct = () => {
             <div className="col-md-3 text-left p-3 bg-light">
                 <h1>Filters</h1>
                 {loading?<h3>Loading...</h3>:(
-                <div className="container">
+                <div className="cont">
                   <Link to={`/category/${params.slug}`}  className="text-decoration-none">
                     <h4 className="text-black">{category.category_name}</h4>
                    </Link> 
@@ -105,7 +105,7 @@ const SubCategoryProduct = () => {
                 </div>
                 )}
                 
-                <div className="container">
+                <div className="cont">
                   <h3>Price Filters</h3>
                   <Radio.Group>
                    {prices.map((price,index)=>(

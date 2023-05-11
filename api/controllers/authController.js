@@ -146,14 +146,7 @@ const forgotPasswordController=async(req,res)=>{
       res.status(200).send({
         success:true,
         message:"Password is changed",
-        user:{
-            username:user.username,
-            email:user.email,
-            addresses:user.addresses,
-            phone_number:user.phone_number,
-            role:user.role,
-            answer:user.answer
-        }
+        updatedUser
       })
     }catch(error){
         res.status(404).send({
@@ -163,6 +156,59 @@ const forgotPasswordController=async(req,res)=>{
     }
 }
 
+const updateProfileController=async(req,res)=>{
+    try{
+    const {username,phone_number,address,answer}=req.body
+    
+    if(!username)
+    {
+      return res.send({message:'Username is not entered'})
+    }
+    if(!phone_number)
+    {
+      return res.send({message:'User phone number is not entered'})
+    }
+    if(!address)
+    {
+      return res.send({message:'User address is not entered'})
+    }
+    if(!answer)
+    {
+      return res.send({message:'User answer is not entered'})
+    }
+    const User=await UserModel.findById(req.user._id)
+    if(!User)
+    {
+      return res.send({message:'User does not exist'})
+    }
+
+    const updatedUser=await UserModel.findByIdAndUpdate(User._id,{
+        user_id:User._id,
+        username:username,
+        email:User.email,
+        password:User.password,
+        phone_number:phone_number,
+        address:address,
+        answer:answer
+    })
+
+    res.send({
+      message:'User Profile updated',
+      success:true,
+      updatedUser
+    })
+
+
+  }catch(error)
+  {
+    res.send({
+      message:'Something went wrong',
+      success:false,
+      error:error.message
+    })
+  }
+}
+
 
 module.exports = { registerController,loginController,
-  forgotPasswordController};
+  forgotPasswordController,updateProfileController};
