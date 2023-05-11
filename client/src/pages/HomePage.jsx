@@ -10,30 +10,36 @@ import "slick-carousel/slick/slick-theme.css";
 
 
 const HomePage = () => {
-  const [auth,setAuth] = useAuth();
-  const [products, setProducts] = useState([]);
+    const [products, setProducts] = useState([]);
   const navigate=useNavigate()
 
    const getAllProducts=async()=>{
     try{
         const {data}=await axios.get('http://localhost:5000/api/products/all-products')
-        // console.log(data)
         setProducts(data.products)
+        //console.log(data)
     }
     catch(error)
     {
         toast.error(error)
     }
    }
+   //console.log(products)
 
   // Fetch products from backend on initial load
   useEffect(() => {
       getAllProducts()
-  },[]);
+      //console.log(products)
+    },[]);
 
-  useEffect(()=>{
-    console.log(products)
-  },[products])
+    const Products = products.map(item =>{
+      return(
+        <Card 
+          key={item.product_id}
+          {...item}
+        />
+      )
+    })
 
 
   return (
@@ -55,14 +61,13 @@ const HomePage = () => {
     <img src="https://img.freepik.com/free-photo/pillow-bed_74190-6104.jpg?w=1060&t=st=1683575403~exp=1683576003~hmac=845d48a31f1bd0f78f863e34f3e7cb4c845c332343a0a916afd5af591d4e3488" alt="Example image" style={{ width: "100vw", height: "60vh" }} />
   </div> */}
 </Slider>
- 
-      {/* <div className='cards-list'>
-        <Card />
-        <Card />
-      </div> */}
+        <div className='cards-list'>
+        {Products}
+      </div>
 
     </div>
   )
 }
 
 export default HomePage
+
