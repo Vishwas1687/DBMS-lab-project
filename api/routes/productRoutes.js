@@ -7,7 +7,9 @@ const {createProductController,updateProductController,
     getSingleProductController,getProductsBySubCategoryController,
     createWeightsController,updateWeightController,deleteWeightController,
     getProductsByBrandController,getRelatedProductsController,
-    getProductsBySearchController,getPhotoController,getSingleWeightController}=require('../controllers/productController')
+    getProductsBySearchController,getPhotoController,getSingleWeightController
+      ,getAllProductsByFiltersController,getProductsByCategoryController}
+      =require('../controllers/productController')
 
 router.post('/create-product',formidable(),createProductController)
 
@@ -16,6 +18,8 @@ router.put('/update-product/:slug',formidable(),updateProductController)
 router.delete('/delete-product/:slug',deleteProductController)
 
 router.get('/all-products',getAllProductsController)
+
+router.get('/get-products-by-category/:slug',getProductsByCategoryController)
 
 router.get('/get-products-by-subcategory/:slug/:subcategory_id',getProductsBySubCategoryController)
 
@@ -35,12 +39,8 @@ router.get('/get-products-based-on-brand-and-subcategory-other-than-current-prod
 
 router.get('/get-related-products-of-the-subcategory/:slug',getRelatedProductsController)
 
-//router.get('/get-products-by-filters/:args',getProductsByFilterController)
-
 router.get('/get-photo/:slug',getPhotoController)
 
-
-
-//
+router.get('/get-all-products-based-on-filters',getAllProductsByFiltersController)
 
 module.exports=router

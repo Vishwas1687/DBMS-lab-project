@@ -1,0 +1,68 @@
+.searchInput{
+    display:flex;
+}
+
+.search input{
+    background-color: white;
+    border:0;
+    font-size: 18px;
+    height:40px;
+    padding :15px;
+    width:25vw;
+}
+
+.searchIcon{
+    height :40px;
+    width:3vw;
+    background-color: white;
+    display: grid;
+    place-items: center;
+}
+
+input:focus{
+    outline:none;
+}
+
+.searchIcon svg{
+    font-size: 35px;
+}
+
+.results{
+    position: absolute;
+    margin-top: 5px;
+    width:25vw;
+    border-radius: 5%;
+    overflow: auto;
+    background-color: #fffbfb;
+    max-height: 200px;
+    overflow:hidden;
+    overflow-y: auto;
+}
+
+.resultItem{
+    height:50px;
+    width:100%;
+    display: flex;
+    align-items: center;
+    text-align: center;
+}
+
+.results::-webkit-scrollbar{
+    display: none;
+}
+
+.brand{
+    margin-left:5px;
+}
+.productName{
+    margin-left: 5px;
+}
+
+.hoverEffect:hover{
+    background-color: lightgray;
+    cursor: pointer;
+}
+
+#clearBtn{
+    cursor:pointer;
+}

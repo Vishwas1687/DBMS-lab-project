@@ -28,6 +28,9 @@ import ManageBrand from "./pages/admin/ManageBrand";
 import GetProduct from "./pages/admin/Product/GetProduct";
 import UpdateProduct from './pages/admin/Product/UpdateProduct'
 import CreateWeight from './pages/admin/CreateWeight'
+import UpdateWeight from './pages/admin/UpdateWeight'
+import CategoryProduct from './pages/CategoryProduct'
+import SubCategoryProduct from './pages/SubCategoryProduct'
 
 
 function App() {
@@ -58,9 +61,11 @@ function App() {
         <Route path = "/admin/update-category/:slug" element = {<UpdateCategory/>}/>
         <Route path = "/admin/get-product/create-weight/:slug" element = {<CreateWeight/>}/>
         <Route path = "/admin/manage-brand" element = {<ManageBrand />} />
+        <Route path = '/admin/update-weight/:slug/:weight_id' element={<UpdateWeight/>}/>
       </Route>
 
-
+      <Route path = '/category/:slug' element = {<CategoryProduct/>}/>
+      <Route path = '/subcategory/:slug/:subcategory_id' element ={<SubCategoryProduct/>}/>
 
       <Route path = "/register" element = {<Register />} />
       <Route path = "/forgot-password" element = {<ForgotPassword />} />

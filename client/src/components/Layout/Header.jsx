@@ -3,6 +3,8 @@ import { NavLink , Link} from 'react-router-dom';
 import {ShoppingCart , ShoppingBag} from 'phosphor-react';
 import Dropdown from './Dropdown'
 import Modal from './Modal'
+import DropdownCategories from './DropdownCategories';
+import SearchBar from '../Form/SearchBar';
 
 const Header = () => {
 
@@ -25,12 +27,13 @@ const Header = () => {
       <Link to = "/" className="navbar-brand">
         GroceryHut <ShoppingBag size={32} />
       </Link>
+      <div className="ms-auto">
+      <SearchBar />
+      </div>
       <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
 
         <li className="nav-item">
-          <NavLink to = "/category" className="nav-link" aria-current="page">
-            Categories
-          </NavLink>
+          <DropdownCategories />
         </li>
         <li className="nav-item">
           <Dropdown />        
