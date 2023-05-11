@@ -4,7 +4,7 @@ const UserModel = require('../models/User');
 
 const registerController = async (req, res) => {
   try {
-    const {username, email, password, confirmPassword, phone_number,answer} = req.body;
+    const {username, email, address,password, confirmPassword, phone_number,answer} = req.body;
     if(!username)
     return res.send({message:'Username is not entered'})
     if(!email)
@@ -35,6 +35,7 @@ const registerController = async (req, res) => {
     }
     // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedAnswer = await bcrypt.hash(answer,10);
     
     // Save the user to the database
     const newUser = await new UserModel({
@@ -43,13 +44,19 @@ const registerController = async (req, res) => {
       email: email,
       password: hashedPassword,
       phone_number: phone_number,
-      answer:answer
+      address:address,
+      answer:hashedAnswer
     }).save();
 
     res.status(201).send({
       success: true,
       message: "Successfully registered",
-      user: newUser,
+      user:{
+        username:newUser.username,
+        email:newUser.email,
+        phone_number:newUser.phone_number,
+        address:newUser.address
+      },
     });
   } catch (error) {
     console.error(error);
@@ -88,13 +95,10 @@ const loginController=async(req,res)=>{
    res.status(200).send({
     success:true,
     user:{
-        _id:existingUser._id,
         username:existingUser.username,
-        email:email,
-        addresses:existingUser.addresses,
-        recommended_products:existingUser.recommended_products,
+        address:existingUser.address,
         phone_number:existingUser.phone_number,
-        role:existingUser.role
+        email:existingUser.email
     },
     token:token,
     message:'Logged In',
@@ -127,7 +131,8 @@ const forgotPasswordController=async(req,res)=>{
             success:false
         })
       }
-      if(user.answer!=answer)
+      const match=await bcrypt.compare(answer,user.answer)
+      if(!match)
       {
         return res.status(404).send({
             message:"Not the correct answer",
@@ -146,7 +151,11 @@ const forgotPasswordController=async(req,res)=>{
       res.status(200).send({
         success:true,
         message:"Password is changed",
-        updatedUser
+        user:{
+          username:updatedUser.username,
+          address:updatedUser.address,
+          phone_number:updatedUser.phone_number
+        }
       })
     }catch(error){
         res.status(404).send({
@@ -158,7 +167,7 @@ const forgotPasswordController=async(req,res)=>{
 
 const updateProfileController=async(req,res)=>{
     try{
-    const {username,phone_number,password,address,answer}=req.body
+    const {username,password,phone_number,address,answer}=req.body
     
     if(!username)
     {
@@ -172,14 +181,17 @@ const updateProfileController=async(req,res)=>{
     {
       return res.send({message:'User address is not entered'})
     }
-    if(!password)
+    let hashedPassword
+    let hashedAnswer
+    if(password)
     {
-      return res.send({message:'User address is not entered'})
+      hashedPassword=await bcrypt.hash(password,10)
     }
-    if(!answer)
+    if(answer)
     {
-      return res.send({message:'User answer is not entered'})
+      hashedAnswer=await bcrypt.hash(password,10)
     }
+    
     const User=await UserModel.findById(req.user._id)
     if(!User)
     {
@@ -190,16 +202,20 @@ const updateProfileController=async(req,res)=>{
         user_id:User._id,
         username:username,
         email:User.email,
-        password:password,
+        password:hashedPassword||User.password,
         phone_number:phone_number,
         address:address,
-        answer:answer
+        answer:hashedAnswer||User.answer
     })
 
     res.send({
       message:'User Profile updated',
       success:true,
-      updatedUser
+      user:{
+        username:updatedUser.username,
+        phone_number:updatedUser.phone_number,
+        address:updatedUser.address
+      }
     })
 
 
