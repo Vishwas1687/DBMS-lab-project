@@ -1,6 +1,7 @@
 import React,{useState,useEffect} from 'react'
 import Header from '../components/Layout/Header'
 import {useAuth} from '../context/auth'
+import Card from '../components/Layout/Card';
 import Slider from "react-slick";
 import axios from 'axios'
 import toast from 'react-hot-toast'
@@ -32,14 +33,7 @@ const HomePage = () => {
       //console.log(products)
     },[]);
 
-    const Products = products.map(item =>{
-      return(
-        <Card 
-          key={item.product_id}
-          {...item}
-        />
-      )
-    })
+   
 
 
   return (
@@ -62,7 +56,13 @@ const HomePage = () => {
   </div> */}
 </Slider>
         <div className='cards-list'>
-        {Products}
+           {products.map(item =>(
+           
+           <Card 
+          key={item.product_id}
+          {...item}
+        />
+       ))}
       </div>
 
     </div>

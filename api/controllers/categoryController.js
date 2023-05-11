@@ -225,6 +225,13 @@ const updateSubCategoryController = async (req, res) => {
       {slug,'subcategories.subcategory_id':subcategory_id},
       {$set:{'subcategories.$.subcategory_name':subcategory_name}},{new:true}
     );
+
+    const subcategoryName=existingSubCategory.category_name
+
+    const products=await ProductModel.updateMany({
+        subcategory:subcategoryName},{
+            $set:{subcategory_name:subcategory_name}
+    },{new:true})
     if (!updatedCategory) {
       return res.send({message:'Sub category does not exist'});
     }
