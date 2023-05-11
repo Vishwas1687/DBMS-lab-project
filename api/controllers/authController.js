@@ -158,7 +158,7 @@ const forgotPasswordController=async(req,res)=>{
 
 const updateProfileController=async(req,res)=>{
     try{
-    const {username,phone_number,password,address,answer}=req.body
+    const {username,phone_number,address,answer}=req.body
     
     if(!username)
     {
@@ -169,10 +169,6 @@ const updateProfileController=async(req,res)=>{
       return res.send({message:'User phone number is not entered'})
     }
     if(!address)
-    {
-      return res.send({message:'User address is not entered'})
-    }
-    if(!password)
     {
       return res.send({message:'User address is not entered'})
     }
@@ -190,7 +186,7 @@ const updateProfileController=async(req,res)=>{
         user_id:User._id,
         username:username,
         email:User.email,
-        password:password,
+        password:User.password,
         phone_number:phone_number,
         address:address,
         answer:answer
