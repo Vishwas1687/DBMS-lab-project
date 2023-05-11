@@ -95,7 +95,8 @@ export default function(props){
 
     <div className="card">
         <div className="wrapper">
-            <img className="card_img" src = {`http://localhost:5000/api/products/get-photo/${props.slug}` } />
+            <img className="card_img" src = {`http://localhost:5000/api/products/get-photo/${props.slug}` }
+             />
 
             <div className="cardInfo">
                 <h1>{props.product_name}</h1>

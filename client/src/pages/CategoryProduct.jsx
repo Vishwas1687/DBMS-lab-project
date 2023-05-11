@@ -84,11 +84,11 @@ const CategoryProduct = () => {
   return (
     <Layout title={'Products by category'}>
         <div className="row m-2">
-            <div className="col-md-3 text-left p-3">
+            <div className="col-md-3 text-left p-3 bg-light">
                 <h1>Filters</h1>
                 {loading?<h3>Loading...</h3>:(
                 <div className="container">
-                    <h4 className="text-black">{category.category_name}</h4>
+                    <h4 className="text-black">{category.category_name}</h4> 
                     <div className="p-1">
                        {category && category.subcategories.map((subcat,index)=>(
                        <div key={index}>
@@ -113,10 +113,8 @@ const CategoryProduct = () => {
                    ))}
                    </Radio.Group>
                 </div>
-                
-
-
             </div>
+
             <div className="col-md-9 text-left p-3">
               {loading?<h1>Loading...</h1>:
               (
