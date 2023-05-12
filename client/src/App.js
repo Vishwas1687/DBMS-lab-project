@@ -15,7 +15,7 @@ import ManageCategory from "./pages/admin/ManageCategory";
 import CreateProduct from "./pages/admin/CreateProduct";
 import Users from "./pages/admin/Users";
 import Orders from "./pages/user/Orders";
-import Profile from "./pages/user/Profile";
+import UpdateProfile from "./pages/user/UpdateProfile";
 import UpdateCategory from './pages/admin/Category/UpdateCategory.jsx'
 import CreateCategory from "./pages/admin/CreateCategory";
 // import ViewCategory from "./pages/admin/ViewCategory";
@@ -44,7 +44,8 @@ function App() {
       <Route path='/user' element={<PrivateRoute />}>
         <Route path = "" element = {<Dashboard />} />
         <Route path = "orders" element = {<Orders/>} />
-        <Route path = "profile" element = {<Profile />} />
+        <Route path = "update-profile" element = {<UpdateProfile />} />
+        
       </Route>
 
       <Route path='/admin' element={ <AdminRoute /> }>

@@ -189,7 +189,7 @@ const updateProfileController=async(req,res)=>{
     }
     if(answer)
     {
-      hashedAnswer=await bcrypt.hash(password,10)
+      hashedAnswer=await bcrypt.hash(answer,10)
     }
     
     const User=await UserModel.findById(req.user._id)
@@ -206,7 +206,7 @@ const updateProfileController=async(req,res)=>{
         phone_number:phone_number,
         address:address,
         answer:hashedAnswer||User.answer
-    })
+    },{new:true})
 
     res.send({
       message:'User Profile updated',
