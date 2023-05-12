@@ -4,9 +4,7 @@ const UserModel=require('../models/User')
 
 const createOrderController=async(req,res)=>{
 try{
-    const {customer,items,shipping_address,total_amount}=req.body
-    if(!customer)
-    return res.send({message:'Customer is not entered'})
+    const {items,shipping_address,total_amount}=req.body
     if(!items)
     return res.send({message:'Items is not entered'})
     if(!shipping_address)
@@ -23,7 +21,8 @@ try{
     }
 
     const newOrder=await new OrderModel({
-        customer:customer,
+        customer:req.user._id,
+        payment:{},
         items:items,
         shipping_address:shipping_address,
         total_amount:total_amount
@@ -176,11 +175,8 @@ const getSingleOrderController=async(req,res)=>{
 
 const getOrderByUserController=async(req,res)=>{
     try{
-        const {customer_id}=req.params
-        if(!customer_id)
-        return res.send({message:'Enter the customer id'})
 
-        const user=await UserModel.findOne({user_id:customer_id})
+        const user=await UserModel.findById(req.user._id)
         if(!user)
         {
             return res.send({
@@ -189,7 +185,7 @@ const getOrderByUserController=async(req,res)=>{
             })
         }
         // const thirtyDaysToGo=new Date(Date.now()-30*24*60*60*1000)
-        const order=await OrderModel.find({customer:user._id
+        const order=await OrderModel.find({customer:req.user._id
          }).populate('items.product').populate('customer')
         if(order.length===0)
         {
@@ -264,309 +260,285 @@ const getDeliveredOrdersController=async(req,res)=>
     }
 }
 
-const getCancelledOrdersController=async(req,res)=>
-{
-   try{
-        const order=await OrderModel.find({status:'cancelled'}).populate('items.product').populate('customer')
-        if(order.length===0)
-        {
-            return res.send({
-                message:'Do not have any cancelled orders',
-                success:true
-            })
-        }
-        return res.send({
-            message:`All cancelled orders are fetched`,
-            success:true,
-            order
-        })
-    }catch(error)
-    {
-         return res.send({
-            message:'Something went wrong',
-            success:false,
-            error:error.message
-         })
-    }
-}
 
-const createFeedbackController=async(req,res)=>{
-    try{
-         const {rating,title,body,is_flagged,flag_reason}=req.body
-         const {order_id,user_id,slug}=req.params
-         if(!rating)
-         return res.send({message:'Enter rating'})
-         if(!title)
-         return res.send({message:'Enter title'})
-         if(!body)
-         return res.send({message:'Enter body'})
-         if(!is_flagged)
-         return res.send({message:'Enter flag or not'})
-         if(!flag_reason)
-         return res.send({message:'Enter flag reason'})
+// const createFeedbackController=async(req,res)=>{
+//     try{
+//          const {rating,title,body,is_flagged,flag_reason}=req.body
+//          const {order_id,user_id,slug}=req.params
+//          if(!rating)
+//          return res.send({message:'Enter rating'})
+//          if(!title)
+//          return res.send({message:'Enter title'})
+//          if(!body)
+//          return res.send({message:'Enter body'})
+//          if(!is_flagged)
+//          return res.send({message:'Enter flag or not'})
+//          if(!flag_reason)
+//          return res.send({message:'Enter flag reason'})
 
-         const user=await UserModel.findOne({user_id})
-         const order=await OrderModel.findOne({customer:user._id,order_id:order_id})
-         const product=await ProductModel.findOne({slug})
+//          const user=await UserModel.findOne({user_id})
+//          const order=await OrderModel.findOne({customer:user._id,order_id:order_id})
+//          const product=await ProductModel.findOne({slug})
          
        
-         let feedbackProduct=order.items.find((pro)=>pro.product.toString()===product._id.toString())
+//          let feedbackProduct=order.items.find((pro)=>pro.product.toString()===product._id.toString())
 
-         if(feedbackProduct.feedback_given)
-         {
-            return res.send({
-                message:'User has already given the feedback',
-                success:false
-            })
-         }
+//          if(feedbackProduct.feedback_given)
+//          {
+//             return res.send({
+//                 message:'User has already given the feedback',
+//                 success:false
+//             })
+//          }
 
-         feedbackProduct={...feedbackProduct,feedback:{
-               user:user._id,
-               product:product._id,
-               order_id:order._id,
-               rating:rating,
-               title:title,
-               body:body,
-               is_flagged:is_flagged,
-               flag_reason:flag_reason
-         }}
+//          feedbackProduct={...feedbackProduct,feedback:{
+//                user:user._id,
+//                product:product._id,
+//                order_id:order._id,
+//                rating:rating,
+//                title:title,
+//                body:body,
+//                is_flagged:is_flagged,
+//                flag_reason:flag_reason
+//          }}
 
-         const feedback=feedbackProduct.feedback
+//          const feedback=feedbackProduct.feedback
 
-         const updatedOrder=await OrderModel.findOneAndUpdate({customer:user._id,order_id:order_id,status:'delivered',
-           "items.product":product._id},{$set:{"items.$.feedback":feedback},"items.$.feedback_given":true},{new:true})
+//          const updatedOrder=await OrderModel.findOneAndUpdate({customer:user._id,order_id:order_id,status:'delivered',
+//            "items.product":product._id},{$set:{"items.$.feedback":feedback},"items.$.feedback_given":true},{new:true})
 
-        if(!updatedOrder)
-        {
-            return res.send({
-                message:'Order is not still delivered to give feedback',
-                success:false,
-            })
-        }
-         return res.send({
-            message:`Feedback of the product ${product.slug} is received from the user ${user.username} for the order ${order.order_id}`,
-            success:true,
-            updatedOrder
-         })
+//         if(!updatedOrder)
+//         {
+//             return res.send({
+//                 message:'Order is not still delivered to give feedback',
+//                 success:false,
+//             })
+//         }
+//          return res.send({
+//             message:`Feedback of the product ${product.slug} is received from the user ${user.username} for the order ${order.order_id}`,
+//             success:true,
+//             updatedOrder
+//          })
 
-    }catch(error)
-    {
-        res.send({
-            message:'Something went wrong',
-            success:false,
-            error:error.message
-        })
-    }
-}
+//     }catch(error)
+//     {
+//         res.send({
+//             message:'Something went wrong',
+//             success:false,
+//             error:error.message
+//         })
+//     }
+// }
 
-const getAllFeedbackOfTheProductController=async(req,res)=>{
-     try{
-          const {slug}=req.params
-          const product=await ProductModel.findOne({slug})
-          const orders=await OrderModel.find({"items.product":product._id,"items.feedback_given":true}).populate("items.product")
+// const getAllFeedbackOfTheProductController=async(req,res)=>{
+//      try{
+//           const {slug}=req.params
+//           const product=await ProductModel.findOne({slug})
+//           const orders=await OrderModel.find({"items.product":product._id,"items.feedback_given":true}).populate("items.product")
           
-          const allFeedback=orders.reduce((feedbackarray,order)=>{
-            order.items.filter((item)=>{
-               feedbackarray.push(item.feedback)
-            })
-            return feedbackarray
-          },[])
+//           const allFeedback=orders.reduce((feedbackarray,order)=>{
+//             order.items.filter((item)=>{
+//                feedbackarray.push(item.feedback)
+//             })
+//             return feedbackarray
+//           },[])
 
-          if(allFeedback.length===0)
-          {
-            return res.send({
-                message:'No feedbacks for the product',
-                success:false, 
-            })
-          }
-          res.send({
-            message:'All feedback of the product received',
-            success:true,
-            allFeedback
-          })
-     }catch(error)
-     {
-         res.send({
-            message:'Something went wrong',
-            success:false,
-            error:error.message
-         })
-     }
-}
+//           if(allFeedback.length===0)
+//           {
+//             return res.send({
+//                 message:'No feedbacks for the product',
+//                 success:false, 
+//             })
+//           }
+//           res.send({
+//             message:'All feedback of the product received',
+//             success:true,
+//             allFeedback
+//           })
+//      }catch(error)
+//      {
+//          res.send({
+//             message:'Something went wrong',
+//             success:false,
+//             error:error.message
+//          })
+//      }
+// }
 
-const getAllFlaggedFeedbackProducts=async(req,res)=>{
-    try{
-         const orders=await OrderModel.find({"items.feedback.is_flagged":true}).populate('items.product')
-         if(orders.length===0)
-         {
-            return res.send({
-                message:'There are no flagged products',
-                success:false
-            })
-         }
-         const allProducts=orders.reduce((productarray,order)=>{
-            order.items.filter((item)=>{
-                productarray.push(item.product)
-            })
-            return productarray
-        },[])
+// const getAllFlaggedFeedbackProducts=async(req,res)=>{
+//     try{
+//          const orders=await OrderModel.find({"items.feedback.is_flagged":true}).populate('items.product')
+//          if(orders.length===0)
+//          {
+//             return res.send({
+//                 message:'There are no flagged products',
+//                 success:false
+//             })
+//          }
+//          const allProducts=orders.reduce((productarray,order)=>{
+//             order.items.filter((item)=>{
+//                 productarray.push(item.product)
+//             })
+//             return productarray
+//         },[])
           
-        const uniqueProducts = Array.from(new Set(allProducts)).filter(product => product !== null);
-         res.send({
-            message:'All products that are flagged are fetched',
-            success:true,
-            uniqueProducts:Array.from(uniqueProducts)
-         })
-    }catch(error)
-    {
-         res.send({
-            message:'Something went wrong',
-            success:false,
-            error:error.message
-         })
-    }
-}
+//         const uniqueProducts = Array.from(new Set(allProducts)).filter(product => product !== null);
+//          res.send({
+//             message:'All products that are flagged are fetched',
+//             success:true,
+//             uniqueProducts:Array.from(uniqueProducts)
+//          })
+//     }catch(error)
+//     {
+//          res.send({
+//             message:'Something went wrong',
+//             success:false,
+//             error:error.message
+//          })
+//     }
+// }
 
-const getFlaggedFeedBackController=async(req,res)=>{
-     try{
-          const {slug}=req.params
-          const product=await ProductModel.findOne({slug})
-          const orders=await OrderModel.find({"items.product":product._id,"items.feedback.is_flagged":true})
+// const getFlaggedFeedBackController=async(req,res)=>{
+//      try{
+//           const {slug}=req.params
+//           const product=await ProductModel.findOne({slug})
+//           const orders=await OrderModel.find({"items.product":product._id,"items.feedback.is_flagged":true})
 
-          const allFeedback=orders.reduce((feedbackarray,order)=>{
-            order.items.filter((item)=>{
-                feedbackarray.push(item.feedback)
-            })
-            return feedbackarray
-          },[])
+//           const allFeedback=orders.reduce((feedbackarray,order)=>{
+//             order.items.filter((item)=>{
+//                 feedbackarray.push(item.feedback)
+//             })
+//             return feedbackarray
+//           },[])
 
-          if(allFeedback.length===0)
-          {
-            return res.send({
-                message:'There is are no flagged feedbacks for this product',
-                success:false
-            })
-          }
+//           if(allFeedback.length===0)
+//           {
+//             return res.send({
+//                 message:'There is are no flagged feedbacks for this product',
+//                 success:false
+//             })
+//           }
 
-           res.send({
-                message:'All flagged feedbacks of the product is fetched',
-                success:true,
-                allFeedback
-            })
-     }catch(error)
-     {
-           res.send({
-                message:'Something went wrong',
-                success:false,
-                error:error.message
-            })
-     }
-}
+//            res.send({
+//                 message:'All flagged feedbacks of the product is fetched',
+//                 success:true,
+//                 allFeedback
+//             })
+//      }catch(error)
+//      {
+//            res.send({
+//                 message:'Something went wrong',
+//                 success:false,
+//                 error:error.message
+//             })
+//      }
+// }
 
-const getPoorQualityFeedbackController=async(req,res)=>{
-    try{
-          const {slug}=req.params
-          const product=await ProductModel.findOne({slug})
-          const orders=await OrderModel.find({"items.product":product._id,
-          "items.feedback.is_flagged":true,"items.feedback.flag_reason":"product_quality"})
+// const getPoorQualityFeedbackController=async(req,res)=>{
+//     try{
+//           const {slug}=req.params
+//           const product=await ProductModel.findOne({slug})
+//           const orders=await OrderModel.find({"items.product":product._id,
+//           "items.feedback.is_flagged":true,"items.feedback.flag_reason":"product_quality"})
 
-          const allFeedback=orders.reduce((feedbackarray,order)=>{
-            order.items.filter((item)=>{
-                feedbackarray.push(item.feedback)
-            })
-            return feedbackarray
-          },[])
+//           const allFeedback=orders.reduce((feedbackarray,order)=>{
+//             order.items.filter((item)=>{
+//                 feedbackarray.push(item.feedback)
+//             })
+//             return feedbackarray
+//           },[])
 
-          if(allFeedback.length===0)
-          {
-            return res.send({
-                message:'There are no poor quality feedbacks for this product',
-                success:false
-            })
-          }
+//           if(allFeedback.length===0)
+//           {
+//             return res.send({
+//                 message:'There are no poor quality feedbacks for this product',
+//                 success:false
+//             })
+//           }
 
-           res.send({
-                message:'All poor quality feedbacks of the product is fetched',
-                success:true,
-                allFeedback
-            })
-     }catch(error)
-     {
-           res.send({
-                message:'Something went wrong',
-                success:false,
-                error:error.message
-            })
-     }
-}
+//            res.send({
+//                 message:'All poor quality feedbacks of the product is fetched',
+//                 success:true,
+//                 allFeedback
+//             })
+//      }catch(error)
+//      {
+//            res.send({
+//                 message:'Something went wrong',
+//                 success:false,
+//                 error:error.message
+//             })
+//      }
+// }
 
-const getPoorQualityProductsController=async(req,res)=>{
-      try{
-         const orders=await OrderModel.find({"items.feedback.is_flagged":true,
-           "items.feedback.flag_reason":"product_quality"}).populate('items.product')
-         if(orders.length===0)
-         {
-            return res.send({
-                message:'There are no poor quality products',
-                success:false
-            })
-         }
-         const allProducts=orders.reduce((productarray,order)=>{
-            order.items.filter((item)=>{
-                productarray.push(item.product)
-            })
-            return productarray
-        },[])
+// const getPoorQualityProductsController=async(req,res)=>{
+//       try{
+//          const orders=await OrderModel.find({"items.feedback.is_flagged":true,
+//            "items.feedback.flag_reason":"product_quality"}).populate('items.product')
+//          if(orders.length===0)
+//          {
+//             return res.send({
+//                 message:'There are no poor quality products',
+//                 success:false
+//             })
+//          }
+//          const allProducts=orders.reduce((productarray,order)=>{
+//             order.items.filter((item)=>{
+//                 productarray.push(item.product)
+//             })
+//             return productarray
+//         },[])
           
-        const uniqueProducts = Array.from(new Set(allProducts)).filter(product => product !== null);
-         res.send({
-            message:'All products that are poor quality are fetched',
-            success:true,
-            uniqueProducts:Array.from(uniqueProducts)
-         })
-    }catch(error)
-    {
-         res.send({
-            message:'Something went wrong',
-            success:false,
-            error:error.message
-         })
-    }
-}
+//         const uniqueProducts = Array.from(new Set(allProducts)).filter(product => product !== null);
+//          res.send({
+//             message:'All products that are poor quality are fetched',
+//             success:true,
+//             uniqueProducts:Array.from(uniqueProducts)
+//          })
+//     }catch(error)
+//     {
+//          res.send({
+//             message:'Something went wrong',
+//             success:false,
+//             error:error.message
+//          })
+//     }
+// }
 
-const deleteFeedbackController=async(req,res)=>{
-      try{
-          const {slug,id}=req.params
-          const product=await ProductModel.findOne({slug})
-          const order=await OrderModel.findOneAndUpdate({"items.product":product._id,
-           "items.feedback._id":id},{"items.$.feedback":null},{new:true})
+// const deleteFeedbackController=async(req,res)=>{
+//       try{
+//           const {slug,id}=req.params
+//           const product=await ProductModel.findOne({slug})
+//           const order=await OrderModel.findOneAndUpdate({"items.product":product._id,
+//            "items.feedback._id":id},{"items.$.feedback":null},{new:true})
 
-          if(!order)
-          {
-            return res.send({
-                message:'Order does not exist or feedback id does not exist to delete',
-                success:false,
-            })
-          }
+//           if(!order)
+//           {
+//             return res.send({
+//                 message:'Order does not exist or feedback id does not exist to delete',
+//                 success:false,
+//             })
+//           }
 
-          res.send({
-            message:'Feedback deleted',
-            success:true,
-            order
-          })
-      }catch(error)
-      {
-          res.send({
-            message:'Something went wrong',
-            success:false,
-            error:error.message
-          })
-      }
-}
+//           res.send({
+//             message:'Feedback deleted',
+//             success:true,
+//             order
+//           })
+//       }catch(error)
+//       {
+//           res.send({
+//             message:'Something went wrong',
+//             success:false,
+//             error:error.message
+//           })
+//       }
+// }
 
 module.exports={createOrderController,updateOrderController,
    deleteOrderController,getAllOrdersController,getSingleOrderController,
-   getOrderByUserController,getPlacedOrdersController,getDeliveredOrdersController,
-     getCancelledOrdersController,createFeedbackController,getAllFeedbackOfTheProductController,
-    getAllFlaggedFeedbackProducts,getFlaggedFeedBackController,getPoorQualityFeedbackController,
-     getPoorQualityProductsController,deleteFeedbackController}
+   getOrderByUserController,getPlacedOrdersController,getDeliveredOrdersController
+    //  ,createFeedbackController,getAllFeedbackOfTheProductController,
+    // getAllFlaggedFeedbackProducts,getFlaggedFeedBackController,getPoorQualityFeedbackController,
+    //  getPoorQualityProductsController,deleteFeedbackController
+}
