@@ -14,9 +14,9 @@ root.render(
   <AuthProvider>
     <SearchProvider>
       <BrowserRouter>
-        <React.StrictMode>
+        
           <App />
-        </React.StrictMode>
+      
       </BrowserRouter>
     </SearchProvider>
     
