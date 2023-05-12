@@ -641,13 +641,16 @@ const getAllProductsByFiltersController=async(req,res)=>{
             const minimumPrice=priceFilters[0]
             const maximumPrice=priceFilters[1]
             const priceProducts=await ProductModel.find({
-                "weights.sp":{
-                  
+                weights:{
+                    $elemMatch:
+                        {sp:{
                             $gte:minimumPrice,
                             $lte:maximumPrice
-                        }
-                        
                     }
+                }
+            }
+                        
+        }
             ).select('-photo').populate('category').populate('brand')
             products=priceProducts
         }
