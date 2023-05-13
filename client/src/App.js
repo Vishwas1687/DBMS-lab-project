@@ -48,7 +48,7 @@ function App() {
         
       </Route>
 
-      <Route path="/product/:productName" element={<ProductPage />} />
+      <Route path="/product/:slug" element={<ProductPage />} />
 
       <Route path='/admin' element={ <AdminRoute /> }>
         <Route path = "" element = {<AdminDashboard />} />
