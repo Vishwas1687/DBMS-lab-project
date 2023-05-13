@@ -2,9 +2,10 @@ import React from 'react'
 import '../styles/SearchBar.css'
 import {BiSearch} from 'react-icons/bi'
 import {AiOutlineClose} from 'react-icons/ai'
-import { useState,useEffect } from 'react'
+import { useState } from 'react'
 // import { useSearch } from '../../context/search'
 import axios from 'axios'
+import { Link } from 'react-router-dom'
 
 const SearchBar = () => {
     // const [reply,setReply] = useSearch();
@@ -14,7 +15,7 @@ const SearchBar = () => {
 
     const handleSearch = async (e) =>{
         setInput(e.target.value);
-        if (input == '') setResults([]);
+        if (input === '') setResults([]);
 
         if (e.target.value.trim() !== ""){
             try{
@@ -45,10 +46,10 @@ const SearchBar = () => {
         <div className="results" style={input ? {display:'block',zIndex:1}: {display:'none'}}>
             { (results.length) ? 
                 results.slice(0,10).map((product,index) => (
-                    <div className='resultItem hoverEffect' key={index}>
-                        <span className='brand'>{product.brand.brand_name}</span>
-                        <span className="productName">{product.product_name}</span>
-                        </div>
+                        <Link to={`/product/${product.slug}`} key={index} className='resultItem hoverEffect' onClick={()=>{setInput('')}}>
+                            <span className='brand'>{product.brand.brand_name}</span>
+                            <span className="productName">{product.product_name}</span>
+                        </Link>
                 ))
              : (<div className='resultItem'>
                 <span className='brand'>No products found...</span>
