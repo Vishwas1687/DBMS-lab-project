@@ -1,7 +1,7 @@
 const express=require('express')
 
 const {registerController,loginController,
-    forgotPasswordController,
+    forgotPasswordController,getAllUsersController,
     updateProfileController}=require('../controllers/authController')
 
 const {requiresSignIn,isAdmin}=require('../middlewares/authmiddleware')
@@ -28,5 +28,7 @@ router.get('/admin-auth',requiresSignIn,isAdmin,(req,res)=>{
 })
 
 router.put('/update-profile',requiresSignIn,updateProfileController)
+
+router.get('/get-all-users',requiresSignIn,isAdmin,getAllUsersController)
 
 module.exports=router;

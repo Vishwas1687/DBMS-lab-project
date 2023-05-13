@@ -229,6 +229,28 @@ const updateProfileController=async(req,res)=>{
   }
 }
 
+const getAllUsersController=async(req,res)=>{
+  try{
+    const users=await UserModel.find({role:0})
+    if(users.length===0)
+    return res.send({
+      message:'There are no users',
+      success:false
+    })
+    res.send({
+      message:'Users are fetched',
+      success:true,
+      users
+    })
+  }catch(error)
+  {
+     res.send({
+      message:'Something went wrong',
+      success:false,
+      error:error.message
+     })
+  }
+}
 
 module.exports = { registerController,loginController,
-  forgotPasswordController,updateProfileController};
+  forgotPasswordController,updateProfileController,getAllUsersController};
