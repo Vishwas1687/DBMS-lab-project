@@ -2,64 +2,64 @@ const mongoose = require('mongoose');
 const { Schema,model } = mongoose;
 const uuid=require('uuid')
 
-const FeedbackSchema = new Schema({
-  user: {
-    type: mongoose.ObjectId,
-    ref: 'User',
-    required: true,
-  },
-  product: {
-    type: mongoose.ObjectId,
-    ref: 'Product',
-    required: true,
-  },
-  order: {
-     type: mongoose.ObjectId,
-     ref: 'Order',
-     required: true,
-  },
-  rating: {
-    type: Number,
-    required: true,
-    min: 1,
-    max: 5,
-  },
-  title: {
-    type: String,
-    required: true,
-    minlength: 1,
-    maxlength: 100,
-  },
-  body: {
-    type: String,
-    required: true,
-    minlength: 1,
-    maxlength: 1000,
-  },
-//   images: [
+// const FeedbackSchema = new Schema({
+//   user: {
+//     type: mongoose.ObjectId,
+//     ref: 'User',
+//     required: true,
+//   },
+//   product: {
+//     type: mongoose.ObjectId,
+//     ref: 'Product',
+//     required: true,
+//   },
+//   order: {
+//      type: mongoose.ObjectId,
+//      ref: 'Order',
+//      required: true,
+//   },
+//   rating: {
+//     type: Number,
+//     required: true,
+//     min: 1,
+//     max: 5,
+//   },
+//   title: {
+//     type: String,
+//     required: true,
+//     minlength: 1,
+//     maxlength: 100,
+//   },
+//   body: {
+//     type: String,
+//     required: true,
+//     minlength: 1,
+//     maxlength: 1000,
+//   },
+// //   images: [
+// //     {
+// //       type: String,
+// //       required: true,
+// //     },
+// //   ],
+//   is_flagged: {
+//     type: Boolean,
+//     default: false,
+//   },
+//   flag_reason: {
+//   type: String,
+//   enum: ['inappropriate', 'spam', 'offensive', 'product_quality', 'delivery_time', 'customer_service', 'not_satisfied_product'],
+//   validator:{
+//     validate:async function(v)
 //     {
-//       type: String,
-//       required: true,
+//       const en=['inappropriate', 'spam', 'offensive', 'product_quality', 'delivery_time', 'customer_service', 'not_satisfied_product']
+//       return en.includes(v)
 //     },
-//   ],
-  is_flagged: {
-    type: Boolean,
-    default: false,
-  },
-  flag_reason: {
-  type: String,
-  enum: ['inappropriate', 'spam', 'offensive', 'product_quality', 'delivery_time', 'customer_service', 'not_satisfied_product'],
-  validator:{
-    validate:async function(v)
-    {
-      const en=['inappropriate', 'spam', 'offensive', 'product_quality', 'delivery_time', 'customer_service', 'not_satisfied_product']
-      return en.includes(v)
-    },
-    message:props=>`${props.value} is not a valid flag reason`
-  },
-  default: null
-}
-}, { timestamps: true });
+//     message:props=>`${props.value} is not a valid flag reason`
+//   },
+//   default: null
+// }
+// }, { timestamps: true });
 
 const OrderSchema = new Schema({
   order_id: {
@@ -71,6 +71,7 @@ const OrderSchema = new Schema({
     ref: 'User',
     required: true
   },
+  payment:{},
   items: [{
     product: {
       type: mongoose.ObjectId,
@@ -93,22 +94,17 @@ const OrderSchema = new Schema({
       type: Number,
       required: true
     },
-    feedback:FeedbackSchema,
-    feedback_given:{
-        type:Boolean,
-        default:false
-    }
+    // feedback:FeedbackSchema,
+    // feedback_given:{
+    //     type:Boolean,
+    //     default:false
+    // }
   }],
   status: {
     type: String,
-    enum: ['placed', 'processing', 'shipped', 'delivered', 'cancelled'],
+    enum: ['placed', 'processing', 'shipped', 'delivered'],
     default: 'placed'
   },
-//   shipping_address: {
-//     type: mongoose.ObjectId,
-//     ref:'Address',
-//     required: true
-//   },
   shipping_address:{
     type:String,
     required:true
@@ -124,27 +120,15 @@ const OrderSchema = new Schema({
   delivery_date: {
     type: Date
   },
-  cancellation_date: {
-    type: Date
-  },
-  reason_for_cancellation: {
-    type: String
-  }
+  // cancellation_date: {
+  //   type: Date
+  // },
+  // reason_for_cancellation: {
+  //   type: String
+  // }
 },{timestamps:true});
 
-OrderSchema.path('items.feedback').required(false)
+// OrderSchema.path('items.feedback').required(false)
 
-module.exports=model('Feedback',FeedbackSchema)
+// module.exports=model('Feedback',FeedbackSchema)
 module.exports = model('Order', OrderSchema);
-
-// const Order = require('./models/Order');
-
-// Order.findOne({ order_id: 'your_order_id' })
-//   .populate('items.product_id')
-//   .exec((err, order) => {
-//     if (err) {
-//       console.log('Error occurred while populating products: ', err);
-//     } else {
-//       console.log('Order with populated products: ', order);
-//     }
-//   });

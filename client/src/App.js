@@ -15,7 +15,7 @@ import ManageCategory from "./pages/admin/ManageCategory";
 import CreateProduct from "./pages/admin/CreateProduct";
 import Users from "./pages/admin/Users";
 import Orders from "./pages/user/Orders";
-import Profile from "./pages/user/Profile";
+import UpdateProfile from "./pages/user/UpdateProfile";
 import UpdateCategory from './pages/admin/Category/UpdateCategory.jsx'
 import CreateCategory from "./pages/admin/CreateCategory";
 // import ViewCategory from "./pages/admin/ViewCategory";
@@ -29,6 +29,8 @@ import GetProduct from "./pages/admin/Product/GetProduct";
 import UpdateProduct from './pages/admin/Product/UpdateProduct'
 import CreateWeight from './pages/admin/CreateWeight'
 import UpdateWeight from './pages/admin/UpdateWeight'
+import CategoryProduct from './pages/CategoryProduct'
+import SubCategoryProduct from './pages/SubCategoryProduct'
 
 
 function App() {
@@ -42,7 +44,8 @@ function App() {
       <Route path='/user' element={<PrivateRoute />}>
         <Route path = "" element = {<Dashboard />} />
         <Route path = "orders" element = {<Orders/>} />
-        <Route path = "profile" element = {<Profile />} />
+        <Route path = "update-profile" element = {<UpdateProfile />} />
+        
       </Route>
 
       <Route path='/admin' element={ <AdminRoute /> }>
@@ -62,7 +65,8 @@ function App() {
         <Route path = '/admin/update-weight/:slug/:weight_id' element={<UpdateWeight/>}/>
       </Route>
 
-
+      <Route path = '/category/:slug' element = {<CategoryProduct/>}/>
+      <Route path = '/subcategory/:slug/:subcategory_id' element ={<SubCategoryProduct/>}/>
 
       <Route path = "/register" element = {<Register />} />
       <Route path = "/forgot-password" element = {<ForgotPassword />} />

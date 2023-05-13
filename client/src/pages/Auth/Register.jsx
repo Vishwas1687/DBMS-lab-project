@@ -70,7 +70,7 @@ const Register = () => {
   </div>
   <div className="form-group my-3">
     <label htmlFor="exampleInputUsername">Answer</label>
-    <input type="text" required value={answer} onChange={(e)=>setAnswer(e.target.value)} className="form-control" id="exampleInputAnswer" aria-describedby="emailHelp" placeholder="Enter answer" />
+    <input type="password" required value={answer} onChange={(e)=>setAnswer(e.target.value)} className="form-control" id="exampleInputAnswer" aria-describedby="emailHelp" placeholder="Enter answer" />
   </div>
   <button type="submit" className="btn btn-primary">Register</button>
 </form>
