@@ -19,6 +19,7 @@ const SearchBar = () => {
         if (e.target.value.trim() !== ""){
             try{
                 const {data} = await axios.get(`http://localhost:5000/api/products/get-products-by-search/${e.target.value}`);
+                console.log(data);
                 if (data.products) setResults(data.products);
                 else setResults([]);
             }catch (error){
@@ -27,8 +28,8 @@ const SearchBar = () => {
         }
     }
 
-    useEffect(() => {
-      }, [results]);
+    // useEffect(() => {
+    //   }, [results]);
 
   return (
     <div className='search'>
