@@ -1,6 +1,7 @@
 import React,{useState,useEffect} from 'react'
 import Header from '../components/Layout/Header'
 import {useAuth} from '../context/auth'
+import Card from '../components/Layout/Card'
 import Slider from "react-slick";
 import axios from 'axios'
 import toast from 'react-hot-toast'
