@@ -1,0 +1,43 @@
+.tableHeading{
+    display: flex;
+    justify-content: space-around;
+    width:100%;
+    box-sizing: border-box;
+    border-bottom: 1px solid black;
+}
+
+.tableHeading div{
+    width:15%;
+    padding:10px;
+    text-align: center;
+}
+
+.flex__{
+    display:flex;
+    width:100%;
+    justify-content: space-around;
+    border-bottom: 1px solid black;
+}
+
+.flex__:last-child{
+    border-bottom: none;
+    border-radius: 0 0 10px 10px;
+}
+
+.flex__:hover{
+    background-color:aliceblue;
+}
+
+.flex__ div{
+    width:20%;
+    text-align: center;
+    margin-top:10px;
+    padding:10px;
+    overflow: hidden;
+}
+
+.tableContainer{
+    border: 1px solid #656363;
+    border-radius: 10px;
+    width:98%;
+}

@@ -13,6 +13,8 @@ const ManageCategory = () => {
   const [id, setId] = useState("");
   const navigate=useNavigate()
 
+  const [search__,setSearch__] = useState('');
+
 
   const handleDelete = async (slug) => {
     try {
@@ -66,6 +68,9 @@ const ManageCategory = () => {
             <br></br>
             <br></br>
             <div>
+              <input type='text' value={search__} onChange={e => {setSearch__(e.target.value)}} className='my-2' placeholder="Search..." style={{border:'1px solid #656363',padding:'10px'}}/>
+            </div>
+            <div>
               <table className="table">
                 <thead>
                   <tr>
@@ -75,7 +80,12 @@ const ManageCategory = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {categories.map((c) => (
+                  {categories.filter((c)=>{
+                    if (search__ === '') return c;
+                    else if (c.category_name.toLowerCase().includes(search__.toLowerCase())){
+                      return c;
+                    }
+                  }).map((c) => (
                     <>
                       <tr key={c.slug}>
                         <td>{c.category_id}</td>

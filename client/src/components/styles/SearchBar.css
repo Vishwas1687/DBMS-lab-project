@@ -31,7 +31,7 @@ input:focus{
     position: absolute;
     margin-top: 5px;
     width:25vw;
-    border-radius: 5%;
+    border-radius: 10px;
     overflow: auto;
     background-color: #fffbfb;
     max-height: 200px;
@@ -59,7 +59,7 @@ input:focus{
 }
 
 .hoverEffect:hover{
-    background-color: lightgray;
+    background-color: #e6e5e5;
     cursor: pointer;
 }
 
