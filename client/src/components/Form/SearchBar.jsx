@@ -19,7 +19,7 @@ const SearchBar = () => {
 
         if (e.target.value.trim() !== ""){
             try{
-                const {data} = await axios.get(`http://localhost:5000/api/products/get-products-by-search/${e.target.value}`);
+                const {data} = await axios.get(`http://localhost:5000/api/products/get-products-by-search/${e.target.value}`)
                 if (data.products) 
                 {
                     setResults(data.products);
@@ -47,8 +47,7 @@ const SearchBar = () => {
             { (results.length) ? 
                 results.slice(0,10).map((product,index) => (
                         <Link to={`/product/${product.slug}`} key={index} className='resultItem hoverEffect' onClick={()=>{setInput('')}}>
-                            <span className='brand'>{product.brand.brand_name}</span>
-                            <span className="productName">{product.product_name}</span>
+                            <span className="productName" style={{padding:"2px"}}>{product.product_name}</span>
                         </Link>
                 ))
              : (<div className='resultItem'>

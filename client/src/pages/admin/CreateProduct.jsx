@@ -228,7 +228,7 @@ useEffect(() => {
               <div className="form-group text-left">
                 <label htmlFor="brand">Brand</label>
                 <br></br>
-                <select className="w-50 p-2 " onChange={(e)=>{handleBrand(e)}}>
+                <select className="w-50 h-25 p-2 " onChange={(e)=>{handleBrand(e)}}>
                 {Object.keys(formData.brand).length===0 && <option value="1">None</option>}
                 {brands.map((brand) => (
               <option key={brand._id} value={brand._id} name="brand">
@@ -242,7 +242,7 @@ useEffect(() => {
               <div className="form-group text-left">
               <label htmlFor="category">Category</label>
               <br></br>
-              <select className="w-50 p-2 " onChange={(e)=>{handleCategory(e)}}>
+              <select className="w-50 h-25 p-2 " onChange={(e)=>{handleCategory(e)}}>
                 {Object.keys(category).length===0 && <option value="1">None</option>}
                 {categories.map((cat) => (
               <option key={cat._id} value={cat._id} name="category">
@@ -258,7 +258,7 @@ useEffect(() => {
                 <label htmlFor="subcategory">Subcategory</label>
                 <br></br>
                   
-                 <select className="w-50 p-2 " onChange={(e)=>{handleSubCategory(e)}}>
+                 <select className="w-50 h-25 p-2 " onChange={(e)=>{handleSubCategory(e)}}>
                   {Object.keys(formData.subcategory).length===0 && <option value="1">None</option>}
                 {category?.subcategories.map((subcat) => (
               <option key={subcat._id} value={subcat.subcategory_name} name="subcategory">
