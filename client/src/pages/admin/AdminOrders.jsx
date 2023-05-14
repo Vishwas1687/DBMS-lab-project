@@ -3,9 +3,8 @@ import Layout from "./../../components/Layout/Layout";
 import AdminMenu from "./../../components/AdminMenu";
 import toast from "react-hot-toast";
 import axios from "axios";
-import UserMenu from "../../components/Layout/UserMenu";
 
-const UserOrders = () => {
+const AdminOrders = () => {
 
   const [orders, setOrders] = useState([]);
 
@@ -19,7 +18,7 @@ const UserOrders = () => {
           }
         } catch (error) {
           console.log(error);
-          // toast.error("Something went wrong in getting orders");
+          toast.error("Something went wrong in getting orders");
         }
       };
 
@@ -27,14 +26,31 @@ const UserOrders = () => {
         getAllOrders();
       }, []);
 
+      const handleDelete = async (order_id) => {
+        try {
+          const { data } = await axios.delete(
+            `http://localhost:5000/api/orders/delete-order/${order_id}`
+          );
+          if (data.success) {
+            toast.success(`order is deleted`);
+    
+            getAllOrders();
+          } else {
+            toast.error(data.message);
+          }
+        } catch (error) {
+          toast.error("Something went wrong");
+        }
+      };
+
 
   return (
     <>
-    <Layout title={"DashBoard - User Orders"}>
+    <Layout title={"DashBoard - Manage Category"}>
     <div className="container-fluid m-3 p-3 dashboard">
     <div className="row">
     <div className="col-md-3">
-    <UserMenu />
+    <AdminMenu />
 
     </div>
     <div className="col-md-9">
@@ -53,6 +69,7 @@ const UserOrders = () => {
     <th scope="col">Total Amount</th>
     <th scope="col">Order Date</th>
     <th scope="col">Delivery Date</th>
+    <th scope="col">Actions</th>
     </tr>
     </thead>
 
@@ -70,8 +87,18 @@ const UserOrders = () => {
             <td>{c.order_date}</td>
             <td>{c.delivery_date}</td>
             <td>
+            <button className="btn btn-primary ms-2">
+                            Edit
+                          </button>
             <button className="btn btn-info ms-2">
                 View
+            </button>
+
+            <button className="btn btn-danger ms-2"
+            onClick={() => {
+              handleDelete(c.order_id);
+            }}>
+                Delete
             </button>
             </td>
             </tr>
@@ -93,4 +120,4 @@ const UserOrders = () => {
   )
 }
 
-export default UserOrders
+export default AdminOrders
