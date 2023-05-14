@@ -41,7 +41,7 @@ const ForgotPassword = () => {
     <>
     <Header />
     <Toaster position="top-center" />
-      <div className='container w-25' style={{marginTop: '7%',backgroundColor:'#fffbfb',padding:'20px'}}>
+      <div className='container-fluid w-25' style={{marginTop: '7%',backgroundColor:'#fffbfb',padding:'20px'}}>
       <form onSubmit={resetPassword}>
   <div className="form-group">
     <label htmlFor="exampleInputEmail1">Email</label>
