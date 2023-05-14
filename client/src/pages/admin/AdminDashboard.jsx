@@ -2,11 +2,11 @@
 import React from 'react'
 import Layout from '../../components/Layout/Layout'
 import AdminMenu from '../../components/AdminMenu'
-// import { useAuth } from '../../context/auth'
+import { useAuth } from '../../context/auth'
 
 const AdminDashboard = () => {
 
-  // const [auth] = useAuth();
+  const [auth] = useAuth();
   return (
 
     <Layout>
@@ -17,10 +17,10 @@ const AdminDashboard = () => {
         </div>
         <div className='col-md-9'>
           <div className='card w-75 p-3'>
-            <h3>Admin Name : </h3>
-            <h3>Admin Email : </h3>
-            <h3>Admin Contact : </h3>
-
+            <h3>{`Admin Name : ${auth.user.username}`}</h3>
+            <h3>{`Admin Email : ${auth.user.email}`}</h3>
+            <h3>{`Admin Contact : ${auth.user.phone_number}`}</h3>
+            <h3>{`Admin Address : ${auth.user.address}`}</h3>
           </div>
         </div>
       </div>
