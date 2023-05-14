@@ -148,7 +148,9 @@ select {
 
 .card__{
     height:350px;
-    width:250px;
+    width:252px;
+    border: 1px solid rgba(0,0,0,.175);
+    border-radius:5px;
 }
 
 hr{
@@ -160,4 +162,8 @@ hr{
 .card-img_{
     height:250px;
     width:250px;
+}
+
+.card-body{
+    text-align: center;
 }

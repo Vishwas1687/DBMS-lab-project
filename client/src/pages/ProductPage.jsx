@@ -101,8 +101,8 @@ const ProductPage = () => {
                         <div className="card__" key={index}>
   <img src={`http://localhost:5000/api/products/get-photo/${product.slug}`} className="card-img_" alt="..." />
   <div className="card-body">
-    <h5 className="card-title" style={{textTransform:'capitalize'}}>{product.product_name}</h5>
-    <a href={`/product/${product.slug}`} className="btn btn-primary">Buy</a>
+    <h5 className="card-title my-2" style={{textTransform:'capitalize'}}>{product.product_name}</h5>
+    <a href={`/product/${product.slug}`} className="btn btn-primary my-2">Buy</a>
   </div>
 </div>
                 ))
@@ -123,8 +123,8 @@ const ProductPage = () => {
                         <div className="card__" key={index}>
   <img src={`http://localhost:5000/api/products/get-photo/${product.slug}`} className="card-img_" alt="..." />
   <div className="card-body">
-    <h5 className="card-title" style={{textTransform:'capitalize'}}>{product.product_name}</h5>
-    <a href={`/product/${product.slug}`} className="btn btn-primary">Buy</a>
+    <h5 className="card-title my-2" style={{textTransform:'capitalize'}}>{product.product_name}</h5>
+    <a href={`/product/${product.slug}`} className="btn btn-primary my-2">Buy</a>
   </div>
 </div>
                 ))
