@@ -1,5 +1,7 @@
 import axios from 'axios';
 import React from 'react'
+import {Link} from 'react-router-dom';
+import Layout from '../components/Layout/Layout'
 import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import PageNotFound from './PageNotFound'
@@ -8,6 +10,7 @@ import '../components/styles/ProductPage.css'
 
 const ProductPage = () => {
   const { slug } = useParams();
+  const [loading,setLoading]=useState(true)
   const [info, setInfo] = useState({})
   const [found,setFound] = useState(false);
   const [selectedWeight, setSelectedWeight] = useState(0);
@@ -18,6 +21,7 @@ const ProductPage = () => {
   useEffect(() => {
     const fetchData = async () => {
         try{
+            setLoading(true)
             const {data} = await axios.get(`http://localhost:5000/api/products/get-single-product/${slug}`);
             const brand = data.existingProduct.brand._id;
             const subcat = data.existingProduct.subcategory;
@@ -33,6 +37,7 @@ const ProductPage = () => {
                 setInfo(data.existingProduct);
                 setFound(true);
             }
+            setLoading(false)
 
         }catch (error){
             console.log(error);
@@ -46,18 +51,19 @@ const ProductPage = () => {
   
   return (
     <>
-    {found ? <>
-    <Header />
+    {(found && !loading)? <Layout>
     <div className='main'>
         <div className='side'>
             <h3>Category</h3>
             <p className='currentCat'>{ info.category ? info.category.category_name : ""}</p>
             { (info.category) ? 
                 info.category.subcategories.map((subcat,index) => (
-                    <>
-                    {(info.subcategory === subcat.subcategory_name) ? <span key={index} className='subcat matchedSubCat'>{subcat.subcategory_name}</span>
-                    : <span key={index} className='subcat'>{subcat.subcategory_name}</span>}
-                    </>
+                    <Link key={index} to={`/subcategory/${info.category.category_name}/${subcat.subcategory_id}`}>
+                    {(info.subcategory === subcat.subcategory_name) ? 
+                    <span  className='subcat matchedSubCat'>
+                        {subcat.subcategory_name}</span>
+                    : <span className='subcat'>{subcat.subcategory_name}</span>}
+                    </Link>
             ))
              : ""}
              <div className='margin'></div>
@@ -93,7 +99,7 @@ const ProductPage = () => {
                         <hr></hr>
 
     <div className="related">
-        <h3>Related Products</h3>
+        <h3>{`More products related to ${info.subcategory}`}</h3>
         <div className="productSlider">
             {
                 (relatedProducts.length) ? 
@@ -115,7 +121,7 @@ const ProductPage = () => {
     <hr></hr>
 
     <div className="related brand">
-        <h3>Similar products by {info.brand.brand_name}</h3>
+        <h3>Similiar products of the brand {info.brand.brand_name}</h3>
         <div className="productSlider">
             {
                 (sameBrand.length) ? 
@@ -124,7 +130,7 @@ const ProductPage = () => {
   <img src={`http://localhost:5000/api/products/get-photo/${product.slug}`} className="card-img_" alt="..." />
   <div className="card-body">
     <h5 className="card-title my-2" style={{textTransform:'capitalize'}}>{product.product_name}</h5>
-    <a href={`/product/${product.slug}`} className="btn btn-primary my-2">Buy</a>
+    <Link to={`/product/${product.slug}`} className="btn btn-primary my-2">Buy</Link>
   </div>
 </div>
                 ))
@@ -135,7 +141,11 @@ const ProductPage = () => {
     </div>
 
     
-    </> : <PageNotFound />}
+    </Layout> : <Layout>
+        <div style={{position:'absolute',top:'50%',left:"50%",transform:"translate(-50%,-50%)"}}>
+          <h1 className='text-center'>{`Loading product ${slug}`}.</h1>
+          </div>
+        </Layout>}
     
     </>
   )
