@@ -1,17 +1,32 @@
 import React from 'react'
 import {User} from 'phosphor-react'
 import { NavLink , Link} from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import '../styles/Dropdown.css'
 import { useAuth } from '../../context/auth';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import axios from 'axios';
 
 export default function Dropdown() {
 
     const navigate = useNavigate();
 
     const [auth,setAuth] = useAuth();
+
+    const [isAdmin,setIsAdmin] = useState(false);
+
+    useEffect(() => {
+      const authCheck = async () => {
+        const res = await axios.get("http://localhost:5000/api/auth/admin-auth");
+        if (res.data.ok) {
+          setIsAdmin(true);
+        } else {
+          setIsAdmin(false);
+        }
+      };
+      if (auth?.token) authCheck();
+    }, [auth?.token]);
 
     return (
     <div className="dropdown dropdown-hover">
@@ -26,7 +41,7 @@ export default function Dropdown() {
       </>) :
       (<>
         <div className={`dropdown-menu positionDropdown`} >
-        <Link className="dropdown-item" to={`/${auth?.user?.role === 1 ? 'admin' : 'user'}/`} >Dashboard</Link>
+        <Link className="dropdown-item" to={`/${ isAdmin ? 'admin' : 'user'}/`} >Dashboard</Link>
         <div className="dropdown-divider"></div>
         <a className="dropdown-item " onClick={()=>{
           setAuth({...auth, user:null,token:''});localStorage.removeItem('auth');navigate('/');toast('Logged out!');

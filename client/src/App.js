@@ -32,6 +32,7 @@ import UpdateWeight from './pages/admin/UpdateWeight'
 import CategoryProduct from './pages/CategoryProduct'
 import SubCategoryProduct from './pages/SubCategoryProduct'
 import ProductPage from './pages/ProductPage'
+import UpdateAdminProfile from "./pages/admin/AdminProfile";
 
 function App() {
   return (
@@ -52,6 +53,7 @@ function App() {
 
       <Route path='/admin' element={ <AdminRoute /> }>
         <Route path = "" element = {<AdminDashboard />} />
+        <Route path = "/admin/update-profile" element = {<UpdateAdminProfile />} />
         <Route path = "/admin/manage-category" element = {<ManageCategory />} />
         <Route path = "/admin/get-category/:slug" element = {<GetCategory />} />
         <Route path = "/admin/users" element = {<Users />} />
