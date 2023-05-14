@@ -27,14 +27,15 @@ const Header = () => {
       <Link to = "/" className="navbar-brand">
         GroceryHut <ShoppingBag size={32} />
       </Link>
+      &nbsp;
+      &nbsp;
+      <DropdownCategories />
       <div className="ms-auto">
       <SearchBar />
       </div>
       <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
 
-        <li className="nav-item">
-          <DropdownCategories />
-        </li>
+        
         <li className="nav-item">
           <Dropdown />        
         </li>
