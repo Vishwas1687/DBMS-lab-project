@@ -725,9 +725,54 @@ const getProductsByCategoryController=async(req,res)=>{
         })
     }
 }
+
+const getPaginatedProductsController=async(req,res)=>{
+    try{
+       const {page,perPage}=req.query;
+       const products=await ProductModel.find({}).select("-photo")
+       .skip(perPage*(page-1)).limit(perPage)
+       if(products.length===0)
+       return res.send({
+        message:'No products left',
+        success:true,
+       })
+       res.send({
+        message:'Products fetched',
+        success:true,
+        products
+       })
+    }catch(error)
+    {
+         res.send({
+            message:'Something went wrong',
+            success:false,
+            error:error.message
+         })
+    }
+}
+
+const getDocumentProductsController=async(req,res)=>{
+    try{
+        const count=await ProductModel.find({}).countDocuments()
+        res.send({
+            message:'Total count of products fetched',
+            success:true,
+            count
+        })
+    }catch(error)
+    {
+        res.send({
+            message:'Something went wrong',
+            success:false,
+            error:error.message
+        })
+    }
+}
 module.exports={createProductController,updateProductController,
             deleteProductController,getAllProductsController,getSingleProductController,
         getProductsBySubCategoryController,createWeightsController,
         updateWeightController,deleteWeightController,getProductsByBrandController,
         getRelatedProductsController,getProductsBySearchController,getPhotoController,
-        getSingleWeightController,getAllProductsByFiltersController,getProductsByCategoryController}
+        getSingleWeightController,getAllProductsByFiltersController,
+        getProductsByCategoryController,getPaginatedProductsController,
+         getDocumentProductsController}

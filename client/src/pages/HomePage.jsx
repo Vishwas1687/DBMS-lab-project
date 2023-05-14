@@ -1,6 +1,7 @@
 import React,{useState,useEffect} from 'react'
 import Header from '../components/Layout/Header'
 import {useAuth} from '../context/auth'
+import {FaAngleLeft,FaAngleRight} from 'react-icons/fa'
 import Card from '../components/Layout/Card';
 import Slider from "react-slick";
 import axios from 'axios'
@@ -12,27 +13,66 @@ import "slick-carousel/slick/slick-theme.css";
 
 const HomePage = () => {
     const [products, setProducts] = useState([]);
+    const [totalProducts,setTotalProducts]=useState(null)
+    const perPage=3;
+    const [currentPage,setCurrentPage]=useState(1)
+    const [totalPages,setTotalPages]=useState(null)
   const navigate=useNavigate()
 
-   const getAllProducts=async()=>{
+   const getPaginatedProducts=async()=>{
     try{
-        const {data}=await axios.get('http://localhost:5000/api/products/all-products')
+        const {data}=await axios.get('http://localhost:5000/api/products/get-paginated-products-for-homepage',{
+          params:{
+            perPage:perPage,
+            page:currentPage
+          }
+        })
         setProducts(data.products)
-        //console.log(data)
+        
     }
     catch(error)
     {
         toast.error(error)
     }
    }
-   //console.log(products)
+   const getTotalProducts=async()=>{
+    try{
+      const {data}=await axios.get('http://localhost:5000/api/products/get-total-products-in-homepage')
+      if(data.success)
+      {
+        setTotalProducts(data.count)
+        setTotalPages(Math.ceil(totalProducts/perPage))
+      }
+    }catch(error)
+    {
+      toast.error('Something went wrong')
+    }
+   }
+
+   const handleForward=()=>{
+       if(currentPage==totalPages)
+       setCurrentPage(1)
+       else
+       setCurrentPage((page)=>page+1)
+   }
+
+   const handleBackward=()=>{
+       if(currentPage==1)
+       setCurrentPage(totalPages)
+       else
+       setCurrentPage((page)=>page-1)
+   }
+
+   
 
   // Fetch products from backend on initial load
   useEffect(() => {
-      getAllProducts()
-      //console.log(products)
-    },[]);
+      getPaginatedProducts()
+    },[currentPage]);
 
+    useEffect(()=>{
+      getTotalProducts()
+    },[])
    
 
 
@@ -64,6 +104,39 @@ const HomePage = () => {
         />
        ))}
       </div>
+
+       <br></br>
+       <br></br>
+       <br></br>
+      <div className="pagination-container" style={{textAlign:"center"}}>
+        <button type="button" className="btn btn-success"
+        onClick={handleBackward}>
+            <span style={{textAlign:"center",alignItems:"center"}}><FaAngleLeft/></span>
+        </button>
+         {
+          products.map((_,index)=>{
+            return (
+            <>
+            {index < totalPages && (
+              
+            <button type="button" className={`btn ${index+1===currentPage?'btn-primary':'btn-secondary'}`} style={{margin:"3px"}}
+            onClick={()=>setCurrentPage(index+1)}>
+              {index+1}
+            </button>
+            )}
+            </>
+            )
+            })
+         }
+         <button type="button" className="btn btn-success"
+         onClick={handleForward}>
+          <span style={{textAlign:"center",alignItems:"center"}}><FaAngleRight/></span>
+         </button>
+      </div>
+      <br></br>
+      <br></br>
+      
+      
 
     </div>
   )
