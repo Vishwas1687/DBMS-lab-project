@@ -46,7 +46,7 @@ const Register = () => {
     <>
       <Header />
       <Toaster position="top-center" />
-      <div className='container w-25' style={{marginTop: '7%',backgroundColor:'#fffbfb',padding:'20px'}}>
+      <div className='container-fluid w-25' style={{marginTop: '7%',backgroundColor:'#fffbfb',padding:'20px'}}>
       <form onSubmit={registerUser}>
       <div className="form-group">
     <label htmlFor="exampleInputUsername">Username</label>
