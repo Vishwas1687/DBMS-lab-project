@@ -7,6 +7,8 @@ import axios from "axios";
 const AdminOrders = () => {
 
   const [orders, setOrders] = useState([]);
+  const [selectedOrder, setSelectedOrder] = useState(null);
+  const [editStatus, setEditStatus] = useState("");
 
     const getAllOrders = async () => {
         try {
@@ -42,6 +44,32 @@ const AdminOrders = () => {
           toast.error("Something went wrong");
         }
       };
+
+      const handleEdit = async () => {
+        try {
+          const { data } = await axios.put(
+            `http://localhost:5000/api/orders/update-order/${selectedOrder.order_id}`,
+            { status: editStatus }
+          );
+          if (data.success) {
+            toast.success("Order updated successfully");
+            getAllOrders();
+          } else {
+            toast.error(data.message);
+          }
+        } catch (error) {
+          toast.error("Something went wrong");
+        } finally {
+          setSelectedOrder(null);
+          setEditStatus("");
+        }
+      };
+    
+      const handleEditModalOpen = (order) => {
+        setSelectedOrder(order);
+        setEditStatus(order.status);
+      };
+    
 
 
   return (
@@ -87,7 +115,11 @@ const AdminOrders = () => {
             <td>{c.order_date}</td>
             <td>{c.delivery_date}</td>
             <td>
-            <button className="btn btn-primary ms-2">
+            <button
+                            className="btn btn-primary ms-2"
+                            data-bs-toggle="modal"
+                            data-bs-target={`#editOrderModal${c.order_id}`}
+                          >
                             Edit
                           </button>
             <button className="btn btn-info ms-2">
