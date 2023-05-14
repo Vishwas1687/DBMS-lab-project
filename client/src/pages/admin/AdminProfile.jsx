@@ -92,7 +92,7 @@ const UpdateAdminProfile = () => {
           <br></br>
           <input
             type="text"
-            style={{width:'20rem', fontSize:'1.2rem',padding:'0.5rem'}}
+            style={{width:'20rem', fontSize:'1.2rem',padding:'0.5rem', border:'1px solid #e6e5e5',borderRadius:'5px'}}
             required="true"
             name="username"
             value={user.username}
@@ -107,7 +107,7 @@ const UpdateAdminProfile = () => {
           <br></br>
           <input
             type="text"
-            style={{width:'20rem', fontSize:'1.2rem',padding:'0.5rem'}}
+            style={{width:'20rem', fontSize:'1.2rem',padding:'0.5rem',border:'1px solid #e6e5e5',borderRadius:'5px'}}
             name="address"
             required="true"
             value={user.address}
@@ -124,7 +124,7 @@ const UpdateAdminProfile = () => {
           <br></br>
           <input
             type="text"
-            style={{width:'20rem', fontSize:'1.2rem',padding:'0.5rem'}}
+            style={{width:'20rem', fontSize:'1.2rem',padding:'0.5rem',border:'1px solid #e6e5e5',borderRadius:'5px'}}
             name="phone_number"
             required="true"
             value={user.phone_number}

@@ -14,6 +14,8 @@ const ManageBrand = () => {
     const [updatedName, setUpdatedName] = useState("");
     const [createVisible,setCreateVisible]=useState(false)
     const [brand,setBrand]=useState('')
+    const [search__,setSearch__] = useState('');
+
 
     // useEffect(() => {
     //     axios.get('/api/brands').then((response) => {
@@ -117,6 +119,10 @@ const ManageBrand = () => {
             <button type="button" className='btn btn-primary' onClick={()=>setCreateVisible(true)}>
                Create Brand
             </button>
+            <br></br>
+            <div>
+              <input type='text' value={search__} onChange={e => {setSearch__(e.target.value)}} className='mt-3 mb-2' placeholder="Search..." style={{border:'1px solid #656363',padding:'10px'}}/>
+            </div>
             <div>
               <table className="table">
                 <thead>
@@ -127,7 +133,12 @@ const ManageBrand = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {brands?.map((c) => (
+                  {brands?.filter((c)=>{
+                    if (search__ === '') return c;
+                    else if (c.brand_name.toLowerCase().includes(search__.toLowerCase())){
+                      return c;
+                    }
+                  }).map((c) => (
 
                     <>
                     <tr key={c.brand_name}>
