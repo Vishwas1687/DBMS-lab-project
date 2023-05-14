@@ -13,6 +13,7 @@ import "slick-carousel/slick/slick-theme.css";
 
 const HomePage = () => {
     const [products, setProducts] = useState([]);
+    const [loading,setLoading]=useState(true)
     const [totalProducts,setTotalProducts]=useState(null)
     const perPage=3;
     const [currentPage,setCurrentPage]=useState(1)
@@ -21,6 +22,7 @@ const HomePage = () => {
 
    const getPaginatedProducts=async()=>{
     try{
+      // setLoading(true)
         const {data}=await axios.get('http://localhost:5000/api/products/get-paginated-products-for-homepage',{
           params:{
             perPage:perPage,
@@ -28,7 +30,7 @@ const HomePage = () => {
           }
         })
         setProducts(data.products)
-        
+        // setLoading(false)
     }
     catch(error)
     {
@@ -37,12 +39,14 @@ const HomePage = () => {
    }
    const getTotalProducts=async()=>{
     try{
+      setLoading(true)
       const {data}=await axios.get('http://localhost:5000/api/products/get-total-products-in-homepage')
       if(data.success)
       {
         setTotalProducts(data.count)
-        setTotalPages(Math.ceil(totalProducts/perPage))
+        
       }
+      setLoading(false)
     }catch(error)
     {
       toast.error('Something went wrong')
@@ -50,14 +54,14 @@ const HomePage = () => {
    }
 
    const handleForward=()=>{
-       if(currentPage==totalPages)
+       if(currentPage===totalPages)
        setCurrentPage(1)
        else
        setCurrentPage((page)=>page+1)
    }
 
    const handleBackward=()=>{
-       if(currentPage==1)
+       if(currentPage===1)
        setCurrentPage(totalPages)
        else
        setCurrentPage((page)=>page-1)
@@ -70,9 +74,14 @@ const HomePage = () => {
       getPaginatedProducts()
     },[currentPage]);
 
+
     useEffect(()=>{
       getTotalProducts()
     },[])
+
+    useEffect(()=>{
+       setTotalPages(Math.ceil(totalProducts/perPage))
+    },[totalProducts])
    
 
 
@@ -113,21 +122,21 @@ const HomePage = () => {
         onClick={handleBackward}>
             <span style={{textAlign:"center",alignItems:"center"}}><FaAngleLeft/></span>
         </button>
-         {
-          products.map((_,index)=>{
-            return (
+         {!loading?(
             <>
-            {index < totalPages && (
-              
-            <button type="button" className={`btn ${index+1===currentPage?'btn-primary':'btn-secondary'}`} style={{margin:"3px"}}
-            onClick={()=>setCurrentPage(index+1)}>
-              {index+1}
+            {Array.from(Array(totalPages), (_, index) => (
+            <button
+            key={index}
+            type="button"
+            className={`btn ${index + 1 === currentPage ? 'btn-primary' : 'btn-secondary'}`}
+            style={{ margin: '3px' }}
+            onClick={() => setCurrentPage(index + 1)}
+             >
+              {index + 1}
             </button>
-            )}
+            ))}
             </>
-            )
-            })
-         }
+            ):''}
          <button type="button" className="btn btn-success"
          onClick={handleForward}>
           <span style={{textAlign:"center",alignItems:"center"}}><FaAngleRight/></span>
