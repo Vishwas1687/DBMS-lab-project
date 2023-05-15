@@ -276,6 +276,7 @@ const getPhotoController=async(req,res)=>{
 const getProductsBySubCategoryController=async(req,res)=>{
     try{
          const {slug,subcategory_id}=req.params
+         const {perPage,currentPage}=req.query
          if(!slug)
          return res.send({message:'Enter slug'})
          if(!subcategory_id)
@@ -297,7 +298,9 @@ const getProductsBySubCategoryController=async(req,res)=>{
             })
           }
 
-          const products=await ProductModel.find({subcategory:subcategory.subcategory_name}).select('-photo').populate('category').populate('brand')
+          const products=await ProductModel.find({subcategory:subcategory.subcategory_name})
+          .select('-photo').populate('category').populate('brand')
+          .skip((currentPage-1)*perPage).limit(perPage)
 
           if(!products)
           {
@@ -699,6 +702,7 @@ const getAllProductsByFiltersController=async(req,res)=>{
 const getProductsByCategoryController=async(req,res)=>{
     try{
         const {slug}=req.params
+        const {perPage,currentPage}=req.query
         if(!slug)
         return res.send({message:'Enter slug'})
         const category=await CategoryModel.findOne({slug})
@@ -710,7 +714,9 @@ const getProductsByCategoryController=async(req,res)=>{
             })
             
         }
-        const products=await ProductModel.find({category:category._id}).select('-photo').populate('brand').populate('category')
+        const products=await ProductModel.find({category:category._id}).
+        select('-photo').populate('brand').populate('category').
+        skip((currentPage-1)*perPage).limit(perPage)
         res.send({
             message:'Products are fetched',
             success:true,
@@ -768,6 +774,67 @@ const getDocumentProductsController=async(req,res)=>{
         })
     }
 }
+
+const getCategoryDocumentProductsController=async(req,res)=>{
+    try{
+       const {slug}=req.params
+       const category=await CategoryModel.findOne({slug})
+       if(!category)
+       return res.send(
+        {message:'Category does not exist',
+       success:false}
+       )
+       const count=await ProductModel.find({category:category._id}).countDocuments()
+       res.send({
+        message:'Count of documents fetched',
+        success:true,
+        count
+       })
+    }catch(error)
+    {
+        res.send({
+            message:'Something went wrong',
+            success:false,
+            error:error.message
+        })
+    }
+}
+
+const getSubCategoryDocumentProductsController=async(req,res)=>{
+    try{
+       const {slug,subcategory_id}=req.params
+       const category=await CategoryModel.findOne({slug})
+       if(!category)
+       return res.send(
+        {message:'Category does not exist',
+       success:false}
+       )
+
+       const subcategory=category.subcategories.filter((subcat)=>{
+        return subcat.subcategory_id===parseInt(subcategory_id)
+       })[0]
+
+       if(!subcategory)
+        return res.send(
+        {message:'Subcategory does not exist',
+       success:false}
+       )
+
+       const count=await ProductModel.find({subcategory:subcategory.subcategory_name}).countDocuments()
+       res.send({
+        message:'Count of documents fetched',
+        success:true,
+        count
+       })
+    }catch(error)
+    {
+        res.send({
+            message:'Something went wrong',
+            success:false,
+            error:error.message
+        })
+    }
+}
 module.exports={createProductController,updateProductController,
             deleteProductController,getAllProductsController,getSingleProductController,
         getProductsBySubCategoryController,createWeightsController,
@@ -775,4 +842,5 @@ module.exports={createProductController,updateProductController,
         getRelatedProductsController,getProductsBySearchController,getPhotoController,
         getSingleWeightController,getAllProductsByFiltersController,
         getProductsByCategoryController,getPaginatedProductsController,
-         getDocumentProductsController}
+         getDocumentProductsController,getCategoryDocumentProductsController,
+         getSubCategoryDocumentProductsController}
