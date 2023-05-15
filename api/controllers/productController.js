@@ -276,7 +276,6 @@ const getPhotoController=async(req,res)=>{
 const getProductsBySubCategoryController=async(req,res)=>{
     try{
          const {slug,subcategory_id}=req.params
-         const {perPage,currentPage}=req.query
          if(!slug)
          return res.send({message:'Enter slug'})
          if(!subcategory_id)
@@ -300,7 +299,6 @@ const getProductsBySubCategoryController=async(req,res)=>{
 
           const products=await ProductModel.find({subcategory:subcategory.subcategory_name})
           .select('-photo').populate('category').populate('brand')
-          .skip((currentPage-1)*perPage).limit(perPage)
 
           if(!products)
           {
@@ -702,7 +700,6 @@ const getAllProductsByFiltersController=async(req,res)=>{
 const getProductsByCategoryController=async(req,res)=>{
     try{
         const {slug}=req.params
-        const {perPage,currentPage}=req.query
         if(!slug)
         return res.send({message:'Enter slug'})
         const category=await CategoryModel.findOne({slug})
@@ -714,9 +711,7 @@ const getProductsByCategoryController=async(req,res)=>{
             })
             
         }
-        const products=await ProductModel.find({category:category._id}).
-        select('-photo').populate('brand').populate('category').
-        skip((currentPage-1)*perPage).limit(perPage)
+        const products=await ProductModel.find({category:category._id}).select('-photo').populate('brand').populate('category')
         res.send({
             message:'Products are fetched',
             success:true,
@@ -835,6 +830,89 @@ const getSubCategoryDocumentProductsController=async(req,res)=>{
         })
     }
 }
+
+const getProductsByCategoryPaginatedController=async(req,res)=>{
+     try{
+        const {slug}=req.params
+        const {perPage,currentPage}=req.query
+        if(!slug)
+        return res.send({message:'Enter slug'})
+        const category=await CategoryModel.findOne({slug})
+        if(!category)
+        {
+            return res.send({
+                message:'Category does not exist',
+                success:false
+            })
+            
+        }
+        const products=await ProductModel.find({category:category._id}).
+        select('-photo').populate('brand').populate('category').
+        skip((currentPage-1)*perPage).limit(perPage)
+        res.send({
+            message:'Products are fetched',
+            success:true,
+            products
+        })
+    }catch(error)
+    {
+        res.send({
+            message:'Something went wrong',
+            success:false,
+            error:error.message
+        })
+    }
+}
+const getProductsBySubCategoryPaginatedController=async(req,res)=>{
+     try{
+         const {slug,subcategory_id}=req.params
+         const {perPage,currentPage}=req.query
+         if(!slug)
+         return res.send({message:'Enter slug'})
+         if(!subcategory_id)
+         return res.send({message:'Enter sub category id'})
+         const category=await CategoryModel.findOne({slug})
+         if(!category)
+         {
+            return res.send({
+                message:`Category of the subcategory does not exist`,
+                success:false
+            })
+         }
+         const subcategory=category.subcategories.filter((subcat)=>subcat.subcategory_id===parseInt(subcategory_id))[0]
+          if(!subcategory)
+          {
+            return res.send({
+                message:`Sub category does not exist`,
+                success:false
+            })
+          }
+
+          const products=await ProductModel.find({subcategory:subcategory.subcategory_name})
+          .select('-photo').populate('category').populate('brand')
+          .skip((currentPage-1)*perPage).limit(perPage)
+
+          if(!products)
+          {
+            return res.send({
+                message:`There are no products of the subcategory ${subcategory.subcategory_name}`,
+                success:true
+            })
+          }
+
+          res.send({
+            message:`Products of the subcategory ${subcategory.subcategory_name} is successfully fetched`,
+            success:true,
+            products
+          })
+    }catch(error){
+         res.send({
+            message:'Something went wrong',
+            success:false,
+            error:error.message
+         })
+    }
+}
 module.exports={createProductController,updateProductController,
             deleteProductController,getAllProductsController,getSingleProductController,
         getProductsBySubCategoryController,createWeightsController,
@@ -843,4 +921,5 @@ module.exports={createProductController,updateProductController,
         getSingleWeightController,getAllProductsByFiltersController,
         getProductsByCategoryController,getPaginatedProductsController,
          getDocumentProductsController,getCategoryDocumentProductsController,
-         getSubCategoryDocumentProductsController}
+         getSubCategoryDocumentProductsController,getProductsBySubCategoryPaginatedController,
+        getProductsByCategoryPaginatedController}

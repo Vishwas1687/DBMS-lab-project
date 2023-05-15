@@ -40,7 +40,7 @@ const CategoryProduct = () => {
    const getAllCategoryProducts=async()=>{
     try{
       setLoading(true)
-       const {data}=await axios.get(`http://localhost:5000/api/products/get-products-by-category/${params.slug}`,{
+       const {data}=await axios.get(`http://localhost:5000/api/products/get-products-by-category-paginated/${params.slug}`,{
         params:{
           perPage:perPage,
           currentPage:currentPage

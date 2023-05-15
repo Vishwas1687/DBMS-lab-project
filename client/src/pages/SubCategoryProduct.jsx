@@ -40,7 +40,7 @@ const SubCategoryProduct = () => {
    const getAllSubCategoryProducts=async()=>{
     try{
       setLoading(true)
-       const {data}=await axios.get(`http://localhost:5000/api/products/get-products-by-subcategory/${params.slug}/${params.subcategory_id}`,{
+       const {data}=await axios.get(`http://localhost:5000/api/products/get-products-by-subcategory-paginated/${params.slug}/${params.subcategory_id}`,{
         params:{
           perPage:perPage,
           currentPage:currentPage
