@@ -1,6 +1,7 @@
 import React,{useEffect,useState} from 'react'
 import {useParams,Link} from 'react-router-dom'
 import {Radio} from 'antd'
+import {FaAngleLeft,FaAngleRight} from 'react-icons/fa'
 import Card from '../components/Layout/Card.jsx'
 import {prices} from './../components/prices.js'
 import toast from 'react-hot-toast'
@@ -9,9 +10,13 @@ import Layout from '../components/Layout/Layout'
 
 const SubCategoryProduct = () => {
    const [category,setCategory]=useState('')
+   const perPage=3;
+   const [totalProducts,setTotalProducts]=useState(null)
    const [loading,setLoading]=useState(true)
    const [priceFilters,setPriceFilters]=useState([0,100000])
    const [products,setProducts]=useState([])
+   const [currentPage,setCurrentPage]=useState(1)
+    const [totalPages,setTotalPages]=useState(null)
    const params=useParams()
    const getCategory=async()=>{
     try{
@@ -35,11 +40,15 @@ const SubCategoryProduct = () => {
    const getAllSubCategoryProducts=async()=>{
     try{
       setLoading(true)
-       const {data}=await axios.get(`http://localhost:5000/api/products/get-products-by-subcategory/${params.slug}/${params.subcategory_id}`)
+       const {data}=await axios.get(`http://localhost:5000/api/products/get-products-by-subcategory/${params.slug}/${params.subcategory_id}`,{
+        params:{
+          perPage:perPage,
+          currentPage:currentPage
+        }
+       })
        if(data.success)
        {
            setProducts(data.products)
-           toast.success(data.message)
        }
        else
        {
@@ -72,15 +81,62 @@ const SubCategoryProduct = () => {
     }
   }
 
+  const getTotalProducts=async()=>{
+    try{
+      
+      const {data}=await axios.get(`http://localhost:5000/api/products/get-total-products-in-subcategory-page/${params.slug}/${params.subcategory_id}`)
+      if(data.success)
+      {
+        setTotalProducts(data.count)
+        
+      }
+      
+    }catch(error)
+    {
+      toast.error('Something went wrong')
+    }
+   }
+
+   const handleForward=()=>{
+       if(currentPage===totalPages)
+       setCurrentPage(1)
+       else
+       setCurrentPage((page)=>page+1)
+   }
+
+   const handleBackward=()=>{
+       if(currentPage===1)
+       setCurrentPage(totalPages)
+       else
+       setCurrentPage((page)=>page-1)
+   }
+
    useEffect(()=>{
     getCategory()
     getAllSubCategoryProducts()
    },[params.slug,params.subcategory_id])
 
+   useEffect(() => {
+      getAllSubCategoryProducts()
+    },[currentPage]);
 
    useEffect(()=>{
         getFilterProducts()
    },[priceFilters])
+
+   useEffect(()=>{
+      getTotalProducts()
+    },[products])
+
+    useEffect(()=>{
+       setTotalPages(Math.ceil(totalProducts/perPage))
+    },[totalProducts])
+
+    // useEffect(()=>{
+    //   console.log(totalProducts)
+    // },[totalProducts])
+
+
 
   return (
     <Layout title={'Products by category'}>
@@ -131,6 +187,35 @@ const SubCategoryProduct = () => {
                  ))
                   }
                   </div>
+                  
+                   {!loading?(
+                  <>
+                  <div className="pagination-container" style={{textAlign:"center"}}>
+        <button type="button" className="btn btn-success"
+        onClick={handleBackward}>
+            <span style={{textAlign:"center",alignItems:"center"}}><FaAngleLeft/></span>
+        </button>
+         
+           
+            {Array.from(Array(totalPages), (_, index) => (
+            <button
+            key={index}
+            type="button"
+            className={`btn ${index + 1 === currentPage ? 'btn-primary' : 'btn-secondary'}`}
+            style={{ margin: '3px' }}
+            onClick={() => setCurrentPage(index + 1)}
+             >
+              {index + 1}
+            </button>
+            ))}
+
+         <button type="button" className="btn btn-success"
+         onClick={handleForward}>
+          <span style={{textAlign:"center",alignItems:"center"}}><FaAngleRight/></span>
+         </button>
+      </div>
+      </>):''}
+
                   
 
                   

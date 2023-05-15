@@ -1,6 +1,7 @@
 import React,{useEffect,useState} from 'react'
 import {useParams,Link} from 'react-router-dom'
 import {Checkbox,Radio} from 'antd'
+import {FaAngleLeft,FaAngleRight} from 'react-icons/fa'
 import Card from '../components/Layout/Card.jsx'
 import {prices} from './../components/prices.js'
 import toast from 'react-hot-toast'
@@ -10,8 +11,12 @@ import Layout from '../components/Layout/Layout'
 const CategoryProduct = () => {
    const [category,setCategory]=useState('')
    const [loading,setLoading]=useState(true)
+   const [totalProducts,setTotalProducts]=useState(null)
+   const perPage=3;
    const [priceFilters,setPriceFilters]=useState([0,100000])
    const [products,setProducts]=useState([])
+   const [currentPage,setCurrentPage]=useState(1)
+    const [totalPages,setTotalPages]=useState(null)
    const params=useParams()
    const getCategory=async()=>{
     try{
@@ -35,12 +40,16 @@ const CategoryProduct = () => {
    const getAllCategoryProducts=async()=>{
     try{
       setLoading(true)
-       const {data}=await axios.get(`http://localhost:5000/api/products/get-products-by-category/${params.slug}`)
-       console.log(data)
+       const {data}=await axios.get(`http://localhost:5000/api/products/get-products-by-category/${params.slug}`,{
+        params:{
+          perPage:perPage,
+          currentPage:currentPage
+        }
+       })
+      //  console.log(data)
        if(data.success)
        {
            setProducts(data.products)
-           toast.success(data.message)
        }
        else
        {
@@ -73,18 +82,60 @@ const CategoryProduct = () => {
     }
   }
 
+  const getTotalProducts=async()=>{
+    try{
+      
+      const {data}=await axios.get(`http://localhost:5000/api/products/get-total-products-in-category-page/${params.slug}`)
+      if(data.success)
+      {
+        setTotalProducts(data.count)
+        
+      }
+      
+    }catch(error)
+    {
+      toast.error('Something went wrong')
+    }
+   }
+
+   const handleForward=()=>{
+       if(currentPage===totalPages)
+       setCurrentPage(1)
+       else
+       setCurrentPage((page)=>page+1)
+   }
+
+   const handleBackward=()=>{
+       if(currentPage===1)
+       setCurrentPage(totalPages)
+       else
+       setCurrentPage((page)=>page-1)
+   }
+
    useEffect(()=>{
     getCategory()
     getAllCategoryProducts()
    },[params.slug])
 
-  //  useEffect(()=>{
-  //   console.log(products)
-  //  },[products])
+   useEffect(() => {
+      getAllCategoryProducts()
+    },[currentPage]);
 
    useEffect(()=>{
         getFilterProducts()
    },[priceFilters])
+
+ useEffect(()=>{
+      getTotalProducts()
+    },[products])
+
+    useEffect(()=>{
+       setTotalPages(Math.ceil(totalProducts/perPage))
+    },[totalProducts])
+
+    // useEffect(()=>{
+    //   console.log(totalPages)
+    // },[totalPages])
 
   return (
     <Layout title={'Products by category'}>
@@ -133,6 +184,41 @@ const CategoryProduct = () => {
                  ))
                   }
                   </div>
+
+                  <br></br>
+                  <br></br>
+                  
+                 {!loading?(
+                  <>
+                  <div className="pagination-container" style={{textAlign:"center"}}>
+        <button type="button" className="btn btn-success"
+        onClick={handleBackward}>
+            <span style={{textAlign:"center",alignItems:"center"}}><FaAngleLeft/></span>
+        </button>
+         
+           
+            {Array.from(Array(totalPages), (_, index) => (
+            <button
+            key={index}
+            type="button"
+            className={`btn ${index + 1 === currentPage ? 'btn-primary' : 'btn-secondary'}`}
+            style={{ margin: '3px' }}
+            onClick={() => setCurrentPage(index + 1)}
+             >
+              {index + 1}
+            </button>
+            ))}
+
+         <button type="button" className="btn btn-success"
+         onClick={handleForward}>
+          <span style={{textAlign:"center",alignItems:"center"}}><FaAngleRight/></span>
+         </button>
+      </div>
+      </>):''}
+
+      <br></br>
+       <br></br>
+        
                   
 
                   
