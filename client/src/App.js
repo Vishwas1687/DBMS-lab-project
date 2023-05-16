@@ -34,6 +34,8 @@ import SubCategoryProduct from './pages/SubCategoryProduct'
 import ProductPage from './pages/ProductPage'
 import UpdateAdminProfile from "./pages/admin/AdminProfile";
 import AdminOrders from "./pages/admin/AdminOrders";
+import Sample from "./pages/SamplePage";
+
 
 function App() {
   return (
@@ -47,7 +49,6 @@ function App() {
         <Route path = "" element = {<Dashboard />} />
         <Route path = "orders" element = {<Orders/>} />
         <Route path = "update-profile" element = {<UpdateProfile />} />
-        
       </Route>
 
       <Route path="/product/:slug" element={<ProductPage />} />
@@ -80,7 +81,7 @@ function App() {
       {/* <Route path = "/contact" element = {<Contact />} /> */}
       <Route path = "/policy" element = {<Policy />} />
       <Route path = "/*" element = {<PageNotFound />} />
-
+      <Route path = '/sample' element ={<Sample/>} />
     </Routes>
     </>
   );

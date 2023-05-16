@@ -1,5 +1,7 @@
 const express=require('express')
-
+const jwt=require('jsonwebtoken')
+const dotenv=require('dotenv')
+const passport= require('passport')
 const {registerController,loginController,
     forgotPasswordController,getAllUsersController,
     updateProfileController}=require('../controllers/authController')
@@ -7,7 +9,28 @@ const {registerController,loginController,
 const {requiresSignIn,isAdmin}=require('../middlewares/authmiddleware')
 const router=express.Router()
 
+dotenv.config()
+// auth with google
+router.get('/google',passport.authenticate('google',{scope:['profile','email','https://www.googleapis.com/auth/contacts.readonly']}))
+
+// google auth callback
+router.get('/google/callback',passport.authenticate('google',{failureRedirect:'http://localhost:3000'}),
+  (req,res)=>{
+    const token = jwt.sign({ _id: req.user._id }, process.env.JWT_TOKEN, { expiresIn: '365d' });
+    const user={
+       username:req.user.username,
+       email:req.user.email
+    }
+
+     res.redirect(`http://localhost:3000/sample?user=${JSON.stringify(user)}&token=${token}`);
+    //  res.status(200).send({
+    //   success: true,
+    //   token: token,
+    // });
+  })
+
 router.post('/login',loginController)
+
 
 router.post('/register',registerController)
 
