@@ -1,5 +1,5 @@
 import React,{useEffect,useState} from 'react'
-import {useParams,Link} from 'react-router-dom'
+import {useParams,Link,useLocation} from 'react-router-dom'
 import {Checkbox,Radio} from 'antd'
 import {FaAngleLeft,FaAngleRight} from 'react-icons/fa'
 import Card from '../components/Layout/Card.jsx'
@@ -12,6 +12,7 @@ const CategoryProduct = () => {
    const [category,setCategory]=useState('')
    const [loading,setLoading]=useState(true)
    const [totalProducts,setTotalProducts]=useState(null)
+   const location=useLocation()
    const perPage=3;
    const [priceFilters,setPriceFilters]=useState([0,100000])
    const [products,setProducts]=useState([])
@@ -170,6 +171,12 @@ const CategoryProduct = () => {
                    ))}
                    </Radio.Group>
                 </div>
+
+                <button type="button" className="btn btn-success" onClick={()=>{
+                  window.location.href = window.location.pathname;
+                }}>
+                      Reset Filters
+                </button>
             </div>
 
             <div className="col-md-10 text-left">
