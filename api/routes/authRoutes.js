@@ -2,6 +2,7 @@ const express=require('express')
 const jwt=require('jsonwebtoken')
 const dotenv=require('dotenv')
 const passport= require('passport')
+const UserModel=require('../models/User')
 const {registerController,loginController,
     forgotPasswordController,getAllUsersController,
     updateProfileController}=require('../controllers/authController')
@@ -11,15 +12,18 @@ const router=express.Router()
 
 dotenv.config()
 // auth with google
-router.get('/google',passport.authenticate('google',{scope:['profile','email','https://www.googleapis.com/auth/contacts.readonly']}))
+router.get('/google',passport.authenticate('google',{scope:['profile','email']}))
 
 // google auth callback
 router.get('/google/callback',passport.authenticate('google',{failureRedirect:'http://localhost:3000'}),
-  (req,res)=>{
+  async(req,res)=>{
     const token = jwt.sign({ _id: req.user._id }, process.env.JWT_TOKEN, { expiresIn: '365d' });
+    const existingUser=await UserModel.findById(req.user._id)
     const user={
        username:req.user.username,
-       email:req.user.email
+       email:req.user.email,
+       address: encodeURIComponent(existingUser.address),
+        phone_number: encodeURIComponent(existingUser.phone_number)
     }
 
      res.redirect(`http://localhost:3000/sample?user=${JSON.stringify(user)}&token=${token}`);
