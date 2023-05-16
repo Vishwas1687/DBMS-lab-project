@@ -11,7 +11,8 @@ const {createProductController,updateProductController,
       ,getAllProductsByFiltersController,getProductsByCategoryController,
       getPaginatedProductsController,getDocumentProductsController,
       getCategoryDocumentProductsController,getSubCategoryDocumentProductsController,
-      getProductsByCategoryPaginatedController,getProductsBySubCategoryPaginatedController}
+      getProductsByCategoryPaginatedController,getProductsBySubCategoryPaginatedController,
+    getAllProductsByCategoryFiltersController,getAllProductsBySubCategoryFiltersController}
       =require('../controllers/productController')
 
 const {requiresSignIn,isAdmin}=require('../middlewares/authmiddleware')      
@@ -47,6 +48,10 @@ router.get('/get-related-products-of-the-subcategory/:slug',getRelatedProductsCo
 router.get('/get-photo/:slug',getPhotoController)
 
 router.get('/get-all-products-based-on-filters',getAllProductsByFiltersController)
+
+router.get('/get-all-products-based-on-category-filters',getAllProductsByCategoryFiltersController)
+
+router.get('/get-all-products-based-on-subcategory-filters',getAllProductsBySubCategoryFiltersController)
 
 router.get('/get-paginated-products-for-homepage',getPaginatedProductsController)
 

@@ -66,10 +66,11 @@ const CategoryProduct = () => {
   const getFilterProducts=async()=>{
     try{
       setLoading(true)
-       const {data}=await axios.get('http://localhost:5000/api/products/get-all-products-based-on-filters',
+       const {data}=await axios.get('http://localhost:5000/api/products/get-all-products-based-on-category-filters',
        {
         params:{
-         priceFilters:JSON.stringify(priceFilters)
+         priceFilters:JSON.stringify(priceFilters),
+         slug:params.slug
         }
        })
        if(data.success)
