@@ -913,6 +913,165 @@ const getProductsBySubCategoryPaginatedController=async(req,res)=>{
          })
     }
 }
+
+const getAllProductsByCategoryFiltersController=async(req,res)=>{
+    try{
+      const priceFilters=JSON.parse(req.query.priceFilters)
+      const slug=req.query.slug
+        let products=[]
+        const category=await CategoryModel.findOne({slug})
+        if(!category)
+      return res.send({
+        message:'Category does not exist',
+        success:false
+      })
+        if(priceFilters.length!==0)
+        {
+            const minimumPrice=priceFilters[0]
+            const maximumPrice=priceFilters[1]
+            const priceProducts=await ProductModel.find({
+                category:category._id,
+                weights:{
+                    $elemMatch:
+                        {sp:{
+                            $gte:minimumPrice,
+                            $lte:maximumPrice
+                    }
+                }
+            }
+                        
+        }
+            ).select('-photo').populate('category').populate('brand')
+            products=priceProducts
+        }
+
+        console.log(products)
+        
+
+
+
+        if(priceFilters.length!==0)
+        {
+            const minimumPrice=priceFilters[0]
+            const maximumPrice=priceFilters[1]
+            
+            const sortedWeightProducts=products.map((product)=>{
+                const matchWeight=product.weights.filter((weight)=>(
+                     (weight.sp<=maximumPrice && weight.sp>=minimumPrice) 
+                     
+                ))
+                const unmatchWeight=product.weights.filter((weight)=>(
+                     (weight.sp>maximumPrice || weight.sp<minimumPrice) 
+                     
+                ))
+
+                return {
+                    ...product._doc,
+                    weights:[...matchWeight,...unmatchWeight]
+                }
+            })
+            products=sortedWeightProducts
+        }
+        
+        res.send({
+            message:'Products fetched',
+            success:true,
+            products
+        })
+
+    }catch(error)
+    {
+        res.send({
+            message:'Something went wrong',
+            success:false,
+            error:error.message
+        })
+    }
+}
+
+const getAllProductsBySubCategoryFiltersController=async(req,res)=>{
+     try{
+      const priceFilters=JSON.parse(req.query.priceFilters)
+      const slug=req.query.slug
+      const subcategory_id=req.query.subcategory_id
+      const category=await CategoryModel.findOne({slug})
+      if(!category)
+      return res.send({
+        message:'Category does not exist',
+        success:false
+      })
+      const subcategory=category.subcategories.filter((subcat)=>subcat.subcategory_id===parseInt(subcategory_id))[0]
+      if(!subcategory)
+      {
+        return res.send({
+            message:'Subcategory does not exist',
+            success:false
+        })
+      }
+        let products=[]
+        if(priceFilters.length!==0)
+        {
+            const minimumPrice=priceFilters[0]
+            const maximumPrice=priceFilters[1]
+            const priceProducts=await ProductModel.find({
+                subcategory:subcategory.subcategory_name,
+                weights:{
+                    $elemMatch:
+                        {sp:{
+                            $gte:minimumPrice,
+                            $lte:maximumPrice
+                    }
+                }
+            }
+                        
+        }
+            ).select('-photo').populate('category').populate('brand')
+            products=priceProducts
+        }
+
+        console.log(products)
+        
+
+
+
+        if(priceFilters.length!==0)
+        {
+            const minimumPrice=priceFilters[0]
+            const maximumPrice=priceFilters[1]
+            
+            const sortedWeightProducts=products.map((product)=>{
+                const matchWeight=product.weights.filter((weight)=>(
+                     (weight.sp<=maximumPrice && weight.sp>=minimumPrice) 
+                     
+                ))
+                const unmatchWeight=product.weights.filter((weight)=>(
+                     (weight.sp>maximumPrice || weight.sp<minimumPrice) 
+                     
+                ))
+
+                return {
+                    ...product._doc,
+                    weights:[...matchWeight,...unmatchWeight]
+                }
+            })
+            products=sortedWeightProducts
+        }
+        
+        res.send({
+            message:'Products fetched',
+            success:true,
+            products
+        })
+
+    }catch(error)
+    {
+        res.send({
+            message:'Something went wrong',
+            success:false,
+            error:error.message
+        })
+    }
+}
 module.exports={createProductController,updateProductController,
             deleteProductController,getAllProductsController,getSingleProductController,
         getProductsBySubCategoryController,createWeightsController,
@@ -922,4 +1081,5 @@ module.exports={createProductController,updateProductController,
         getProductsByCategoryController,getPaginatedProductsController,
          getDocumentProductsController,getCategoryDocumentProductsController,
          getSubCategoryDocumentProductsController,getProductsBySubCategoryPaginatedController,
-        getProductsByCategoryPaginatedController}
+        getProductsByCategoryPaginatedController,getAllProductsByCategoryFiltersController,
+       getAllProductsBySubCategoryFiltersController}
