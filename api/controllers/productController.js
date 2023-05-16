@@ -1,5 +1,6 @@
 const { response } = require('express')
 const slugify=require('slugify')
+const mongoose=require('mongoose')
 // const OrderModel=require('../models/Order')
 const CategoryModel=require('../models/Category')
 const fs=require('fs')
@@ -995,6 +996,7 @@ const getAllProductsBySubCategoryFiltersController=async(req,res)=>{
       const slug=req.query.slug
       const subcategory_id=req.query.subcategory_id
       const category=await CategoryModel.findOne({slug})
+      let brandFilters=JSON.parse(req.query.brandFilters)
       if(!category)
       return res.send({
         message:'Category does not exist',
@@ -1009,6 +1011,27 @@ const getAllProductsBySubCategoryFiltersController=async(req,res)=>{
         })
       }
         let products=[]
+        if(priceFilters.length!==0 && brandFilters.length!==0)
+        {
+            const minimumPrice=priceFilters[0]
+            const maximumPrice=priceFilters[1]
+            const priceProducts=await ProductModel.find({
+                subcategory:subcategory.subcategory_name,
+                brand: {$in:brandFilters},
+                weights:{
+                    $elemMatch:
+                        {sp:{
+                            $gte:minimumPrice,
+                            $lte:maximumPrice
+                    }
+                }
+            }
+                        
+        }
+            ).select('-photo').populate('category').populate('brand')
+            products=priceProducts
+        }
+
         if(priceFilters.length!==0)
         {
             const minimumPrice=priceFilters[0]
@@ -1029,7 +1052,21 @@ const getAllProductsBySubCategoryFiltersController=async(req,res)=>{
             products=priceProducts
         }
 
-        console.log(products)
+
+        if(brandFilters.length!==0)
+        {
+            const minimumPrice=priceFilters[0]
+            const maximumPrice=priceFilters[1]
+            const priceProducts=await ProductModel.find({
+                subcategory:subcategory.subcategory_name,
+                brand: {$in:brandFilters}              
+        }
+            ).select('-photo').populate('category').populate('brand')
+            products=priceProducts
+        }
+        
+
+        
         
 
 

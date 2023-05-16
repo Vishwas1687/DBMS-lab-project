@@ -1,6 +1,6 @@
 import React,{useEffect,useState} from 'react'
 import {useParams,Link} from 'react-router-dom'
-import {Radio} from 'antd'
+import {Radio,Checkbox} from 'antd'
 import {FaAngleLeft,FaAngleRight} from 'react-icons/fa'
 import Card from '../components/Layout/Card.jsx'
 import {prices} from './../components/prices.js'
@@ -15,6 +15,8 @@ const SubCategoryProduct = () => {
    const [loading,setLoading]=useState(true)
    const [priceFilters,setPriceFilters]=useState([0,100000])
    const [products,setProducts]=useState([])
+   const [brands,setBrands]=useState([])
+   const [brandFilters,setBrandFilters]=useState([])
    const [currentPage,setCurrentPage]=useState(1)
     const [totalPages,setTotalPages]=useState(null)
    const params=useParams()
@@ -65,12 +67,14 @@ const SubCategoryProduct = () => {
   const getFilterProducts=async()=>{
     try{
       setLoading(true)
+      
        const {data}=await axios.get('http://localhost:5000/api/products/get-all-products-based-on-subcategory-filters',
        {
         params:{
          priceFilters:JSON.stringify(priceFilters),
          slug:params.slug,
-         subcategory_id:params.subcategory_id
+         subcategory_id:params.subcategory_id,
+         brandFilters:JSON.stringify(brandFilters)
         }
        })
        if(data.success)
@@ -80,6 +84,17 @@ const SubCategoryProduct = () => {
     catch(error)
     {
         toast.error('Something went wrong')
+    }
+  }
+
+  const getAllBrands=async()=>{
+    try{
+      const {data}=await axios.get('http://localhost:5000/api/brands/get-all-brands')
+      if(data.success)
+      setBrands(data.brands)
+    }catch(error)
+    {
+
     }
   }
 
@@ -99,6 +114,16 @@ const SubCategoryProduct = () => {
     }
    }
 
+   const handleFilter = (value, id) => {
+    let all = [...brandFilters];
+    if (value) {
+      all.push(id);
+    } else {
+      all = all.filter((c) => c !== id);
+    }
+    setBrandFilters(all);
+  };
+
    const handleForward=()=>{
        if(currentPage===totalPages)
        setCurrentPage(1)
@@ -116,6 +141,7 @@ const SubCategoryProduct = () => {
    useEffect(()=>{
     getCategory()
     getAllSubCategoryProducts()
+    getAllBrands()
    },[params.slug,params.subcategory_id])
 
    useEffect(() => {
@@ -124,7 +150,7 @@ const SubCategoryProduct = () => {
 
    useEffect(()=>{
         getFilterProducts()
-   },[priceFilters])
+   },[priceFilters,brandFilters])
 
    useEffect(()=>{
       getTotalProducts()
@@ -161,6 +187,21 @@ const SubCategoryProduct = () => {
                     </div>
                 </div>
                 )} 
+
+                 <div className="cont">
+                  <h3>BrandFilters</h3>
+                   {brands?.map((c) => (
+              <Checkbox
+                key={c._id}
+                onChange={(e) => handleFilter(e.target.checked,c._id)}
+              >
+                {c.brand_name}
+              </Checkbox>
+            ))}
+
+                 </div>
+ 
+
                 
                 <div className="cont">
                   <h3>Price Filters</h3>
@@ -173,6 +214,12 @@ const SubCategoryProduct = () => {
                     </div>
                    ))}
                    </Radio.Group>
+
+                   <button type="button" className="btn btn-success" onClick={()=>{
+                  window.location.href = window.location.pathname;
+                }}>
+                      Reset Filters
+                </button>
                 </div>
             </div>
 
