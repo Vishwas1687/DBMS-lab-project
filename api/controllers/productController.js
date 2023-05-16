@@ -918,6 +918,8 @@ const getProductsBySubCategoryPaginatedController=async(req,res)=>{
 const getAllProductsByCategoryFiltersController=async(req,res)=>{
     try{
       const priceFilters=JSON.parse(req.query.priceFilters)
+      const brandFilters=JSON.parse(req.query.brandFilters)
+      const subcategoryFilters=JSON.parse(req.query.subcategoryFilters)
       const slug=req.query.slug
         let products=[]
         const category=await CategoryModel.findOne({slug})
@@ -926,7 +928,106 @@ const getAllProductsByCategoryFiltersController=async(req,res)=>{
         message:'Category does not exist',
         success:false
       })
-        if(priceFilters.length!==0)
+        if(priceFilters.length!==0 && subcategoryFilters.length!==0 && brandFilters.length!==0)
+        {
+            const minimumPrice=priceFilters[0]
+            const maximumPrice=priceFilters[1]
+            const priceProducts=await ProductModel.find({
+                brand:{$in:brandFilters},
+                subcategory:{$in:subcategoryFilters},
+                weights:{
+                    $elemMatch:
+                        {sp:{
+                            $gte:minimumPrice,
+                            $lte:maximumPrice
+                    }
+                }
+            }
+                        
+        }
+            ).select('-photo').populate('category').populate('brand')
+            products=priceProducts
+        }
+
+       
+        else if(subcategoryFilters.length!==0 && priceFilters.length!==0)
+        {
+            const minimumPrice=priceFilters[0]
+            const maximumPrice=priceFilters[1]
+            const priceProducts=await ProductModel.find({
+                subcategory:{$in:subcategoryFilters},
+                weights:{
+                    $elemMatch:
+                        {sp:{
+                            $gte:minimumPrice,
+                            $lte:maximumPrice
+                    }
+                }
+            }
+                        
+        }
+            ).select('-photo').populate('category').populate('brand')
+            products=priceProducts
+        }
+
+        else if(brandFilters.length!==0 && priceFilters.length!==0)
+        {
+            const minimumPrice=priceFilters[0]
+            const maximumPrice=priceFilters[1]
+            const priceProducts=await ProductModel.find({
+                category:category._id,
+                brand:{$in:brandFilters},
+                weights:{
+                    $elemMatch:
+                        {sp:{
+                            $gte:minimumPrice,
+                            $lte:maximumPrice
+                    }
+                }
+            }
+                        
+        }
+            ).select('-photo').populate('category').populate('brand')
+            products=priceProducts
+        }
+        
+         else if(brandFilters.length!==0 && subcategoryFilters.length!==0)
+        {
+            const minimumPrice=priceFilters[0]
+            const maximumPrice=priceFilters[1]
+            const priceProducts=await ProductModel.find({
+                brand:{$in:brandFilters},
+                subcategory:{$in:subcategoryFilters}        
+        }
+            ).select('-photo').populate('category').populate('brand')
+            products=priceProducts
+        }
+
+
+        else if(brandFilters.length!==0)
+        {
+            const minimumPrice=priceFilters[0]
+            const maximumPrice=priceFilters[1]
+            const priceProducts=await ProductModel.find({
+                category:category._id,
+                brand:{$in:brandFilters},       
+        }
+            ).select('-photo').populate('category').populate('brand')
+            products=priceProducts
+        }
+
+        else if(subcategoryFilters.length!==0)
+        {
+            const minimumPrice=priceFilters[0]
+            const maximumPrice=priceFilters[1]
+            const priceProducts=await ProductModel.find({
+                subcategory:{$in:subcategoryFilters},       
+        }
+            ).select('-photo').populate('category').populate('brand')
+            products=priceProducts
+        }
+
+        else if(priceFilters.length!==0)
         {
             const minimumPrice=priceFilters[0]
             const maximumPrice=priceFilters[1]
@@ -945,9 +1046,6 @@ const getAllProductsByCategoryFiltersController=async(req,res)=>{
             ).select('-photo').populate('category').populate('brand')
             products=priceProducts
         }
-
-        console.log(products)
-        
 
 
 
@@ -1064,12 +1162,6 @@ const getAllProductsBySubCategoryFiltersController=async(req,res)=>{
             ).select('-photo').populate('category').populate('brand')
             products=priceProducts
         }
-        
-
-        
-        
-
-
 
         if(priceFilters.length!==0)
         {

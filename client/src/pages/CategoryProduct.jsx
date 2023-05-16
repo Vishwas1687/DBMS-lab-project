@@ -14,7 +14,10 @@ const CategoryProduct = () => {
    const [totalProducts,setTotalProducts]=useState(null)
    const location=useLocation()
    const perPage=3;
+   const [brands,setBrands]=useState([])
+   const [brandFilters,setBrandFilters]=useState([])
    const [priceFilters,setPriceFilters]=useState([0,100000])
+   const [subcategoryFilters,setSubCategoryFilters]=useState([])
    const [products,setProducts]=useState([])
    const [currentPage,setCurrentPage]=useState(1)
     const [totalPages,setTotalPages]=useState(null)
@@ -63,6 +66,16 @@ const CategoryProduct = () => {
     }
    }
 
+    const getAllBrands=async()=>{
+    try{
+      const {data}=await axios.get('http://localhost:5000/api/brands/get-all-brands')
+      if(data.success)
+      setBrands(data.brands)
+    }catch(error)
+    {
+
+    }
+  }
 
   const getFilterProducts=async()=>{
     try{
@@ -71,7 +84,9 @@ const CategoryProduct = () => {
        {
         params:{
          priceFilters:JSON.stringify(priceFilters),
-         slug:params.slug
+         slug:params.slug,
+         subcategoryFilters:JSON.stringify(subcategoryFilters),
+         brandFilters:JSON.stringify(brandFilters)
         }
        })
        if(data.success)
@@ -100,6 +115,27 @@ const CategoryProduct = () => {
     }
    }
 
+
+   const handleFilterBrand = (value, id) => {
+    let all = [...brandFilters];
+    if (value) {
+      all.push(id);
+    } else {
+      all = all.filter((c) => c !== id);
+    }
+    setBrandFilters(all);
+  };
+
+  const handleFilterSubCategory = (value, name) => {
+    let all = [...subcategoryFilters];
+    if (value) {
+      all.push(name);
+    } else {
+      all = all.filter((c) => c.subcategory_name !== name);
+    }
+    setSubCategoryFilters(all);
+  };
+
    const handleForward=()=>{
        if(currentPage===totalPages)
        setCurrentPage(1)
@@ -117,6 +153,7 @@ const CategoryProduct = () => {
    useEffect(()=>{
     getCategory()
     getAllCategoryProducts()
+    getAllBrands()
    },[params.slug])
 
    useEffect(() => {
@@ -125,7 +162,7 @@ const CategoryProduct = () => {
 
    useEffect(()=>{
         getFilterProducts()
-   },[priceFilters])
+   },[priceFilters,brandFilters,subcategoryFilters])
 
  useEffect(()=>{
       getTotalProducts()
@@ -158,6 +195,34 @@ const CategoryProduct = () => {
                     </div>
                 </div>
                 )} 
+
+                 <div className="cont">
+                  <h3>BrandFilters</h3>
+                   {brands?.map((c) => (
+              <Checkbox
+                key={c._id}
+                onChange={(e) => handleFilterBrand(e.target.checked,c._id)}
+              >
+                {c.brand_name}
+              </Checkbox>
+            ))}
+
+                 </div>
+
+                  <div className="cont">
+                  <h3>SubCategoryFilters</h3>
+                   {category.subcategories?.map((subcat) => (
+              <Checkbox
+                key={subcat._id}
+                onChange={(e) => handleFilterSubCategory(e.target.checked,subcat.subcategory_name)}
+              >
+                {subcat.subcategory_name}
+              </Checkbox>
+            ))}
+
+                 </div>
+
+
                 
                 <div className="cont">
                   <h3>Price Filters</h3>
