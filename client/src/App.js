@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import About from "./pages/About";
-import Contact from "./pages/Contact";
+// import Contact from "./pages/Contact";
 import Policy from "./pages/Policy";
 import PageNotFound from "./pages/PageNotFound";
 import Register from "./pages/Auth/Register";
@@ -34,6 +34,9 @@ import SubCategoryProduct from './pages/SubCategoryProduct'
 import ProductPage from './pages/ProductPage'
 import UpdateAdminProfile from "./pages/admin/AdminProfile";
 import SingleOrder from "./pages/SingleOrder";
+import AdminOrders from "./pages/admin/AdminOrders";
+import Sample from "./pages/SamplePage";
+
 
 function App() {
   return (
@@ -57,6 +60,7 @@ function App() {
         <Route path = "/admin/update-profile" element = {<UpdateAdminProfile />} />
         <Route path = "/admin/manage-category" element = {<ManageCategory />} />
         <Route path = "/admin/get-category/:slug" element = {<GetCategory />} />
+        <Route path = "/admin/orders" element = {<AdminOrders />} />
         <Route path = "/admin/users" element = {<Users />} />
         <Route path = "/admin/create-category" element={<CreateCategory/>}></Route>
         <Route path = "/admin/manage-product" element = {<ManageProduct />} /> 
@@ -76,10 +80,10 @@ function App() {
       <Route path = "/forgot-password" element = {<ForgotPassword />} />
 
       <Route path = "/about" element = {<About />} />
-      <Route path = "/contact" element = {<Contact />} />
+      {/* <Route path = "/contact" element = {<Contact />} /> */}
       <Route path = "/policy" element = {<Policy />} />
       <Route path = "/*" element = {<PageNotFound />} />
-
+      <Route path = '/sample' element ={<Sample/>} />
     </Routes>
     </>
   );

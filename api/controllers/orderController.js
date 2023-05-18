@@ -117,7 +117,9 @@ const deleteOrderController=async(req,res)=>{
 
 const getAllOrdersController=async(req,res)=>{
     try{
-        const orders=await OrderModel.find({}).populate('customer').populate('items.product')
+        const orders=await OrderModel.find({}).
+        populate('customer',"username")
+        .populate('items.product',"product_name")
         if(orders.length===0)
         {
             return res.send({
