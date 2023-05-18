@@ -142,7 +142,8 @@ const ProductPage = () => {
 
     
     </Layout> : <Layout>
-        <div style={{position:'absolute',top:'50%',left:"50%",transform:"translate(-50%,-50%)"}}>
+        <div style={{position:'absolute',top:'50%',left:"50%",transform:"translate(-50%,-50%)",textAlign:"center"}}>
+        <div className="spinner-border text-center" role="status"></div>
           <h1 className='text-center'>{`Loading product ${slug}`}.</h1>
           </div>
         </Layout>}

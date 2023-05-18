@@ -33,6 +33,7 @@ import CategoryProduct from './pages/CategoryProduct'
 import SubCategoryProduct from './pages/SubCategoryProduct'
 import ProductPage from './pages/ProductPage'
 import UpdateAdminProfile from "./pages/admin/AdminProfile";
+import SingleOrder from "./pages/SingleOrder";
 
 function App() {
   return (
@@ -46,7 +47,7 @@ function App() {
         <Route path = "" element = {<Dashboard />} />
         <Route path = "orders" element = {<Orders/>} />
         <Route path = "update-profile" element = {<UpdateProfile />} />
-        
+        <Route path = "single-order/:slug" element = {<SingleOrder />} />
       </Route>
 
       <Route path="/product/:slug" element={<ProductPage />} />
