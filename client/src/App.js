@@ -36,6 +36,7 @@ import UpdateAdminProfile from "./pages/admin/AdminProfile";
 import SingleOrder from "./pages/SingleOrder";
 import AdminOrders from "./pages/admin/AdminOrders";
 import Sample from "./pages/SamplePage";
+import AdminSingleOrder from './pages/admin/AdminSingleOrder';
 
 
 function App() {
@@ -71,6 +72,7 @@ function App() {
         <Route path = "/admin/get-product/create-weight/:slug" element = {<CreateWeight/>}/>
         <Route path = "/admin/manage-brand" element = {<ManageBrand />} />
         <Route path = '/admin/update-weight/:slug/:weight_id' element={<UpdateWeight/>}/>
+        <Route path = "/admin/single-order/:slug" element = {<AdminSingleOrder />} />
       </Route>
 
       <Route path = '/category/:slug' element = {<CategoryProduct/>}/>

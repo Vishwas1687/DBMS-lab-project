@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Layout from "./../../components/Layout/Layout";
+import {Link} from 'react-router-dom'
 import AdminMenu from "./../../components/AdminMenu";
 import toast from "react-hot-toast";
 import axios from "axios";
@@ -122,9 +123,11 @@ const AdminOrders = () => {
                           >
                             Edit
                           </button>
+            <Link to={`/admin/single-order/${c.order_id}`}>         
             <button className="btn btn-info ms-2">
                 View
             </button>
+            </Link>    
 
             <button className="btn btn-danger ms-2"
             onClick={() => {
