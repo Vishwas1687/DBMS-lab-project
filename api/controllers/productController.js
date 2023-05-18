@@ -114,8 +114,8 @@ const updateProductController=async(req,res)=>{
     return res.send({message:'Enter the tags'})
     if(!slug)
     return res.send({message:'Enter the slug'})
-    if(!photo)
-    return res.send({message:'Enter the photo'})
+    // if(!photo)
+    // return res.send({message:'Enter the photo'})
 
     const existingProduct=await ProductModel.findOne({slug}).populate('brand')
     if(!existingProduct)
@@ -134,8 +134,8 @@ const updateProductController=async(req,res)=>{
             success:false
         })
     }
-
-    const updatedProduct=await ProductModel.findByIdAndUpdate(existingProduct._id,{
+    
+      const updatedProduct=await ProductModel.findByIdAndUpdate(existingProduct._id,{
         product_id:existingProduct.product_id,
         product_name:product_name,
         slug:slugify(product_name),
@@ -144,15 +144,15 @@ const updateProductController=async(req,res)=>{
         weights:weights,
         category:category,
         subcategory:subcategory,
-        photo:{
+        photo:photo ? {
             data:fs.readFileSync(photo.path),
             contentType:photo.type
-        },
+        }:existingProduct.photo,
         tags:tags,
     },{new:true})
+    
 
-     
-
+    
 
     await updatedProduct.save()
 
@@ -229,7 +229,7 @@ const getAllProductsController=async(req,res)=>{
 const getSingleProductController=async(req,res)=>{
     try{
         const {slug}=req.params
-        const existingProduct=await ProductModel.findOne({slug}).select('-photo').populate('category').populate('brand')
+        const existingProduct=await ProductModel.findOne({slug}).populate('category').populate('brand')
         if(!existingProduct)
         {
             return res.send({
@@ -1021,6 +1021,7 @@ const getAllProductsByCategoryFiltersController=async(req,res)=>{
             const minimumPrice=priceFilters[0]
             const maximumPrice=priceFilters[1]
             const priceProducts=await ProductModel.find({
+                category:category._id,
                 subcategory:{$in:subcategoryFilters},       
         }
             ).select('-photo').populate('category').populate('brand')
@@ -1130,7 +1131,7 @@ const getAllProductsBySubCategoryFiltersController=async(req,res)=>{
             products=priceProducts
         }
 
-        if(priceFilters.length!==0)
+        else if(priceFilters.length!==0)
         {
             const minimumPrice=priceFilters[0]
             const maximumPrice=priceFilters[1]
@@ -1151,7 +1152,7 @@ const getAllProductsBySubCategoryFiltersController=async(req,res)=>{
         }
 
 
-        if(brandFilters.length!==0)
+        else if(brandFilters.length!==0)
         {
             const minimumPrice=priceFilters[0]
             const maximumPrice=priceFilters[1]

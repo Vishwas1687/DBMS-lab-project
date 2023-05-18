@@ -173,8 +173,11 @@ const SubCategoryProduct = () => {
                 <h1>Filters</h1>
                 {loading?<h3>Loading...</h3>:(
                 <div className="cont">
+                  <Link to={`/category/${category.slug}`}>
                     <h4 className="text-black">{category.category_name}</h4> 
+                    </Link>
                     <div className="p-1">
+                     
                        {category && category.subcategories.map((subcat,index)=>(
                        <div key={index}>
                         <Link to={`/subcategory/${category.slug}/${subcat.subcategory_id}`} className="text-decoration-none">

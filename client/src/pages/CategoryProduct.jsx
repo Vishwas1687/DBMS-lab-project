@@ -126,14 +126,14 @@ const CategoryProduct = () => {
     setBrandFilters(all);
   };
 
-  const handleFilterSubCategory = (value, name) => {
-    let all = [...subcategoryFilters];
+  const handleFilterSubCategory = (value, subcategory_name) => {
+    let allSubcat = [...subcategoryFilters];
     if (value) {
-      all.push(name);
+      allSubcat.push(subcategory_name);
     } else {
-      all = all.filter((c) => c.subcategory_name !== name);
+      allSubcat = allSubcat.filter((c) => c!== subcategory_name);
     }
-    setSubCategoryFilters(all);
+    setSubCategoryFilters(allSubcat);
   };
 
    const handleForward=()=>{
