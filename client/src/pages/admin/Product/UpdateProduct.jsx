@@ -12,17 +12,19 @@ const CreateProduct = () => {
   const [weights,setWeights]=useState([{
     weight_id:"",weight:"",weight_units:"",mrp:"",sp:"",stock:"",
   }])
-  const [photo,setPhoto]=useState(null)
+  const [photo,setPhoto]=useState('')
   const [tags,setTags]=useState([])
   const [loading,setLoading]=useState(true)
   const [categories, setCategories] = useState([]);
   const [brands,setBrands]=useState([])
   const [category,setCategory]=useState('')
+  const [retreivedCat,setRetreivedCat]=useState('')
   const [index,setIndex]=useState(0)
   const [subcategory,setSubcategory]=useState('')
   const [productName,setProductName]=useState('')
   const [sellerId,setSellerId]=useState('')
   const [brand,setBrand]=useState('')
+  const [retreivedBrand,setRetreivedBrand]=useState('')
   
   const [cat,setCat]=useState('')
   const [catObj,setCatObj]=useState({})
@@ -89,6 +91,8 @@ const getSingleProduct=async()=>{
         {
         setTags(data.existingProduct.tags)
         setCategory(data.existingProduct.category._id)
+        setRetreivedCat(data.existingProduct.category.category_name)
+        setRetreivedBrand(data.existingProduct.brand.brand_name)
         setSubcategory(data.existingProduct.subcategory)
         setSellerId(data.existingProduct.seller_id)
         setBrand(data.existingProduct.brand._id)
@@ -247,12 +251,24 @@ useEffect(()=>{
                 <label htmlFor="brand">Brand</label>
                 <br></br>
                 <select className="w-50 p-2 h-25 " onChange={(e)=>setBrand(e.target.value)}>
-                {Object.keys(brand).length===0 && <option value="1">None</option>}
-                {brands && brands.map((brand) => (
-              <option key={brand._id} value={brand._id} name="brand">
-              {brand.brand_name}
+
+                <option value={brand} name="brand">
+                  {retreivedBrand}
+                 </option>
+
+                {brands && brands.map((c) => {
+                 return (
+                  <>
+                   {c.brand_name!==retreivedBrand?(
+              <option key={c._id} value={c._id} name="brand" >
+              {c.brand_name}
               </option>
-               ))}
+                  ):''
+                  }
+                </> )})}
+
+
+
               </select>
               </div>
               <br></br>
@@ -260,13 +276,24 @@ useEffect(()=>{
                <div className="form-group text-left">
               <label htmlFor="category">Category</label>
               <br></br>
+
               <select className="w-50 p-2 h-25 " onChange={(e)=>{setCategory(e.target.value);
                  setIndex(1)}}>
-                {categories && categories.map((c) => (
+                 <option value={category._id} name="category">
+                  {retreivedCat}
+                 </option>
+                 
+                  
+                {categories && categories.map((c) => {
+                 return (
+                  <>
+                   {c.category_name!==retreivedCat?(
               <option key={c._id} value={c._id} name="category" >
               {c.category_name}
               </option>
-               ))}
+                  ):''
+                  }
+                </> )})}
               </select>
               </div>
 

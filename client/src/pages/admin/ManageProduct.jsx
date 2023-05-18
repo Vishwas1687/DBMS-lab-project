@@ -27,34 +27,6 @@ const ManageProduct = () => {
       getAllProducts()
     },[]);
 
-  // Function to handle adding a new product
-  const handleAddProduct = () => {
-    // TODO: Implement adding a new product
-  };
-
-  const getAllProduct = async() => {
-
-    try{
-
-      const {data} = await axios.get("http://localhost:5000/api/products/all-products");
-      if(data?.success){
-
-        setProducts(data?.products)
-      }
-    }catch(error){
-
-      console.log(error)
-      toast.error("Something went wrong in getting category");
-    }
-  }
-
-  useEffect(() => {
-    getAllProduct();
-  }, []);
-  // Function to handle editing an existing product
-  const handleEditProduct = (productId) => {
-    // TODO: Implement editing an existing product
-  };
 
   // Function to handle deleting an existing product
   const handleDeleteProduct = async (slug) => {
@@ -65,7 +37,7 @@ const ManageProduct = () => {
       if (data.success) {
         toast.success(`product is deleted`);
 
-        getAllProduct();
+        getAllProducts();
       } else {
         toast.error(data.message);
       }
