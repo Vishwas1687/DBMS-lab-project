@@ -8,14 +8,17 @@ const {createProductController,updateProductController,
     createWeightsController,updateWeightController,deleteWeightController,
     getProductsByBrandController,getRelatedProductsController,
     getProductsBySearchController,getPhotoController,getSingleWeightController
-      ,getAllProductsByFiltersController,getProductsByCategoryController}
+      ,getAllProductsByFiltersController,getProductsByCategoryController,
+      getPaginatedProductsController,getDocumentProductsController}
       =require('../controllers/productController')
 
-router.post('/create-product',formidable(),createProductController)
+const {requiresSignIn,isAdmin}=require('../middlewares/authmiddleware')      
 
-router.put('/update-product/:slug',formidable(),updateProductController)
+router.post('/create-product',requiresSignIn,isAdmin,formidable(),createProductController)
 
-router.delete('/delete-product/:slug',deleteProductController)
+router.put('/update-product/:slug',requiresSignIn,isAdmin,formidable(),updateProductController)
+
+router.delete('/delete-product/:slug',requiresSignIn,isAdmin,deleteProductController)
 
 router.get('/all-products',getAllProductsController)
 
@@ -27,11 +30,11 @@ router.get('/get-products-by-search/:search',getProductsBySearchController)
 
 router.get('/get-single-product/:slug',getSingleProductController)
 
-router.post('/get-single-product/:slug/create-weights',createWeightsController)
+router.post('/get-single-product/:slug/create-weights',requiresSignIn,isAdmin,createWeightsController)
 
-router.put('/get-single-product/:slug/:weight_id/edit',updateWeightController)
+router.put('/get-single-product/:slug/:weight_id/edit',requiresSignIn,isAdmin,updateWeightController)
 
-router.delete('/get-single-product/:slug/:weight_id/delete',deleteWeightController)
+router.delete('/get-single-product/:slug/:weight_id/delete',requiresSignIn,isAdmin,deleteWeightController)
 
 router.get('/get-single-product/get-single-weight/:slug/:weight_id',getSingleWeightController)
 
@@ -42,5 +45,9 @@ router.get('/get-related-products-of-the-subcategory/:slug',getRelatedProductsCo
 router.get('/get-photo/:slug',getPhotoController)
 
 router.get('/get-all-products-based-on-filters',getAllProductsByFiltersController)
+
+router.get('/get-paginated-products-for-homepage',getPaginatedProductsController)
+
+router.get('/get-total-products-in-homepage',getDocumentProductsController)
 
 module.exports=router

@@ -5,47 +5,48 @@ const {createOrderController,updateOrderController,
       deleteOrderController,getAllOrdersController,
        getSingleOrderController,getOrderByUserController,
        getPlacedOrdersController,getDeliveredOrdersController,
-       getCancelledOrdersController,createFeedbackController,
-        getAllFeedbackOfTheProductController,getAllFlaggedFeedbackProducts,
-         getFlaggedFeedBackController,getPoorQualityFeedbackController,
-        getPoorQualityProductsController,deleteFeedbackController}=require('../controllers/orderController')
+//        getCancelledOrdersController,createFeedbackController,
+//         getAllFeedbackOfTheProductController,getAllFlaggedFeedbackProducts,
+//          getFlaggedFeedBackController,getPoorQualityFeedbackController,
+//         getPoorQualityProductsController,deleteFeedbackController
+}=require('../controllers/orderController')
 
-router.post('/create-order',createOrderController)
+const {requiresSignIn,isAdmin}=require('../middlewares/authmiddleware')
 
-router.delete('/delete-order/:order_id',deleteOrderController)
+router.post('/create-order',requiresSignIn,createOrderController)
 
-router.put('/update-order/:order_id',updateOrderController)
+router.delete('/delete-order/:order_id',requiresSignIn,isAdmin,deleteOrderController)
 
-router.get('/get-all-orders',getAllOrdersController)
+router.put('/update-order/:order_id',requiresSignIn,isAdmin,updateOrderController)
 
-router.get('/get-order-by-user/:customer_id',getOrderByUserController)
+router.get('/get-all-orders',requiresSignIn,isAdmin,getAllOrdersController)
+
+router.get('/get-order-by-user',requiresSignIn,getOrderByUserController)
 
 // router.post('/get-all-orders-by-filters',getAllOrdersByFiltersController)
 
 // router.post('get-user-orders-by-filters/:customer_id',getUserOrdersByFiltersController)
 
-router.get('/get-single-order/:order_id',getSingleOrderController)
+router.get('/get-single-order/:order_id',requiresSignIn,getSingleOrderController)
 
-router.get('/get-placed-orders',getPlacedOrdersController)
+router.get('/get-placed-orders',requiresSignIn,isAdmin,getPlacedOrdersController)
 
-router.get('/get-delivered-orders',getDeliveredOrdersController)
+router.get('/get-delivered-orders',requiresSignIn,isAdmin,getDeliveredOrdersController)
 
-router.get('/get-cancelled-orders',getCancelledOrdersController)
+// router.put('/get-order/:order_id/:user_id/:slug/feedback',createFeedbackController)
 
-router.put('/get-order/:order_id/:user_id/:slug/feedback',createFeedbackController)
+// router.get('/get-feedback/:slug',getAllFeedbackOfTheProductController)
 
-router.get('/get-feedback/:slug',getAllFeedbackOfTheProductController)
+// router.get('/get-all-flagged-feedback-of-the-product/:slug',getFlaggedFeedBackController)
 
-router.get('/get-all-flagged-feedback-of-the-product/:slug',getFlaggedFeedBackController)
+// router.get('/get-all-poor-quality-feedback-of-the-product/:slug',getPoorQualityFeedbackController)
 
-router.get('/get-all-poor-quality-feedback-of-the-product/:slug',getPoorQualityFeedbackController)
+// router.get('/get-all-products-with-poor-quality',getPoorQualityProductsController)
 
-router.get('/get-all-products-with-poor-quality',getPoorQualityProductsController)
-
-router.get('/get-all-flagged-feedback-products',getAllFlaggedFeedbackProducts)
+// router.get('/get-all-flagged-feedback-products',getAllFlaggedFeedbackProducts)
 
 // router.get('/get-products-by-feedback-rating',getProductsByFeedbackController)
 
-router.put('/delete-feedback-but-user-cant-enter-feedback-again/:slug/:id',deleteFeedbackController)
+// router.put('/delete-feedback-but-user-cant-enter-feedback-again/:slug/:id',deleteFeedbackController)
 
 module.exports=router

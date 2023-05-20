@@ -41,7 +41,7 @@ const ForgotPassword = () => {
     <>
     <Header />
     <Toaster position="top-center" />
-      <div className='container w-25' style={{marginTop: '7%',backgroundColor:'#fffbfb',padding:'20px'}}>
+      <div className='container-fluid w-25' style={{marginTop: '7%',border:'1px solid #e6e5e5',borderRadius:'10px',padding:'20px'}}>
       <form onSubmit={resetPassword}>
   <div className="form-group">
     <label htmlFor="exampleInputEmail1">Email</label>
@@ -57,7 +57,7 @@ const ForgotPassword = () => {
   </div>
   <div className="form-group mt-3">
     <label htmlFor="exampleInputUsername">Answer</label>
-    <input type="text" required value={answer} onChange={(e)=>setAnswer(e.target.value)} className="form-control" id="exampleInputAnswer" aria-describedby="emailHelp" placeholder="Enter answer" />
+    <input type="password" required value={answer} onChange={(e)=>setAnswer(e.target.value)} className="form-control" id="exampleInputAnswer" aria-describedby="emailHelp" placeholder="Enter answer" />
   </div>
   <div className='text-center mt-3'>
   <button type="submit" className="btn btn-primary">Reset Password</button>

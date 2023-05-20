@@ -8,6 +8,7 @@ import { Link,useNavigate } from 'react-router-dom';
 const ManageProduct = () => {
   const [products, setProducts] = useState([]);
   const navigate=useNavigate()
+  const [search__,setSearch__] = useState('');
 
    const getAllProducts=async()=>{
     try{
@@ -90,6 +91,9 @@ const ManageProduct = () => {
             <br></br>
             <br></br>
             <div>
+              <input type='text' value={search__} onChange={e => {setSearch__(e.target.value)}} className='mt-2 mb-2' placeholder="Search..." style={{border:'1px solid #656363',padding:'10px'}}/>
+            </div>
+            <div>
               <table className="table">
                 <thead>
                   <tr>
@@ -100,7 +104,12 @@ const ManageProduct = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {products.map((c) => (
+                  {products.filter((c)=>{
+                    if (search__ === '') return c;
+                    else if (c.product_name.toLowerCase().includes(search__.toLowerCase())){
+                      return c;
+                    }
+                  }).map((c) => (
                     <>
                     <tr key={c.slug}>
                         <td>

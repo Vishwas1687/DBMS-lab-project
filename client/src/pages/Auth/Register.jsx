@@ -46,7 +46,7 @@ const Register = () => {
     <>
       <Header />
       <Toaster position="top-center" />
-      <div className='container w-25' style={{marginTop: '7%',backgroundColor:'#fffbfb',padding:'20px'}}>
+      <div className='container-fluid w-25' style={{marginTop: '7%',border:'1px solid #e6e5e5',borderRadius:'10px',padding:'20px'}}>
       <form onSubmit={registerUser}>
       <div className="form-group">
     <label htmlFor="exampleInputUsername">Username</label>
@@ -70,7 +70,7 @@ const Register = () => {
   </div>
   <div className="form-group my-3">
     <label htmlFor="exampleInputUsername">Answer</label>
-    <input type="text" required value={answer} onChange={(e)=>setAnswer(e.target.value)} className="form-control" id="exampleInputAnswer" aria-describedby="emailHelp" placeholder="Enter answer" />
+    <input type="password" required value={answer} onChange={(e)=>setAnswer(e.target.value)} className="form-control" id="exampleInputAnswer" aria-describedby="emailHelp" placeholder="Enter answer" />
   </div>
   <button type="submit" className="btn btn-primary">Register</button>
 </form>

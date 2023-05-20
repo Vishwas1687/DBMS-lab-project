@@ -17,6 +17,8 @@ const GetCategory = () => {
     const [visible,setVisible]=useState(false)
     const [createVisible,setCreateVisible]=useState(false)
     const params=useParams()
+  const [search__,setSearch__] = useState('');
+
     
      const getCategory = async () => {
             try {
@@ -114,6 +116,9 @@ const GetCategory = () => {
              <h2 className="mb-4">{`Category id : ${cat.category_id}`}</h2>
              <button className="btn btn-primary mb-4"
                onClick={()=>setCreateVisible(true)}>Create Sub category</button>
+               <div>
+              <input type='text' value={search__} onChange={e => {setSearch__(e.target.value)}} className='my-2' placeholder="Search..." style={{border:'1px solid #656363',padding:'10px'}}/>
+            </div>
              <table className="table w-75">
                 <thead>
                  <tr>
@@ -123,7 +128,12 @@ const GetCategory = () => {
                  </tr>
                 </thead>
                 <tbody>
-                  {cat.subcategories && cat.subcategories.map((subcat,index)=>{
+                  {cat.subcategories && cat.subcategories.filter((c)=>{
+                  if (search__ === '') return c;
+                  else if (c.subcategory_name.toLowerCase().includes(search__.toLowerCase())){
+                    return c;
+                  }
+                }).map((subcat,index)=>{
                     return (
                       <>
                          <tr key={index}>

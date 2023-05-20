@@ -5,8 +5,12 @@ import Dropdown from './Dropdown'
 import Modal from './Modal'
 import DropdownCategories from './DropdownCategories';
 import SearchBar from '../Form/SearchBar';
+import { useCart } from '../../context/cart';
+import { Badge } from 'antd'
 
 const Header = () => {
+
+  const [cart] = useCart()
 
   return (
     <>
@@ -40,9 +44,13 @@ const Header = () => {
         </li>
 
         <li className="nav-item">
+
+        <Badge count={cart?.length} showZero>
           <NavLink to = "/cart" className="nav-link" href="#">
           <ShoppingCart size={32} />
           </NavLink>
+        </Badge>
+          
         </li>
         
       </ul>

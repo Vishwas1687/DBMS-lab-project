@@ -9,6 +9,10 @@ const AdminMenu = () => {
     <div className="list-group">
   <h4>Admin Page</h4>
 
+  <NavLink to="/admin/update-profile" className="list-group-item list-group-item-action">
+    Update Profile
+    
+  </NavLink>
   <NavLink to="/admin/manage-category" className="list-group-item list-group-item-action">
     Manage Category
     

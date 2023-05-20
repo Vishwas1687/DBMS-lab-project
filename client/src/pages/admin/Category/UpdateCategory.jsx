@@ -4,7 +4,6 @@ import AdminMenu from "./../../../components/AdminMenu";
 import toast from 'react-hot-toast';
 import axios from "axios";
 import {useParams,useNavigate} from 'react-router-dom';
-import { Modal } from "antd";
 
 
 const UpdateCategory = () => {
@@ -38,11 +37,6 @@ const UpdateCategory = () => {
        getSingleCategory()
    },[params.slug])
 
-   const addSubcategory=()=>{
-    setSubcategories([...subcategories,{subcategory_id:'',
-       subcategory_name:''}])
-   }
-
    const handleChange=(e)=>{
         if(e.target.name==="category id")
         setCatId(e.target.value)
@@ -72,12 +66,6 @@ const UpdateCategory = () => {
         {
             toast.error('Something went wrong')
         }
-   }
-
-   const handleSubcategories=(index,field,value)=>{
-    const newSubCategories=[...subcategories]
-    newSubCategories[index][field]=value
-    setSubcategories(newSubCategories)
    }
 
   return (
@@ -112,11 +100,11 @@ const UpdateCategory = () => {
                           name="category id"
                           placeholder="Enter category Id"
                           value={catId}
-                          onChange={handleChange}
                          />
                     </div>
 
                     <br></br>
+                    <h3>Sub categories cannot be edited</h3>
                     {subcategories.map((subcat,index)=>{
                         return(
                             <>
@@ -129,7 +117,7 @@ const UpdateCategory = () => {
                              placeholder="Enter subcategory Id"
                              name="subcategory_id"
                             value={subcat.subcategory_id}
-                            onChange={(e)=>handleSubcategories(index,"subcategory_id",e.target.value)}
+                            
                             />
                            </div>
                             <br></br>
@@ -141,17 +129,12 @@ const UpdateCategory = () => {
                              placeholder="Enter subcategory Name"
                              name="subcategory name"
                             value={subcat.subcategory_name}
-                            onChange={(e)=>handleSubcategories(index,"subcategory_name",e.target.value)}
+                            
                             />
                            </div>
                            </>
                         )
                     })}
-                    <br></br>
-                    <button className="btn btn-primary sm-2"
-                    type="button" onClick={addSubcategory}>
-                        Add another subcategory
-                    </button>
                     <br></br>
                     <br></br>
                     <button type="submit" className="btn btn-success w-100">

@@ -1,6 +1,7 @@
 import React,{useEffect,useState} from 'react'
 import {useParams,Link} from 'react-router-dom'
 import {Radio} from 'antd'
+import Card from '../components/Layout/Card.jsx'
 import {prices} from './../components/prices.js'
 import toast from 'react-hot-toast'
 import axios from 'axios'
@@ -31,10 +32,10 @@ const SubCategoryProduct = () => {
     }
    }
 
-   const getAllCategoryProducts=async()=>{
+   const getAllSubCategoryProducts=async()=>{
     try{
       setLoading(true)
-       const {data}=await axios.get(`http://localhost:5000/api/products/get-products-by-category/${params.slug}`)
+       const {data}=await axios.get(`http://localhost:5000/api/products/get-products-by-subcategory/${params.slug}/${params.subcategory_id}`)
        if(data.success)
        {
            setProducts(data.products)
@@ -73,8 +74,8 @@ const SubCategoryProduct = () => {
 
    useEffect(()=>{
     getCategory()
-    getAllCategoryProducts()
-   },[])
+    getAllSubCategoryProducts()
+   },[params.slug,params.subcategory_id])
 
 
    useEffect(()=>{
@@ -84,28 +85,26 @@ const SubCategoryProduct = () => {
   return (
     <Layout title={'Products by category'}>
         <div className="row m-2">
-            <div className="col-md-3 text-left p-3 bg-light">
+            <div className="col-md-2 text-left p-3 bg-light">
                 <h1>Filters</h1>
                 {loading?<h3>Loading...</h3>:(
-                <div className="container">
-                  <Link to={`/category/${params.slug}`}  className="text-decoration-none">
-                    <h4 className="text-black">{category.category_name}</h4>
-                   </Link> 
-                    <div className="p-2">
+                <div className="cont">
+                    <h4 className="text-black">{category.category_name}</h4> 
+                    <div className="p-1">
                        {category && category.subcategories.map((subcat,index)=>(
                        <div key={index}>
-                        <Link to={`/subcategory/${category.slug}/${subcat.subcategory_id}`} className="text-decoration-none text-secondary">
-                            {subcat.subcategory_id===parseInt(params.subcategory_id)?
-                            <p className="text-primary">{subcat.subcategory_name}</p>:
-                            <p>{subcat.subcategory_name}</p>}
+                        <Link to={`/subcategory/${category.slug}/${subcat.subcategory_id}`} className="text-decoration-none">
+                          {subcat.subcategory_id===parseInt(params.subcategory_id)?
+                          (<p className="text-primary">{subcat.subcategory_name}</p>)
+                           :(<p className="text-secondary">{subcat.subcategory_name}</p>)}
                         </Link>
                         </div>
                        ))}
                     </div>
                 </div>
-                )}
+                )} 
                 
-                <div className="container">
+                <div className="cont">
                   <h3>Price Filters</h3>
                   <Radio.Group>
                    {prices.map((price,index)=>(
@@ -117,19 +116,25 @@ const SubCategoryProduct = () => {
                    ))}
                    </Radio.Group>
                 </div>
-                
-
-
             </div>
-              <div className="col-md-9 text-left p-3">
-                {loading?<h1>Loading...</h1>:(
-                  <h1>
-                    Products
-                  </h1>
-            )}
+
+            <div className="col-md-10 text-left">
+           
+                <h1>Products</h1>  
+                <div className="row no-gutters">
+                 {!loading && products.length!==0 && products.map((product,index)=>(
+                       <>
+                          <div className="col-md-3">
+                            <Card {...product}/>
+                          </div>
+                       </>
+                 ))
+                  }
+                  </div>
+                  
+
+                  
             </div>
-            
-            
         </div>
     </Layout>
   )

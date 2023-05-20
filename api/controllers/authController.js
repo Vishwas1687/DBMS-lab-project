@@ -4,7 +4,7 @@ const UserModel = require('../models/User');
 
 const registerController = async (req, res) => {
   try {
-    const {username, email, password, confirmPassword, phone_number,answer} = req.body;
+    const {username, email, address,password, confirmPassword, phone_number,answer} = req.body;
     if(!username)
     return res.send({message:'Username is not entered'})
     if(!email)
@@ -35,6 +35,7 @@ const registerController = async (req, res) => {
     }
     // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedAnswer = await bcrypt.hash(answer,10);
     
     // Save the user to the database
     const newUser = await new UserModel({
@@ -43,13 +44,19 @@ const registerController = async (req, res) => {
       email: email,
       password: hashedPassword,
       phone_number: phone_number,
-      answer:answer
+      address:address,
+      answer:hashedAnswer
     }).save();
 
     res.status(201).send({
       success: true,
       message: "Successfully registered",
-      user: newUser,
+      user:{
+        username:newUser.username,
+        email:newUser.email,
+        phone_number:newUser.phone_number,
+        address:newUser.address
+      },
     });
   } catch (error) {
     console.error(error);
@@ -88,13 +95,10 @@ const loginController=async(req,res)=>{
    res.status(200).send({
     success:true,
     user:{
-        _id:existingUser._id,
         username:existingUser.username,
-        email:email,
-        addresses:existingUser.addresses,
-        recommended_products:existingUser.recommended_products,
+        address:existingUser.address,
         phone_number:existingUser.phone_number,
-        role:existingUser.role
+        email:existingUser.email
     },
     token:token,
     message:'Logged In',
@@ -127,7 +131,8 @@ const forgotPasswordController=async(req,res)=>{
             success:false
         })
       }
-      if(user.answer!=answer)
+      const match=await bcrypt.compare(answer,user.answer)
+      if(!match)
       {
         return res.status(404).send({
             message:"Not the correct answer",
@@ -147,12 +152,9 @@ const forgotPasswordController=async(req,res)=>{
         success:true,
         message:"Password is changed",
         user:{
-            username:user.username,
-            email:user.email,
-            addresses:user.addresses,
-            phone_number:user.phone_number,
-            role:user.role,
-            answer:user.answer
+          username:updatedUser.username,
+          address:updatedUser.address,
+          phone_number:updatedUser.phone_number
         }
       })
     }catch(error){
@@ -163,6 +165,92 @@ const forgotPasswordController=async(req,res)=>{
     }
 }
 
+const updateProfileController=async(req,res)=>{
+    try{
+    const {username,password,phone_number,address,answer}=req.body
+    
+    if(!username)
+    {
+      return res.send({message:'Username is not entered'})
+    }
+    if(!phone_number)
+    {
+      return res.send({message:'User phone number is not entered'})
+    }
+    if(!address)
+    {
+      return res.send({message:'User address is not entered'})
+    }
+    let hashedPassword
+    let hashedAnswer
+    if(password)
+    {
+      hashedPassword=await bcrypt.hash(password,10)
+    }
+    if(answer)
+    {
+      hashedAnswer=await bcrypt.hash(answer,10)
+    }
+    
+    const User=await UserModel.findById(req.user._id)
+    if(!User)
+    {
+      return res.send({message:'User does not exist'})
+    }
+
+    const updatedUser=await UserModel.findByIdAndUpdate(User._id,{
+        user_id:User._id,
+        username:username,
+        email:User.email,
+        password:hashedPassword||User.password,
+        phone_number:phone_number,
+        address:address,
+        answer:hashedAnswer||User.answer
+    },{new:true})
+
+    res.send({
+      message:'User Profile updated',
+      success:true,
+      user:{
+        username:updatedUser.username,
+        phone_number:updatedUser.phone_number,
+        address:updatedUser.address
+      }
+    })
+
+
+  }catch(error)
+  {
+    res.send({
+      message:'Something went wrong',
+      success:false,
+      error:error.message
+    })
+  }
+}
+
+const getAllUsersController=async(req,res)=>{
+  try{
+    const users=await UserModel.find({role:0})
+    if(users.length===0)
+    return res.send({
+      message:'There are no users',
+      success:false
+    })
+    res.send({
+      message:'Users are fetched',
+      success:true,
+      users
+    })
+  }catch(error)
+  {
+     res.send({
+      message:'Something went wrong',
+      success:false,
+      error:error.message
+     })
+  }
+}
 
 module.exports = { registerController,loginController,
-  forgotPasswordController};
+  forgotPasswordController,updateProfileController,getAllUsersController};

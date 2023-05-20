@@ -1,9 +1,12 @@
 import React from 'react'
 import '../styles/Card.css'
-import { Drop } from 'phosphor-react'
+import { Drop, X } from 'phosphor-react'
 import Dropdown from 'react-dropdown'
 import {useState} from 'react'
 import { useEffect } from 'react'
+import { useCart } from '../../context/cart'
+import { toast } from 'react-hot-toast'
+
 
 export default function(props){
 
@@ -16,11 +19,13 @@ export default function(props){
         )
     })
 
-
+    const [cart, setCart] = useCart([])
     const [selectedWeight, setSelectedWeight] = useState(weights[0].weight_id)
     const [sp, setSp] = useState(weights[0].sp)
     const [mrp, setMrp] = useState(weights[0].mrp)
     const [stock, setStock] = useState((weights[0].stock) > 0 ? true : false)
+
+    const [quantity, setQuantity] = useState(0)
 
     useEffect(()=>{
         //console.log(selectedWeight)
@@ -127,11 +132,17 @@ export default function(props){
                 <div> 
                     {stock ?
                         <div className="cart">
-                            <svg className="outCart" xmlns="<http://www.w3.org/2000/svg>" viewBox="0 0 64 64">
-                                <path d="M2 6h10l10 40h32l8-24H16"></path>
-                                <circle cx="23" cy="54" r="4"></circle>
-                                <circle cx="49" cy="54" r="4"></circle>
-                            </svg>
+                            <button type="button" 
+                                onClick={() =>
+                                    {
+                                    setCart([...cart, {product: props, selectedWeight: selectedWeight, sp: sp, mrp: mrp}])
+                                    console.log(cart)
+                                    localStorage.setItem('cart', JSON.stringify([...cart, {product: props, selectedWeight: selectedWeight, sp: sp, mrp: mrp, quantity: parseInt(1)}]))
+                                    toast.success('Item added to cart')
+                                }}>
+                                {quantity > 0 ? 
+                                "+-" : "ADD TO CART"}
+                            </button>
                             </div>
                         : "OUT OF STOCK"
                     }   

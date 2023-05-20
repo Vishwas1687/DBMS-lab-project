@@ -15,7 +15,7 @@ import ManageCategory from "./pages/admin/ManageCategory";
 import CreateProduct from "./pages/admin/CreateProduct";
 import Users from "./pages/admin/Users";
 import Orders from "./pages/user/Orders";
-import Profile from "./pages/user/Profile";
+import UpdateProfile from "./pages/user/UpdateProfile";
 import UpdateCategory from './pages/admin/Category/UpdateCategory.jsx'
 import CreateCategory from "./pages/admin/CreateCategory";
 // import ViewCategory from "./pages/admin/ViewCategory";
@@ -31,7 +31,9 @@ import CreateWeight from './pages/admin/CreateWeight'
 import UpdateWeight from './pages/admin/UpdateWeight'
 import CategoryProduct from './pages/CategoryProduct'
 import SubCategoryProduct from './pages/SubCategoryProduct'
-
+import ProductPage from './pages/ProductPage'
+import UpdateAdminProfile from "./pages/admin/AdminProfile";
+import CartPage from "./pages/CartPage";
 
 function App() {
   return (
@@ -44,16 +46,19 @@ function App() {
       <Route path='/user' element={<PrivateRoute />}>
         <Route path = "" element = {<Dashboard />} />
         <Route path = "orders" element = {<Orders/>} />
-        <Route path = "profile" element = {<Profile />} />
+        <Route path = "update-profile" element = {<UpdateProfile />} />
+        
       </Route>
+
+      <Route path="/product/:slug" element={<ProductPage />} />
 
       <Route path='/admin' element={ <AdminRoute /> }>
         <Route path = "" element = {<AdminDashboard />} />
+        <Route path = "/admin/update-profile" element = {<UpdateAdminProfile />} />
         <Route path = "/admin/manage-category" element = {<ManageCategory />} />
         <Route path = "/admin/get-category/:slug" element = {<GetCategory />} />
         <Route path = "/admin/users" element = {<Users />} />
         <Route path = "/admin/create-category" element={<CreateCategory/>}></Route>
-        {/* <Route path = "/admin/manage-category/category/:categorySlug" element={<ViewCategory />} /> */}
         <Route path = "/admin/manage-product" element = {<ManageProduct />} /> 
         <Route path = "/admin/manage-product/product/:slug" element = {<GetProduct />} />
         <Route path = "/admin/update-product/:slug" element = {<UpdateProduct/>} />
@@ -69,6 +74,7 @@ function App() {
 
       <Route path = "/register" element = {<Register />} />
       <Route path = "/forgot-password" element = {<ForgotPassword />} />
+      <Route path = "/cart" element = {<CartPage />} />
 
       <Route path = "/about" element = {<About />} />
       <Route path = "/contact" element = {<Contact />} />
