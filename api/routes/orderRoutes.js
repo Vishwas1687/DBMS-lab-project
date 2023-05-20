@@ -5,6 +5,7 @@ const {createOrderController,updateOrderController,
       deleteOrderController,getAllOrdersController,
        getSingleOrderController,getOrderByUserController,
        getPlacedOrdersController,getDeliveredOrdersController,
+       braintreeTokenController
 //        getCancelledOrdersController,createFeedbackController,
 //         getAllFeedbackOfTheProductController,getAllFlaggedFeedbackProducts,
 //          getFlaggedFeedBackController,getPoorQualityFeedbackController,
@@ -48,5 +49,8 @@ router.get('/get-delivered-orders',requiresSignIn,isAdmin,getDeliveredOrdersCont
 // router.get('/get-products-by-feedback-rating',getProductsByFeedbackController)
 
 // router.put('/delete-feedback-but-user-cant-enter-feedback-again/:slug/:id',deleteFeedbackController)
+
+router.get('/braintree/token',braintreeTokenController)
+
 
 module.exports=router

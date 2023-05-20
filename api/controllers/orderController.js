@@ -1,46 +1,66 @@
 const OrderModel=require('../models/Order')
 const ProductModel=require('../models/Product')
 const UserModel=require('../models/User')
+const braintree =require("braintree");
+const uuid=require('uuid')
+const dotenv=require("dotenv");
+
+dotenv.config();
+
+var gateway = new braintree.BraintreeGateway({
+  environment: braintree.Environment.Sandbox,
+  merchantId: process.env.BRAINTREE_MERCHANT_ID,
+  publicKey: process.env.BRAINTREE_PUBLIC_KEY,
+  privateKey: process.env.BRAINTREE_PRIVATE_KEY,
+});
+
+const braintreeTokenController = async (req, res) => {
+  try {
+    gateway.clientToken.generate({}, function (err, response) {
+      if (err) {
+        res.status(500).send(err);
+      } else {
+        res.send(response);
+      }
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 const createOrderController=async(req,res)=>{
-try{
-    const {items,shipping_address,total_amount}=req.body
-    if(!items)
-    return res.send({message:'Items is not entered'})
-    if(!shipping_address)
-    return res.send({message:'Shipping address not entered'})
-    if(!total_amount)
-    return res.send({message:'Total amount not entered'})
-
-    if(items.length===0)
-    {
-        return res.send({
-            message:'No products in cart',
-            success:false
-        })
-    }
-
-    const newOrder=await new OrderModel({
-        customer:req.user._id,
-        payment:{},
-        items:items,
-        shipping_address:shipping_address,
-        total_amount:total_amount
-    }).save()
-
-    res.send({
-        message:'Order successfully placed',
-        success:true,
-        newOrder
-    })
-} catch(error)
-   {
-      res.send({
-        message:'Something went wrong',
-        success:false,
-        error:error.message
-      })
-   }
+ try {
+    const { nonce, products,shipping_address,total_price} = req.body;
+    let total = 0;
+    products.map((i) => {
+      total += i.price;
+    });
+    let newTransaction = gateway.transaction.sale(
+      {
+        amount: total,
+        paymentMethodNonce: nonce,
+        options: {
+          submitForSettlement: true,
+        },
+      },
+      async function (error, result) {
+        if (result) {
+          const order =await new OrderModel({
+            items: products,
+            payment: result,
+            customer: req.user._id,
+            shipping_address:shipping_address,
+            total_amount:total_price,
+          }).save();
+          res.json({ ok: true });
+        } else {
+          res.status(500).send(error);
+        }
+      }
+    );
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 const updateOrderController=async(req,res)=>{
@@ -539,7 +559,8 @@ const getDeliveredOrdersController=async(req,res)=>
 
 module.exports={createOrderController,updateOrderController,
    deleteOrderController,getAllOrdersController,getSingleOrderController,
-   getOrderByUserController,getPlacedOrdersController,getDeliveredOrdersController
+   getOrderByUserController,getPlacedOrdersController,getDeliveredOrdersController,
+   braintreeTokenController
     //  ,createFeedbackController,getAllFeedbackOfTheProductController,
     // getAllFlaggedFeedbackProducts,getFlaggedFeedBackController,getPoorQualityFeedbackController,
     //  getPoorQualityProductsController,deleteFeedbackController
