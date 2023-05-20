@@ -33,10 +33,12 @@ import CategoryProduct from './pages/CategoryProduct'
 import SubCategoryProduct from './pages/SubCategoryProduct'
 import ProductPage from './pages/ProductPage'
 import UpdateAdminProfile from "./pages/admin/AdminProfile";
+import CartPage from "./pages/CartPage";
 import SingleOrder from "./pages/SingleOrder";
 import AdminOrders from "./pages/admin/AdminOrders";
 import Sample from "./pages/SamplePage";
 import AdminSingleOrder from './pages/admin/AdminSingleOrder';
+
 
 
 function App() {
@@ -80,6 +82,7 @@ function App() {
 
       <Route path = "/register" element = {<Register />} />
       <Route path = "/forgot-password" element = {<ForgotPassword />} />
+      <Route path = "/cart" element = {<CartPage />} />
 
       <Route path = "/about" element = {<About />} />
       {/* <Route path = "/contact" element = {<Contact />} /> */}
