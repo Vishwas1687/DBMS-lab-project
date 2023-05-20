@@ -75,6 +75,7 @@ export default function Modal() {
   </NavLink>
   <div className='text-center'>
   <button type="submit" className="btn btn-primary">Log In</button>
+  <a href="http://localhost:5000/api/auth/google">Login with google</a>
   </div>
 </form>
       </div>

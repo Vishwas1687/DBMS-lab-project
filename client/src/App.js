@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import About from "./pages/About";
-import Contact from "./pages/Contact";
+// import Contact from "./pages/Contact";
 import Policy from "./pages/Policy";
 import PageNotFound from "./pages/PageNotFound";
 import Register from "./pages/Auth/Register";
@@ -34,6 +34,12 @@ import SubCategoryProduct from './pages/SubCategoryProduct'
 import ProductPage from './pages/ProductPage'
 import UpdateAdminProfile from "./pages/admin/AdminProfile";
 import CartPage from "./pages/CartPage";
+import SingleOrder from "./pages/SingleOrder";
+import AdminOrders from "./pages/admin/AdminOrders";
+import Sample from "./pages/SamplePage";
+import AdminSingleOrder from './pages/admin/AdminSingleOrder';
+
+
 
 function App() {
   return (
@@ -47,7 +53,7 @@ function App() {
         <Route path = "" element = {<Dashboard />} />
         <Route path = "orders" element = {<Orders/>} />
         <Route path = "update-profile" element = {<UpdateProfile />} />
-        
+        <Route path = "single-order/:slug" element = {<SingleOrder />} />
       </Route>
 
       <Route path="/product/:slug" element={<ProductPage />} />
@@ -57,6 +63,7 @@ function App() {
         <Route path = "/admin/update-profile" element = {<UpdateAdminProfile />} />
         <Route path = "/admin/manage-category" element = {<ManageCategory />} />
         <Route path = "/admin/get-category/:slug" element = {<GetCategory />} />
+        <Route path = "/admin/orders" element = {<AdminOrders />} />
         <Route path = "/admin/users" element = {<Users />} />
         <Route path = "/admin/create-category" element={<CreateCategory/>}></Route>
         <Route path = "/admin/manage-product" element = {<ManageProduct />} /> 
@@ -67,6 +74,7 @@ function App() {
         <Route path = "/admin/get-product/create-weight/:slug" element = {<CreateWeight/>}/>
         <Route path = "/admin/manage-brand" element = {<ManageBrand />} />
         <Route path = '/admin/update-weight/:slug/:weight_id' element={<UpdateWeight/>}/>
+        <Route path = "/admin/single-order/:slug" element = {<AdminSingleOrder />} />
       </Route>
 
       <Route path = '/category/:slug' element = {<CategoryProduct/>}/>
@@ -77,10 +85,10 @@ function App() {
       <Route path = "/cart" element = {<CartPage />} />
 
       <Route path = "/about" element = {<About />} />
-      <Route path = "/contact" element = {<Contact />} />
+      {/* <Route path = "/contact" element = {<Contact />} /> */}
       <Route path = "/policy" element = {<Policy />} />
       <Route path = "/*" element = {<PageNotFound />} />
-
+      <Route path = '/sample' element ={<Sample/>} />
     </Routes>
     </>
   );

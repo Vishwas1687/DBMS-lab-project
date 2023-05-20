@@ -1,5 +1,6 @@
 const { response } = require('express')
 const slugify=require('slugify')
+const mongoose=require('mongoose')
 // const OrderModel=require('../models/Order')
 const CategoryModel=require('../models/Category')
 const fs=require('fs')
@@ -113,8 +114,8 @@ const updateProductController=async(req,res)=>{
     return res.send({message:'Enter the tags'})
     if(!slug)
     return res.send({message:'Enter the slug'})
-    if(!photo)
-    return res.send({message:'Enter the photo'})
+    // if(!photo)
+    // return res.send({message:'Enter the photo'})
 
     const existingProduct=await ProductModel.findOne({slug}).populate('brand')
     if(!existingProduct)
@@ -133,8 +134,8 @@ const updateProductController=async(req,res)=>{
             success:false
         })
     }
-
-    const updatedProduct=await ProductModel.findByIdAndUpdate(existingProduct._id,{
+    
+      const updatedProduct=await ProductModel.findByIdAndUpdate(existingProduct._id,{
         product_id:existingProduct.product_id,
         product_name:product_name,
         slug:slugify(product_name),
@@ -143,15 +144,15 @@ const updateProductController=async(req,res)=>{
         weights:weights,
         category:category,
         subcategory:subcategory,
-        photo:{
+        photo:photo ? {
             data:fs.readFileSync(photo.path),
             contentType:photo.type
-        },
+        }:existingProduct.photo,
         tags:tags,
     },{new:true})
+    
 
-     
-
+    
 
     await updatedProduct.save()
 
@@ -228,7 +229,7 @@ const getAllProductsController=async(req,res)=>{
 const getSingleProductController=async(req,res)=>{
     try{
         const {slug}=req.params
-        const existingProduct=await ProductModel.findOne({slug}).select('-photo').populate('category').populate('brand')
+        const existingProduct=await ProductModel.findOne({slug}).populate('category').populate('brand')
         if(!existingProduct)
         {
             return res.send({
@@ -297,7 +298,8 @@ const getProductsBySubCategoryController=async(req,res)=>{
             })
           }
 
-          const products=await ProductModel.find({subcategory:subcategory.subcategory_name}).select('-photo').populate('category').populate('brand')
+          const products=await ProductModel.find({subcategory:subcategory.subcategory_name})
+          .select('-photo').populate('category').populate('brand')
 
           if(!products)
           {
@@ -768,6 +770,438 @@ const getDocumentProductsController=async(req,res)=>{
         })
     }
 }
+
+const getCategoryDocumentProductsController=async(req,res)=>{
+    try{
+       const {slug}=req.params
+       const category=await CategoryModel.findOne({slug})
+       if(!category)
+       return res.send(
+        {message:'Category does not exist',
+       success:false}
+       )
+       const count=await ProductModel.find({category:category._id}).countDocuments()
+       res.send({
+        message:'Count of documents fetched',
+        success:true,
+        count
+       })
+    }catch(error)
+    {
+        res.send({
+            message:'Something went wrong',
+            success:false,
+            error:error.message
+        })
+    }
+}
+
+const getSubCategoryDocumentProductsController=async(req,res)=>{
+    try{
+       const {slug,subcategory_id}=req.params
+       const category=await CategoryModel.findOne({slug})
+       if(!category)
+       return res.send(
+        {message:'Category does not exist',
+       success:false}
+       )
+
+       const subcategory=category.subcategories.filter((subcat)=>{
+        return subcat.subcategory_id===parseInt(subcategory_id)
+       })[0]
+
+       if(!subcategory)
+        return res.send(
+        {message:'Subcategory does not exist',
+       success:false}
+       )
+
+       const count=await ProductModel.find({subcategory:subcategory.subcategory_name}).countDocuments()
+       res.send({
+        message:'Count of documents fetched',
+        success:true,
+        count
+       })
+    }catch(error)
+    {
+        res.send({
+            message:'Something went wrong',
+            success:false,
+            error:error.message
+        })
+    }
+}
+
+const getProductsByCategoryPaginatedController=async(req,res)=>{
+     try{
+        const {slug}=req.params
+        const {perPage,currentPage}=req.query
+        if(!slug)
+        return res.send({message:'Enter slug'})
+        const category=await CategoryModel.findOne({slug})
+        if(!category)
+        {
+            return res.send({
+                message:'Category does not exist',
+                success:false
+            })
+            
+        }
+        const products=await ProductModel.find({category:category._id}).
+        select('-photo').populate('brand').populate('category').
+        skip((currentPage-1)*perPage).limit(perPage)
+        res.send({
+            message:'Products are fetched',
+            success:true,
+            products
+        })
+    }catch(error)
+    {
+        res.send({
+            message:'Something went wrong',
+            success:false,
+            error:error.message
+        })
+    }
+}
+const getProductsBySubCategoryPaginatedController=async(req,res)=>{
+     try{
+         const {slug,subcategory_id}=req.params
+         const {perPage,currentPage}=req.query
+         if(!slug)
+         return res.send({message:'Enter slug'})
+         if(!subcategory_id)
+         return res.send({message:'Enter sub category id'})
+         const category=await CategoryModel.findOne({slug})
+         if(!category)
+         {
+            return res.send({
+                message:`Category of the subcategory does not exist`,
+                success:false
+            })
+         }
+         const subcategory=category.subcategories.filter((subcat)=>subcat.subcategory_id===parseInt(subcategory_id))[0]
+          if(!subcategory)
+          {
+            return res.send({
+                message:`Sub category does not exist`,
+                success:false
+            })
+          }
+
+          const products=await ProductModel.find({subcategory:subcategory.subcategory_name})
+          .select('-photo').populate('category').populate('brand')
+          .skip((currentPage-1)*perPage).limit(perPage)
+
+          if(!products)
+          {
+            return res.send({
+                message:`There are no products of the subcategory ${subcategory.subcategory_name}`,
+                success:true
+            })
+          }
+
+          res.send({
+            message:`Products of the subcategory ${subcategory.subcategory_name} is successfully fetched`,
+            success:true,
+            products
+          })
+    }catch(error){
+         res.send({
+            message:'Something went wrong',
+            success:false,
+            error:error.message
+         })
+    }
+}
+
+const getAllProductsByCategoryFiltersController=async(req,res)=>{
+    try{
+      const priceFilters=JSON.parse(req.query.priceFilters)
+      const brandFilters=JSON.parse(req.query.brandFilters)
+      const subcategoryFilters=JSON.parse(req.query.subcategoryFilters)
+      const slug=req.query.slug
+        let products=[]
+        const category=await CategoryModel.findOne({slug})
+        if(!category)
+      return res.send({
+        message:'Category does not exist',
+        success:false
+      })
+        if(priceFilters.length!==0 && subcategoryFilters.length!==0 && brandFilters.length!==0)
+        {
+            const minimumPrice=priceFilters[0]
+            const maximumPrice=priceFilters[1]
+            const priceProducts=await ProductModel.find({
+                brand:{$in:brandFilters},
+                subcategory:{$in:subcategoryFilters},
+                weights:{
+                    $elemMatch:
+                        {sp:{
+                            $gte:minimumPrice,
+                            $lte:maximumPrice
+                    }
+                }
+            }
+                        
+        }
+            ).select('-photo').populate('category').populate('brand')
+            products=priceProducts
+        }
+
+       
+        else if(subcategoryFilters.length!==0 && priceFilters.length!==0)
+        {
+            const minimumPrice=priceFilters[0]
+            const maximumPrice=priceFilters[1]
+            const priceProducts=await ProductModel.find({
+                subcategory:{$in:subcategoryFilters},
+                weights:{
+                    $elemMatch:
+                        {sp:{
+                            $gte:minimumPrice,
+                            $lte:maximumPrice
+                    }
+                }
+            }
+                        
+        }
+            ).select('-photo').populate('category').populate('brand')
+            products=priceProducts
+        }
+
+        else if(brandFilters.length!==0 && priceFilters.length!==0)
+        {
+            const minimumPrice=priceFilters[0]
+            const maximumPrice=priceFilters[1]
+            const priceProducts=await ProductModel.find({
+                category:category._id,
+                brand:{$in:brandFilters},
+                weights:{
+                    $elemMatch:
+                        {sp:{
+                            $gte:minimumPrice,
+                            $lte:maximumPrice
+                    }
+                }
+            }
+                        
+        }
+            ).select('-photo').populate('category').populate('brand')
+            products=priceProducts
+        }
+        
+         else if(brandFilters.length!==0 && subcategoryFilters.length!==0)
+        {
+            const minimumPrice=priceFilters[0]
+            const maximumPrice=priceFilters[1]
+            const priceProducts=await ProductModel.find({
+                brand:{$in:brandFilters},
+                subcategory:{$in:subcategoryFilters}        
+        }
+            ).select('-photo').populate('category').populate('brand')
+            products=priceProducts
+        }
+
+
+        else if(brandFilters.length!==0)
+        {
+            const minimumPrice=priceFilters[0]
+            const maximumPrice=priceFilters[1]
+            const priceProducts=await ProductModel.find({
+                category:category._id,
+                brand:{$in:brandFilters},       
+        }
+            ).select('-photo').populate('category').populate('brand')
+            products=priceProducts
+        }
+
+        else if(subcategoryFilters.length!==0)
+        {
+            const minimumPrice=priceFilters[0]
+            const maximumPrice=priceFilters[1]
+            const priceProducts=await ProductModel.find({
+                category:category._id,
+                subcategory:{$in:subcategoryFilters},       
+        }
+            ).select('-photo').populate('category').populate('brand')
+            products=priceProducts
+        }
+
+        else if(priceFilters.length!==0)
+        {
+            const minimumPrice=priceFilters[0]
+            const maximumPrice=priceFilters[1]
+            const priceProducts=await ProductModel.find({
+                category:category._id,
+                weights:{
+                    $elemMatch:
+                        {sp:{
+                            $gte:minimumPrice,
+                            $lte:maximumPrice
+                    }
+                }
+            }
+                        
+        }
+            ).select('-photo').populate('category').populate('brand')
+            products=priceProducts
+        }
+
+
+
+        if(priceFilters.length!==0)
+        {
+            const minimumPrice=priceFilters[0]
+            const maximumPrice=priceFilters[1]
+            
+            const sortedWeightProducts=products.map((product)=>{
+                const matchWeight=product.weights.filter((weight)=>(
+                     (weight.sp<=maximumPrice && weight.sp>=minimumPrice) 
+                     
+                ))
+                const unmatchWeight=product.weights.filter((weight)=>(
+                     (weight.sp>maximumPrice || weight.sp<minimumPrice) 
+                     
+                ))
+
+                return {
+                    ...product._doc,
+                    weights:[...matchWeight,...unmatchWeight]
+                }
+            })
+            products=sortedWeightProducts
+        }
+        
+        res.send({
+            message:'Products fetched',
+            success:true,
+            products
+        })
+
+    }catch(error)
+    {
+        res.send({
+            message:'Something went wrong',
+            success:false,
+            error:error.message
+        })
+    }
+}
+
+const getAllProductsBySubCategoryFiltersController=async(req,res)=>{
+     try{
+      const priceFilters=JSON.parse(req.query.priceFilters)
+      const slug=req.query.slug
+      const subcategory_id=req.query.subcategory_id
+      const category=await CategoryModel.findOne({slug})
+      let brandFilters=JSON.parse(req.query.brandFilters)
+      if(!category)
+      return res.send({
+        message:'Category does not exist',
+        success:false
+      })
+      const subcategory=category.subcategories.filter((subcat)=>subcat.subcategory_id===parseInt(subcategory_id))[0]
+      if(!subcategory)
+      {
+        return res.send({
+            message:'Subcategory does not exist',
+            success:false
+        })
+      }
+        let products=[]
+        if(priceFilters.length!==0 && brandFilters.length!==0)
+        {
+            const minimumPrice=priceFilters[0]
+            const maximumPrice=priceFilters[1]
+            const priceProducts=await ProductModel.find({
+                subcategory:subcategory.subcategory_name,
+                brand: {$in:brandFilters},
+                weights:{
+                    $elemMatch:
+                        {sp:{
+                            $gte:minimumPrice,
+                            $lte:maximumPrice
+                    }
+                }
+            }
+                        
+        }
+            ).select('-photo').populate('category').populate('brand')
+            products=priceProducts
+        }
+
+        else if(priceFilters.length!==0)
+        {
+            const minimumPrice=priceFilters[0]
+            const maximumPrice=priceFilters[1]
+            const priceProducts=await ProductModel.find({
+                subcategory:subcategory.subcategory_name,
+                weights:{
+                    $elemMatch:
+                        {sp:{
+                            $gte:minimumPrice,
+                            $lte:maximumPrice
+                    }
+                }
+            }
+                        
+        }
+            ).select('-photo').populate('category').populate('brand')
+            products=priceProducts
+        }
+
+
+        else if(brandFilters.length!==0)
+        {
+            const minimumPrice=priceFilters[0]
+            const maximumPrice=priceFilters[1]
+            const priceProducts=await ProductModel.find({
+                subcategory:subcategory.subcategory_name,
+                brand: {$in:brandFilters}              
+        }
+            ).select('-photo').populate('category').populate('brand')
+            products=priceProducts
+        }
+
+        if(priceFilters.length!==0)
+        {
+            const minimumPrice=priceFilters[0]
+            const maximumPrice=priceFilters[1]
+            
+            const sortedWeightProducts=products.map((product)=>{
+                const matchWeight=product.weights.filter((weight)=>(
+                     (weight.sp<=maximumPrice && weight.sp>=minimumPrice) 
+                     
+                ))
+                const unmatchWeight=product.weights.filter((weight)=>(
+                     (weight.sp>maximumPrice || weight.sp<minimumPrice) 
+                     
+                ))
+
+                return {
+                    ...product._doc,
+                    weights:[...matchWeight,...unmatchWeight]
+                }
+            })
+            products=sortedWeightProducts
+        }
+        
+        res.send({
+            message:'Products fetched',
+            success:true,
+            products
+        })
+
+    }catch(error)
+    {
+        res.send({
+            message:'Something went wrong',
+            success:false,
+            error:error.message
+        })
+    }
+}
 module.exports={createProductController,updateProductController,
             deleteProductController,getAllProductsController,getSingleProductController,
         getProductsBySubCategoryController,createWeightsController,
@@ -775,4 +1209,7 @@ module.exports={createProductController,updateProductController,
         getRelatedProductsController,getProductsBySearchController,getPhotoController,
         getSingleWeightController,getAllProductsByFiltersController,
         getProductsByCategoryController,getPaginatedProductsController,
-         getDocumentProductsController}
+         getDocumentProductsController,getCategoryDocumentProductsController,
+         getSubCategoryDocumentProductsController,getProductsBySubCategoryPaginatedController,
+        getProductsByCategoryPaginatedController,getAllProductsByCategoryFiltersController,
+       getAllProductsBySubCategoryFiltersController}

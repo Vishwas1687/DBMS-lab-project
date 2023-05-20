@@ -9,7 +9,10 @@ const {createProductController,updateProductController,
     getProductsByBrandController,getRelatedProductsController,
     getProductsBySearchController,getPhotoController,getSingleWeightController
       ,getAllProductsByFiltersController,getProductsByCategoryController,
-      getPaginatedProductsController,getDocumentProductsController}
+      getPaginatedProductsController,getDocumentProductsController,
+      getCategoryDocumentProductsController,getSubCategoryDocumentProductsController,
+      getProductsByCategoryPaginatedController,getProductsBySubCategoryPaginatedController,
+    getAllProductsByCategoryFiltersController,getAllProductsBySubCategoryFiltersController}
       =require('../controllers/productController')
 
 const {requiresSignIn,isAdmin}=require('../middlewares/authmiddleware')      
@@ -46,8 +49,20 @@ router.get('/get-photo/:slug',getPhotoController)
 
 router.get('/get-all-products-based-on-filters',getAllProductsByFiltersController)
 
+router.get('/get-all-products-based-on-category-filters',getAllProductsByCategoryFiltersController)
+
+router.get('/get-all-products-based-on-subcategory-filters',getAllProductsBySubCategoryFiltersController)
+
 router.get('/get-paginated-products-for-homepage',getPaginatedProductsController)
 
 router.get('/get-total-products-in-homepage',getDocumentProductsController)
+
+router.get('/get-total-products-in-category-page/:slug',getCategoryDocumentProductsController)
+
+router.get('/get-total-products-in-subcategory-page/:slug/:subcategory_id',getSubCategoryDocumentProductsController)
+
+router.get('/get-products-by-category-paginated/:slug',getProductsByCategoryPaginatedController)
+
+router.get('/get-products-by-subcategory-paginated/:slug/:subcategory_id',getProductsBySubCategoryPaginatedController)
 
 module.exports=router

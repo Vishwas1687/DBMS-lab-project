@@ -252,5 +252,7 @@ const getAllUsersController=async(req,res)=>{
   }
 }
 
+
+
 module.exports = { registerController,loginController,
   forgotPasswordController,updateProfileController,getAllUsersController};
