@@ -25,7 +25,7 @@ const SingleOrder = () => {
         try{
             setLoading(true)
             const {data} = await axios.get(`http://localhost:5000/api/orders/get-single-order/${slug}`);
-            if (auth.user.username !== data.singleOrder.customer.username) navigate("/");
+            // if (auth.user.username !== data.singleOrder.customer.username) navigate("/");
             console.log(data);
             if (!data.success){
                 setFound(false);
@@ -55,6 +55,10 @@ const SingleOrder = () => {
     };
     fetchData();
   }, [slug]);
+
+  useEffect(()=>{
+    console.log(info)
+  },[])
 
   return (
     <>

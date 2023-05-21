@@ -135,9 +135,9 @@ export default function(props){
                             <button type="button" 
                                 onClick={() =>
                                     {
-                                    setCart([...cart, {product: props, selectedWeight: selectedWeight, sp: sp, mrp: mrp}])
+                                    setCart([...cart, {product:props,selectedWeight: selectedWeight, sp: sp, mrp: mrp,quantity:parseInt(1)}])
                                     console.log(cart)
-                                    localStorage.setItem('cart', JSON.stringify([...cart, {product: props, selectedWeight: selectedWeight, sp: sp, mrp: mrp, quantity: parseInt(1)}]))
+                                    localStorage.setItem('cart', JSON.stringify([...cart, {product:props,selectedWeight: selectedWeight, sp: sp, mrp: mrp, quantity: parseInt(1)}]))
                                     toast.success('Item added to cart')
                                 }}>
                                 {quantity > 0 ? 
