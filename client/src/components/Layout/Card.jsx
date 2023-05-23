@@ -6,6 +6,8 @@ import {useState} from 'react'
 import { useEffect } from 'react'
 import { useCart } from '../../context/cart'
 import { toast } from 'react-hot-toast'
+import { FaShoppingBasket } from 'react-icons/fa'
+import {Link} from 'react-router-dom'
 
 
 export default function(props){
@@ -15,7 +17,7 @@ export default function(props){
 
     const options = weights.map(item =>{
         return(
-            <option value={item.weight_id}>{item.weight} {item.weight_units}</option>
+            <option value={item.weight_id}>{item.weight} {item.weight_units} {` - Rs. ${item.sp}`}</option>
         )
     })
 
@@ -52,51 +54,9 @@ export default function(props){
     },[selectedWeight])
 
     //console.log(stock)
-
-    
-
-    // const imgStr = `http://localhost:5000/api/products/get-photo/${props.slug}`
-    // console.log(imgStr)
-    
-
-
-    
+ 
     return(
-            // <div className="card">
-            //     <img 
-            //         className="card--image" 
-            //         src= {`http://localhost:5000/api/products/get-photo/${props.slug}`}
-            //     />
-            //     <div className="card--content">
-            //         <h3 className="card--title">{props.product_name}</h3>
-            //         <p className="card--text">
-            //             {props.brand.brand_name}
-            //             <br/>
-            //             {props.category.category_name} • {props.subcategory}
-            //         </p>
-            //         <h4 className="card--choice">
-            //             <label>
-            //                 Weight:
-            //                 <select 
-            //                     name="selectedWeight" 
-            //                     value={selectedWeight}
-            //                     onChange={e => setSelectedWeight(e.target.value)}
-            //                 >
-            //                     {options}
-            //                 </select>
-            //             </label>
-            //             <br/>
-
-            //             <h5 className="card--price">
-            //                     Selling price: {sp}
-            //                     <br/> 
-            //                     MRP: {mrp}
-            //             </h5>
-                        
-            //         </h4>
-            //     </div>
-    
-            // </div>
+            
 
     <div className="card">
         <div className="wrapper">
@@ -111,28 +71,31 @@ export default function(props){
                     {props.category.category_name} • {props.subcategory}
                 </p>
 
-                <div className="action">
-                    <div className="priceGroup">
-                        <p className="price old_price">MRP:{mrp}</p>
-                        <p className="price newPrice">Price:{sp}</p>
-                    </div>
+                
                     
                     <label>
-                            Weight:
                             <select 
                                 name="selectedWeight" 
+                                id="weight"
                                 value={selectedWeight}
                                 onChange={e => setSelectedWeight(e.target.value)}
                             >
                                 {options}
                             </select>
                     </label> 
+
+                    <div className="action">
+                    <div className="priceGroup">
+                        <span className="price old_price">MRP:{mrp}</span>
+                        <span className="price newPrice">Price:{sp}</span>
+                    </div>
                 </div>
 
                 <div> 
                     {stock ?
                         <div className="cart">
                             <button type="button" 
+                             className='add_to_cart_btn'
                                 onClick={() =>
                                     {
                                     setCart([...cart, {product:props,selectedWeight: selectedWeight, sp: sp, mrp: mrp,quantity:parseInt(1)}])
@@ -140,9 +103,15 @@ export default function(props){
                                     localStorage.setItem('cart', JSON.stringify([...cart, {product:props,selectedWeight: selectedWeight, sp: sp, mrp: mrp, quantity: parseInt(1)}]))
                                     toast.success('Item added to cart')
                                 }}>
-                                {quantity > 0 ? 
-                                "+-" : "ADD TO CART"}
+                                <span>{quantity > 0 ? 
+                                "+-" : "Add to cart"}
+                                </span>
                             </button>
+                          <Link to={`/product/${props.slug}`}>
+                            <button type="button" className='view_detail_btn'>
+                              View details
+                            </button>
+                          </Link> 
                             </div>
                         : "OUT OF STOCK"
                     }   

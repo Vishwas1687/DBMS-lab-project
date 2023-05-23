@@ -731,7 +731,7 @@ const getProductsByCategoryController=async(req,res)=>{
 const getPaginatedProductsController=async(req,res)=>{
     try{
        const {page,perPage}=req.query;
-       const products=await ProductModel.find({}).select("-photo")
+       const products=await ProductModel.find({}).select("-photo").populate('brand').populate('category')
        .skip(perPage*(page-1)).limit(perPage)
        if(products.length===0)
        return res.send({
