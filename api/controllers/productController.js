@@ -1,7 +1,7 @@
 const { response } = require('express')
 const slugify=require('slugify')
 const mongoose=require('mongoose')
-// const OrderModel=require('../models/Order')
+const OrderModel=require('../models/Order')
 const CategoryModel=require('../models/Category')
 const fs=require('fs')
 const ProductModel=require('../models/Product')
@@ -193,6 +193,7 @@ const deleteProductController=async(req,res)=>{
     // );
 
        await ProductModel.findByIdAndDelete(existingProduct._id)
+       await OrderModel.deleteMany({"items.product":existingProduct._id})
        res.send({
            message:`Product ${slug} deleted successfully`,
            success:true
@@ -731,7 +732,7 @@ const getProductsByCategoryController=async(req,res)=>{
 const getPaginatedProductsController=async(req,res)=>{
     try{
        const {page,perPage}=req.query;
-       const products=await ProductModel.find({}).select("-photo")
+       const products=await ProductModel.find({}).select("-photo").populate('brand').populate('category')
        .skip(perPage*(page-1)).limit(perPage)
        if(products.length===0)
        return res.send({
