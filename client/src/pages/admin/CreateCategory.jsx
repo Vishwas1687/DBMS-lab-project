@@ -62,12 +62,12 @@ const CreateCategory = ({ categoryId, categoryName }) => {
   return (
     <Layout title={"Dashboard-Create Category"}>
       <br></br>
-      <div className="container-fluid">
+      <div className= "container-fluid m-3 p-3 dashboard">
         <div className="row">
-          <div className="col-md-2">
+          <div className="col-md-3">
             <AdminMenu />
           </div>
-          <div className="col-md-10 create-category-section">
+          <div className="col-md-9">
             <h1>Create Category</h1>
             <br></br>
             <form onSubmit={handleSubmit}>
