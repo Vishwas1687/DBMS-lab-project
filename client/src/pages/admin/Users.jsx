@@ -32,12 +32,11 @@ const Users = () => {
 
   return (
     <Layout title = {"Dashboard-All Users"}>
-        <div className='container-fluid m-3 p-3' >
-
-        <div className='row'>
-            <div className='col-md-3'>
+        <div className="container-fluid m-3 p-3 dashboard">
+    <div className="row">
+    <div className="col-md-3">
             <AdminMenu />
-            </div>
+          </div>
 
             <div className='col-md-9'>
                 <h1>All Users</h1>
@@ -46,34 +45,50 @@ const Users = () => {
                   <input type='text' value={search__} onChange={e => {setSearch__(e.target.value)}} className='mb-5' placeholder="Search..." style={{border:'1px solid #656363',padding:'10px'}}/>
                 </div>
                 </div>
-              <div className='tableContainer'>
-                <div class='tableHeading'>
-                  <div>ID</div>
-                  <div>Username</div>
-                  <div>Email</div>
-                  <div>Phone number</div>
-                  <div>Address</div>
-                  </div>
+                <div>
+                <table className="table">
+                <thead>
+                  <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Username</th>          
+                    <th scope="col">Email</th>
+                    <th scope="col">Phone Number</th>
+                    <th scope="col">Address</th>
+                  </tr>
+                </thead>
+                <tbody>
                 {users.length ? 
 
-                users.filter((c)=>{
-                  if (search__ === '') return c;
-                  else if (c.username.toLowerCase().includes(search__.toLowerCase())){
-                    return c;
-                  }
-                }).map((user,index)=>(
-                    <div class='flex__'>
-                      <div>{user.user_id}</div>
-                      <div>{user.username}</div>
-                      <div>{user.email}</div>
-                      <div>{user.phone_number}</div>
-                      <div>{user.address ? user.address : "No address"}</div>
-                    </div>
-                ))
-        :<>
-        No users...
-        </>}
-            </div>
+users.filter((c)=>{
+  if (search__ === '') return c;
+  else if (c.username.toLowerCase().includes(search__.toLowerCase())){
+    return c;
+  }
+}).map((user,index)=>(
+  <>
+      <tr key={user.user_id}>
+      <td>{user.user_id}</td>
+      <td>{user.username}</td>
+      <td>{user.email}</td>
+      <td>{user.phone_number}</td>
+      <td>{user.address ? user.address : "No address"}</td>
+      </tr>
+    
+  </>
+    
+))
+:<>
+No users...
+</>}
+
+                </tbody>
+
+                </table>
+                
+                </div>
+              
+                
+            
             </div>
         </div>
         <div>
