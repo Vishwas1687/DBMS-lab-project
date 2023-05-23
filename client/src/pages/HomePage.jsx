@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Header from '../components/Layout/Header';
 import { useAuth } from '../context/auth';
-import { FaAngleLeft, FaAngleRight, FaGithub } from 'react-icons/fa';
+import { FaAngleLeft, FaAngleRight, FaGithub, FaArrowUp  } from 'react-icons/fa';
 import Card from '../components/Layout/Card';
 import Slider from 'react-slick';
 import axios from 'axios';
@@ -56,6 +56,13 @@ const HomePage = () => {
     else setCurrentPage((page) => page - 1);
   };
 
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+  };
+
   useEffect(() => {
     getPaginatedProducts();
   }, [currentPage]);
@@ -67,6 +74,7 @@ const HomePage = () => {
   useEffect(() => {
     setTotalPages(Math.ceil(totalProducts / perPage));
   }, [totalProducts]);
+
 
   return (
     <div>
@@ -196,6 +204,18 @@ const HomePage = () => {
     &copy; Copyright <strong><span>GroceryHut</span></strong>.
     All Rights Reserved
   </div>
+  <button
+  className="btn btn-success scroll-top-button"
+  onClick={scrollToTop}
+  style={{
+    position: 'fixed',
+    bottom: '20px',
+    right: '20px',
+    zIndex: '9999',
+  }}
+>
+  <FaArrowUp />
+</button>
 </div>
 
     </div>
