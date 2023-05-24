@@ -61,10 +61,10 @@ section {
 }
 
 .card {
-	width: 280px;
+	width: 300px;
 	margin-left:2rem;
 	background-color: #fff;
-	height: 375px;
+	height: 400px;
 	display: flex;
 	flex-direction: column;
 	position: relative;
@@ -93,7 +93,7 @@ section {
 	background-repeat: no-repeat;
 	position: absolute;
 	bottom: calc(100% - 120px);
-	width: 250px;
+	width: 275px;
 	height: 100px;
 	transition: ease all .3s;
 }
@@ -136,6 +136,7 @@ section {
 	align-items: center;
 	padding: 2px;
 	margin-top: 2px;
+	margin-bottom:10px;
 }
 
 /* .priceGroup {
@@ -156,13 +157,14 @@ section {
 	font-size: 15px;
 	text-decoration: line-through;
 	text-align: left;
-	margin-right:20px;
+	margin-right:5px;
 }
 
 .priceGroup .price.newPrice {
 	color: #000;
 	font-size: 20px;
 	font-weight: 800;
+	margin-right:2px;
 }
 
 .cart {
@@ -178,7 +180,10 @@ section {
    height:2rem;
    width:6rem;
    border-radius: 5%;
-   margin-right:0.5rem;
+}
+
+.quantity-btn{
+
 }
 
 
