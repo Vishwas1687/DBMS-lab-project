@@ -6,6 +6,7 @@ import toast from 'react-hot-toast'
 import { useCart } from "../context/cart"
 import { useAuth } from "../context/auth"
 import { useNavigate ,Link} from "react-router-dom"
+import "../components/styles/Cart.css"
 
 const CartPage = () => {
     const [auth, setAuth] = useAuth()
@@ -34,6 +35,8 @@ const CartPage = () => {
             
         }
     }
+
+    console.log(cart)
 
     const removeCartItem = (pid, w_id) =>{
         try{
@@ -123,29 +126,35 @@ const CartPage = () => {
                         </h2>
                     </div>
                 </div>
-                <div className="row">
-                    <div className="col-md-9">
+                <div className="cart-container">
+                    <div className="cart-items">
                         {
                             cart?.map( p =>(
-                                <div className="row mb-2 card flex-row">
-                                    <div className="col-md-4">
-                                    <img 
-                                        className="card_img" 
-                                        src = {`http://localhost:5000/api/products/get-photo/${p.product.slug}`}
-                                         />
-                                    </div>
-                                    <div className="col-md-8">{p.product.product_name}</div>
-                                    <button className="button" onClick={() => removeCartItem(p.product._id,p.selectedWeight)}> Remove</button>
+                              <div className="cart-item">
+                              <div className="cart-item-image"
+                                style={{textAlign: "center", width: "100%", height: "150px", overflow: "hidden"}}
+                              >
+                                  <img style={{maxWidth: "100%", maxHeight: "100%", objectFit: "contain"} }
+                                  src = {`http://localhost:5000/api/products/get-photo/${p.product.slug}`}
+                                   />
+                              </div>
+                              <div className="cart-item-details">
+                                  <h3>{p.product.product_name}</h3>
+                                  <p>MRP: {p.mrp}</p>
+                                  <p>Selling Price: {p.sp}</p>
+                                  <p>Quantity: {p.quantity}</p>
                                 </div>
+                              <button className="remove-button" onClick={() => removeCartItem(p.product._id,p.selectedWeight)}> Remove</button>
+                          </div>
                             ))
                         }
                     </div>
-                </div>
-                <div className="col-md-3 text-center">
+                
+                <div className="cart-summary">
                     <h2>Cart Summary</h2>
                     <p>Total|Checkout|Payment</p>
-                    <hr/>
-                    <p>Total: {totalPrice()}</p>
+                    <hr style={{width: "200px"}}/>
+                    <h1>Total: {totalPrice()}</h1>
                     {auth?.user?.address ? (
                     
                         <div className="mb-3">
@@ -179,9 +188,10 @@ const CartPage = () => {
                             }
                         </div>
                     )}
-                    </div>
+                    
+                    
 
-                     <div className="mt-2">
+                <div >
                 {!clientToken || !auth?.token || !cart?.length ? (
                   ""
                 ) : (
@@ -205,6 +215,8 @@ const CartPage = () => {
                     </button>
                   </>
                 )}
+              </div>
+              </div>
               </div>
 
             </div>
