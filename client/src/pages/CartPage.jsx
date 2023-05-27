@@ -6,7 +6,9 @@ import toast from 'react-hot-toast'
 import { useCart } from "../context/cart"
 import { useAuth } from "../context/auth"
 import { useNavigate ,Link} from "react-router-dom"
+import { Trash } from 'phosphor-react'
 import "../components/styles/Cart.css"
+import { useQuantityLocal } from "../context/quantity";
 
 const CartPage = () => {
     const [auth, setAuth] = useAuth()
@@ -15,6 +17,7 @@ const CartPage = () => {
     const [clientToken,setClientToken]=useState('')
     const [instance,setInstance]=useState('')
     const navigate = useNavigate()
+    const [quantityLocal,setQuantityLocal]=useQuantityLocal()
     const [order,setOrder]=useState([])
     const [singleProduct,setSingleProduct]=useState({
         product:null,
@@ -45,6 +48,12 @@ const CartPage = () => {
             myCart.splice(index, 1)
             setCart(myCart)
             localStorage.setItem('cart', JSON.stringify(myCart))
+
+            let myQuantityLocal = [...quantityLocal]
+            let index2 = myQuantityLocal.findIndex(item => item.product._id === pid && item.selectedWeight === w_id) 
+            myQuantityLocal.splice(index2, 1)
+            setQuantityLocal(myQuantityLocal)
+            localStorage.setItem('quantityLocal', JSON.stringify(myQuantityLocal))
         } catch(error){
             console.log(error)
         }
@@ -130,21 +139,29 @@ const CartPage = () => {
                     <div className="cart-items">
                         {
                             cart?.map( p =>(
-                              <div className="cart-item">
+                              <div className="cart-item" style={{'height':'460px'}}>
                               <div className="cart-item-image"
-                                style={{textAlign: "center", width: "100%", height: "150px", overflow: "hidden"}}
+                                style={{textAlign: "center", width: "100%", height: "250px", overflow: "hidden"}}
                               >
-                                  <img style={{maxWidth: "100%", maxHeight: "100%", objectFit: "contain"} }
+                                  <img style={{maxWidth: "100%", maxHeight: "100%"
+                                  ,width:'350px',"height":'240px'} }
                                   src = {`http://localhost:5000/api/products/get-photo/${p.product.slug}`}
                                    />
                               </div>
-                              <div className="cart-item-details">
+                              <div className="cart-item-details" style={{'text-align':"center"}}>
                                   <h3>{p.product.product_name}</h3>
                                   <p>MRP: {p.mrp}</p>
                                   <p>Selling Price: {p.sp}</p>
                                   <p>Quantity: {p.quantity}</p>
                                 </div>
-                              <button className="remove-button" onClick={() => removeCartItem(p.product._id,p.selectedWeight)}> Remove</button>
+                              <button style={{'margin-left':'8rem',width:'10rem',
+                              display:'flex','alignItems':'center'}} className="remove-button"
+                               onClick={() => removeCartItem(p.product._id,p.selectedWeight)}> 
+                               <span style={{'font-size':'1.5rem'}}>
+                                 Remove
+                               </span>
+                               <Trash size="28"/>
+                               </button>
                           </div>
                             ))
                         }
