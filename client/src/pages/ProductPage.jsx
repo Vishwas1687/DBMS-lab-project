@@ -85,6 +85,10 @@ const ProductPage = () => {
                         }) : ""}
                     </select>
                 </div>
+                <br></br>
+                <button className='btn btn-success' style={{'cursor':'pointer'}}>
+                    Add to cart
+                </button>
             </div>
         </div>
     </div>
