@@ -30,7 +30,6 @@ export default function(props){
     const [stock, setStock] = useState((weights[0].stock) > 0 ? true : false)
     const [temp,setTemp]=useState('')
     const navigate=useNavigate()
-    const [addtocart,setAddtocart]=useState(false)
 
     const [quantity, setQuantity] = useState(parseInt(quantityLocal.map((quant)=>{
             if(quant.product===props._id && quant.selectedWeight===props.weights[0])
