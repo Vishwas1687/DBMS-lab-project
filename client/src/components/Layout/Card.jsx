@@ -25,6 +25,8 @@ export default function(props){
     const [cart, setCart] = useCart([])
     const [quantityLocal,setQuantityLocal]=useQuantityLocal([])
     const [selectedWeight, setSelectedWeight] = useState(weights[0].weight_id)
+    const [weight,setWeight]=useState(weights[0].weight)
+    const [weightUnits,setWeightUnits]=useState(weights[0].weight_units)
     const [sp, setSp] = useState(weights[0].sp)
     const [mrp, setMrp] = useState(weights[0].mrp)
     const [stock, setStock] = useState((weights[0].stock) > 0 ? true : false)
@@ -57,6 +59,8 @@ export default function(props){
         const selectedW = weights.find((weight) => weight.weight_id === parseInt(selectedWeight));
         //console.log(selectedW)
         setStock(selectedW.stock > 0 ? true : false) 
+        setWeight(selectedW.weight)
+        setWeightUnits(selectedW.weight_units)
 
     },[selectedWeight])
 
@@ -230,11 +234,11 @@ export default function(props){
                                 onClick={() =>
                                     {
                                         setQuantity(temp||1)
-                                    setCart([...cart, {product:props,selectedWeight:parseInt(selectedWeight), sp: sp, mrp: mrp,quantity:parseInt(temp || 1)}])
-                                    setQuantityLocal([...quantityLocal,{product:props._id,selectedWeight:parseInt(selectedWeight),quantity:parseInt(temp || 1)}])
-                                    localStorage.setItem('quantityLocal',JSON.stringify([...quantityLocal,{product:props._id,selectedWeight:parseInt(selectedWeight),quantity:parseInt(temp || 1)}]))
+                                    setCart([...cart, {product:props,selectedWeight:parseInt(selectedWeight), sp: sp, mrp: mrp,weight:weight,weightUnits:weightUnits,quantity:parseInt(temp || 1)}])
+                                    setQuantityLocal([...quantityLocal,{product:props._id,selectedWeight:parseInt(selectedWeight),weightUnits:weightUnits,quantity:parseInt(temp || 1)}])
+                                    localStorage.setItem('quantityLocal',JSON.stringify([...quantityLocal,{product:props._id,selectedWeight:parseInt(selectedWeight),weightUnits:weightUnits,quantity:parseInt(temp || 1)}]))
                                     console.log(cart)
-                                    localStorage.setItem('cart', JSON.stringify([...cart, {product:props,selectedWeight:parseInt(selectedWeight), sp: sp, mrp: mrp, quantity: parseInt(temp || 1)}]))
+                                    localStorage.setItem('cart', JSON.stringify([...cart, {product:props,selectedWeight:parseInt(selectedWeight), sp: sp, mrp: mrp,weightUnits:weightUnits, quantity: parseInt(temp || 1)}]))
                                     toast.success('Item added to cart')
                                 }}>
                                 <span style={{display:'flex','align-items':'center',

@@ -140,7 +140,7 @@ const CartPage = () => {
                     <div className="cart-items">
                         {
                             cart?.map( p =>(
-                              <div className="cart-item" style={{'height':'460px'}}>
+                              <div className="cart-item" style={{'height':'500px'}}>
                               <div className="cart-item-image"
                                 style={{textAlign: "center", width: "100%", height: "250px", overflow: "hidden"}}
                               >
@@ -151,8 +151,10 @@ const CartPage = () => {
                               </div>
                               <div className="cart-item-details" style={{'text-align':"center"}}>
                                   <h3>{p.product.product_name}</h3>
+                                  
                                   <p>MRP: {p.mrp}</p>
                                   <p>Selling Price: {p.sp}</p>
+                                  <p>Weight:{p.weight} {p.weightUnits}</p>
                                   <p>Quantity: {p.quantity}</p>
                                 </div>
                               <button style={{'margin-left':'8rem',width:'10rem',
