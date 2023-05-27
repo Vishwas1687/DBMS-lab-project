@@ -161,7 +161,7 @@ export default function(props){
              onClick={()=>navigate(`/product/${props.slug}`)}/>
 
             <div className="cardInfo">
-                <h1 style={{cursor:'pointer',"font-size":"1.8rem"}}
+                <h1 style={{cursor:'pointer',"font-size":"1.3rem"}}
              onClick={()=>navigate(`/product/${props.slug}`)}>{props.product_name}</h1>
 
                 <p className="date_" style={{cursor:'pointer',"font-size":"1.3rem"}}

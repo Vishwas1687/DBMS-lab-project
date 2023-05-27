@@ -197,7 +197,7 @@ useEffect(() => {
               <br></br>
 
               <div className="form-group text-left">
-                <label className="btn btn-outline-secondary col-md-7">
+                <label className="btn btn-outline-secondary" style={{'width':'31rem'}}>
                   {photo?photo.name:"Upload Photo"}
                  <input
                   type="file"
@@ -228,7 +228,8 @@ useEffect(() => {
               <div className="form-group text-left">
                 <label htmlFor="brand">Brand</label>
                 <br></br>
-                <select className="w-50 h-25 p-2 " onChange={(e)=>{handleBrand(e)}}>
+                <select className="w-50 h-25 p-2 " onChange={(e)=>{handleBrand(e)}}
+                style={{'cursor':'pointer','font-size':'1.5rem','width':'23rem'}}>
                 {Object.keys(formData.brand).length===0 && <option value="1">None</option>}
                 {brands.map((brand) => (
               <option key={brand._id} value={brand._id} name="brand">
@@ -242,7 +243,8 @@ useEffect(() => {
               <div className="form-group text-left">
               <label htmlFor="category">Category</label>
               <br></br>
-              <select className="w-50 h-25 p-2 " onChange={(e)=>{handleCategory(e)}}>
+              <select className="w-50 h-25 p-2 " onChange={(e)=>{handleCategory(e)}}
+              style={{'cursor':'pointer','font-size':'1.5rem','width':'23rem'}}>
                 {Object.keys(category).length===0 && <option value="1">None</option>}
                 {categories.map((cat) => (
               <option key={cat._id} value={cat._id} name="category">
@@ -258,7 +260,8 @@ useEffect(() => {
                 <label htmlFor="subcategory">Subcategory</label>
                 <br></br>
                   
-                 <select className="w-50 h-25 p-2 " onChange={(e)=>{handleSubCategory(e)}}>
+                 <select className="w-50 h-25 p-2 " onChange={(e)=>{handleSubCategory(e)}}
+                 style={{'cursor':'pointer','font-size':'1.5rem','width':'23rem'}}>
                   {Object.keys(formData.subcategory).length===0 && <option value="1">None</option>}
                 {category?.subcategories.map((subcat) => (
               <option key={subcat._id} value={subcat.subcategory_name} name="subcategory">
@@ -378,7 +381,7 @@ useEffect(() => {
               </div>
               <br></br>
 
-              <button type="submit" className="btn btn-primary col-md-7">
+              <button type="submit" className="btn btn-primary" style={{width:'31rem','font-size':'1.5rem'}}>
                 Create
               </button>
               <br></br>
