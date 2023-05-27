@@ -4,8 +4,6 @@ import {Link} from 'react-router-dom';
 import Layout from '../components/Layout/Layout'
 import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import PageNotFound from './PageNotFound'
-import Header from '../components/Layout/Header';
 import '../components/styles/ProductPage.css'
 
 const ProductPage = () => {
@@ -27,14 +25,13 @@ const ProductPage = () => {
             const subcat = data.existingProduct.subcategory;
             const temp = await axios.get(`http://localhost:5000/api/products/get-related-products-of-the-subcategory/${slug}/`);
             const tempBrand = await axios.get(`http://localhost:5000/api/products/get-products-based-on-brand-and-subcategory-other-than-current-product/${brand}/${subcat}/${slug}`);
-
             setRelatedProducts(temp.data.products);
             setSameBrand(tempBrand.data.products);
             if (!data.success){
                 setFound(false);
                 setInfo({});
             }else{
-                setInfo(data.existingProduct);
+                setInfo(data.existingProduct);  
                 setFound(true);
             }
             setLoading(false)
@@ -46,8 +43,6 @@ const ProductPage = () => {
     fetchData();
   }, [slug]);
 
-  useEffect(() => {
-  }, [relatedProducts,sameBrand])
   
   return (
     <>
@@ -89,9 +84,6 @@ const ProductPage = () => {
                             </>
                         }) : ""}
                     </select>
-                </div>
-                <div className='addTC'>
-                    <button>Add to Cart</button>
                 </div>
             </div>
         </div>
