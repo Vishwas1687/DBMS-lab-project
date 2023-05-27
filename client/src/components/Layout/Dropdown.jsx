@@ -44,7 +44,11 @@ export default function Dropdown() {
         <Link className="dropdown-item" to={`/${ isAdmin ? 'admin' : 'user'}/`} >Dashboard</Link>
         <div className="dropdown-divider"></div>
         <a className="dropdown-item " onClick={()=>{
-          setAuth({...auth, user:null,token:''});localStorage.removeItem('auth');navigate('/');toast('Logged out!');
+          localStorage.removeItem('cart');
+          localStorage.removeItem('quantityLocal');
+          navigate('/');
+          window.location.reload();
+          setAuth({...auth, user:null,token:''});localStorage.removeItem('auth');toast('Logged out!');
         }}>Logout</a>
 
       </div>

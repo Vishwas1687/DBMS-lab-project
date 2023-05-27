@@ -104,6 +104,7 @@ const CartPage = () => {
       setLoading(false);
       localStorage.removeItem("cart");
       setCart([]);
+      localStorage.removeItem('quantityLocal')
       navigate("/user/orders");
       toast.success("Payment Completed Successfully ");
     } catch (error) {
@@ -172,7 +173,7 @@ const CartPage = () => {
                     <p>Total|Checkout|Payment</p>
                     <hr style={{width: "200px"}}/>
                     <h1>Total: {totalPrice()}</h1>
-                    {auth?.user?.address ? (
+                    {auth?.user?.address!=="undefined" ? (
                     
                         <div className="mb-3">
                             <h4>Current Address</h4>
@@ -209,7 +210,7 @@ const CartPage = () => {
                     
 
                 <div >
-                {!clientToken || !auth?.token || !cart?.length ? (
+                {!clientToken || !auth?.token || !cart?.length ||!auth?.user?.address? (
                   ""
                 ) : (
                   <>
