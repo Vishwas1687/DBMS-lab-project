@@ -2,13 +2,18 @@ import React, { useEffect, useState } from "react";
 import Layout from "./../../components/Layout/Layout";
 import {Link} from 'react-router-dom'
 import AdminMenu from "./../../components/AdminMenu";
+import CategoryForm from '../../components/Form/CategoryForm';
+import Modal from 'antd/es/modal/Modal';
 import toast from "react-hot-toast";
 import axios from "axios";
 
 const AdminOrders = () => {
 
   const [orders, setOrders] = useState([]);
-  const [selectedOrder, setSelectedOrder] = useState(null);
+  const [visible,setVisible]=useState(false);
+  const [status,setStatus]=useState('');
+  const [deliveryTime,setDeliveryTime]=useState('')
+  const [selectedOrder, setSelectedOrder] = useState('');
   const [editStatus, setEditStatus] = useState("");
 
     const getAllOrders = async () => {
@@ -46,15 +51,18 @@ const AdminOrders = () => {
         }
       };
 
-      const handleEdit = async () => {
+      const handleEdit = async (e) => {
+        e.preventDefault()
         try {
           const { data } = await axios.put(
             `http://localhost:5000/api/orders/update-order/${selectedOrder.order_id}`,
-            { status: editStatus }
+            { status: status,delivery_in_hours:parseInt(deliveryTime) }
           );
           if (data.success) {
             toast.success("Order updated successfully");
+            setVisible(false)
             getAllOrders();
+
           } else {
             toast.error(data.message);
           }
@@ -113,16 +121,17 @@ const AdminOrders = () => {
             <td>{c.status}</td>
             <td>{c.shipping_address}</td>
             <td>{c.total_amount}</td>
-            <td>{c.order_date}</td>
-            <td>{c.delivery_date}</td>
+            <td>{`${new Date(c.order_date).getDate()}/${new Date(c.order_date).getMonth()}/${new Date(c.order_date).getFullYear()}   ${new Date(c.order_date)?.getHours()}:${new Date(c.order_date)?.getMinutes()}:${new Date(c.order_date)?.getSeconds()}`}</td>
+            <td>{c.delivery_date?`${new Date(c.delivery_date)?.getDate()}/${new Date(c.delivery_date)?.getMonth()}/${new Date(c.delivery_date)?.getFullYear()}    ${new Date(c.delivery_date)?.getHours()}:${new Date(c.delivery_date)?.getMinutes()}:${new Date(c.delivery_date)?.getSeconds()}`:''}</td>
             <td>
             <button
-                            className="btn btn-primary ms-2"
-                            data-bs-toggle="modal"
-                            data-bs-target={`#editOrderModal${c.order_id}`}
-                          >
-                            Edit
-                          </button>
+              className="btn btn-primary ms-2"
+              onClick={(e)=>{setStatus(c.status);
+                setSelectedOrder(c)
+               setVisible(true)}}           
+             >
+              Edit
+              </button>
             <Link to={`/admin/single-order/${c.order_id}`}>         
             <button className="btn btn-info ms-2">
                 View
@@ -144,6 +153,43 @@ const AdminOrders = () => {
     </tbody>
     </table>
     </div>
+
+    <Modal
+  onCancel={() => setVisible(false)}
+  footer={null}
+  visible={visible}
+>
+   
+   <form onSubmit={handleEdit}>
+        <div className="mb-3">
+          <br></br>
+          <label style={{'font-size':'1.3rem'}}>Status</label>
+          <br></br>
+          <select value={status} onChange={(e)=>setStatus(e.target.value)}
+          style={{height:'3rem','font-size':'1.5rem','width':'10rem',cursor:'pointer'}}>
+            <option value='shipping'>shipping</option>
+            <option value='delivered'>delivered</option>
+          </select>
+          <br></br>
+          <label style={{'font-size':'1.3rem'}}>Delivery in hours</label>
+          <input
+            type="text"
+            className="form-control"
+            placeholder={`Enter delivery time in hours`}
+            value={deliveryTime}
+            onChange={(e) => setDeliveryTime(e.target.value)}
+          />
+        </div>
+
+        <button type="submit" className="btn btn-primary">
+          Submit
+        </button>
+      </form>
+
+
+  
+</Modal>
+
     </div>
     </div>
     </div>

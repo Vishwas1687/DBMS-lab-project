@@ -128,11 +128,11 @@ const CreateCategory = ({ categoryId, categoryName }) => {
                 )
               })}
               
-              <button type="button" onClick={handleAddSubCategory}>Create sub category</button>
+              <button className="btn btn-primary" onClick={handleAddSubCategory}>Create sub category</button>
                <br></br>
                <br></br>
 
-              <button type="submit" className="btn btn-primary">
+              <button type="submit" className="btn btn-success" style={{'font-size':'1.5rem','width':'31rem'}}>
                 Create
               </button>
             </form>

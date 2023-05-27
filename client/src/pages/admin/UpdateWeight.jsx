@@ -83,7 +83,6 @@ const EditWeight = () => {
                 <input
                   type="text"
                   className="form-control"
-                  id="weight"
                   name="weight"
                    value={weight}
                   onChange={(e)=>setWeight(e.target.value)} 
@@ -141,7 +140,7 @@ const EditWeight = () => {
                    onChange={(e)=>setStock(e.target.value)} 
                 />
                 </div>
-                <button type="submit" className="btn btn-primary">
+                <button type="submit" className="btn btn-primary" style={{'font-size':'1.5rem','width':'31rem'}}>
                     Update weight
                 </button>
                 </form>

@@ -78,7 +78,7 @@ const UpdateCategory = () => {
                <div className="col-md-9">
                 <h1>Update Category</h1>
                 <br></br>
-                <form onSubmit={handleSubmit} className="w-50">
+                <form onSubmit={handleSubmit} style={{width:'31rem'}}>
                     <div className="form-group text-left">
                         <label>Category name</label>
                         <input 
@@ -137,7 +137,7 @@ const UpdateCategory = () => {
                     })}
                     <br></br>
                     <br></br>
-                    <button type="submit" className="btn btn-success w-100">
+                    <button type="submit" className="btn btn-success" style={{'font-size':'1.5rem','width':'31rem'}}>
                          Update category
                     </button>
                 </form>

@@ -250,7 +250,8 @@ useEffect(()=>{
               <div className="form-group text-left">
                 <label htmlFor="brand">Brand</label>
                 <br></br>
-                <select className="w-50 p-2 h-25 " onChange={(e)=>setBrand(e.target.value)}>
+                <select className="w-50 p-2 h-25 " onChange={(e)=>setBrand(e.target.value)}
+                style={{'cursor':'pointer','font-size':'1.5rem','width':'23rem'}}>
 
                 <option value={brand} name="brand">
                   {retreivedBrand}
@@ -277,7 +278,8 @@ useEffect(()=>{
               <label htmlFor="category">Category</label>
               <br></br>
 
-              <select className="w-50 p-2 h-25 " onChange={(e)=>{setCategory(e.target.value);
+              <select className="w-50 p-2 h-25 "
+              style={{'cursor':'pointer','font-size':'1.5rem','width':'23rem'}} onChange={(e)=>{setCategory(e.target.value);
                  setIndex(1)}}>
                  <option value={category._id} name="category">
                   {retreivedCat}
@@ -303,7 +305,8 @@ useEffect(()=>{
                 <label htmlFor="subcategory">Subcategory</label>
                 <br></br> 
                   
-                 <select className="w-50 p-2 h-25" onChange={(e)=>setSubcategory(e.target.value)}>
+                 <select className="w-50 p-2 h-25" onChange={(e)=>setSubcategory(e.target.value)}
+                 style={{'cursor':'pointer','font-size':'1.5rem','width':'23rem'}}>
                 {!index?<option value={subcategory}>{subcategory}</option>:(<>
                 {catObj.subcategories.map((subcat) => (
               <option key={subcat._id} value={subcat.subcategory_name} name="subcategory"
@@ -426,7 +429,7 @@ useEffect(()=>{
               </div>
               <br></br>
 
-              <button type="submit" className="btn btn-primary col-md-7">
+              <button type="submit" className="btn btn-primary" style={{'font-size':'1.5rem','width':'31rem'}}>
                 Update
               </button>
               <br></br>
