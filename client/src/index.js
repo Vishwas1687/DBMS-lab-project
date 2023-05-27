@@ -8,6 +8,7 @@ import {BrowserRouter} from "react-router-dom";
 import {AuthProvider} from './context/auth';
 import { SearchProvider } from './context/search';
 import { CartProvider } from './context/cart';
+import { QuantityProvider } from './context/quantity';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -15,12 +16,14 @@ root.render(
   <AuthProvider>
     <SearchProvider>
       <CartProvider>
+        <QuantityProvider>
         <BrowserRouter>
         
             <App />
         
       
         </BrowserRouter>
+        </QuantityProvider>
       </CartProvider>
     </SearchProvider>
     
