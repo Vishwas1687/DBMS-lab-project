@@ -122,7 +122,7 @@ const CartPage = () => {
 
     return (
         
-        <Layout>
+        <Layout title={'Cart - Grocery Hut'}>
             <div className="cont">
                 <div className="row">
                     <div className="col-md-12">
@@ -173,7 +173,7 @@ const CartPage = () => {
                     <p>Total|Checkout|Payment</p>
                     <hr style={{width: "200px"}}/>
                     <h1>Total: {totalPrice()}</h1>
-                    {auth?.user?.address!=="undefined" ? (
+                    {auth?.user?.address!=="undefined" && auth?.token ? (
                     
                         <div className="mb-3">
                             <h4>Current Address</h4>
@@ -210,7 +210,7 @@ const CartPage = () => {
                     
 
                 <div >
-                {!clientToken || !auth?.token || !cart?.length ||!auth?.user?.address? (
+                {!clientToken || !auth?.token || !cart?.length ||auth?.user?.address==='undefined' ? (
                   ""
                 ) : (
                   <>

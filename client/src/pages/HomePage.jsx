@@ -6,6 +6,7 @@ import Card from '../components/Layout/Card';
 import Slider from 'react-slick';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import Layout from '../components/Layout/Layout'
 import { useNavigate } from 'react-router-dom';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -78,7 +79,8 @@ const HomePage = () => {
 
   return (
     <div>
-      <Header />
+      
+      <Layout title={"Homepage-Grocery Hut"}>
       <Slider autoplay={true} autoplaySpeed={3000}>
         <div>
           <img
@@ -217,8 +219,9 @@ const HomePage = () => {
   <FaArrowUp />
 </button>
 </div>
-
+</Layout>
     </div>
+    
   );
 };
 

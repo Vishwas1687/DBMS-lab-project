@@ -177,7 +177,7 @@ const CategoryProduct = () => {
     // },[totalPages])
 
   return (
-    <Layout title={'Products by category'}>
+    <Layout title={`Products by ${params.slug}`}>
         <div className="row m-2">
             <div className="col-md-2 text-left p-3 bg-light">
                 <h1>Filters</h1>

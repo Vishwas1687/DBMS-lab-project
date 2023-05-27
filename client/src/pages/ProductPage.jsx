@@ -51,7 +51,7 @@ const ProductPage = () => {
   
   return (
     <>
-    {(found && !loading)? <Layout>
+    {(found && !loading)? <Layout title={`${slug} product`}>
     <div className='main'>
         <div className='side'>
             <h3>Category</h3>

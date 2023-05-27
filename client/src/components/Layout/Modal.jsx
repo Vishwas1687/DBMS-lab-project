@@ -7,6 +7,7 @@ import toast from 'react-hot-toast'
 import { useNavigate,useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/auth';
 import '../styles/Modal.css'
+import { GoogleChromeLogo, GoogleLogo } from 'phosphor-react';
 
 export default function Modal() {
 
@@ -73,9 +74,15 @@ export default function Modal() {
   <NavLink style={{textAlign:'center'}} to="/forgot-password" className="nav-link mb-3 underline" onClick={()=>{closeRef.current.click();navigate('/forgot-password');}} >
             Forgot Password?
   </NavLink>
-  <div className='text-center'>
-  <button type="submit" className="btn btn-primary">Log In</button>
-  <a href="http://localhost:5000/api/auth/google">Login with google</a>
+  <div>
+  <button type="submit" className="btn btn-primary" style={{'margin-left':'8rem'}}>Log In</button>
+  <button className="btn btn-danger" style={{'height':'2.5rem',padding:"0",'position':'absolute','margin-left':'1rem'}}>
+  <a href="http://localhost:5000/api/auth/google" style={{display:'block',width:"100%",
+  height:"100%",'position':'relative','top':'17%'}}>
+     Google Login
+     <GoogleLogo size="25"/>
+   </a>
+    </button>
   </div>
 </form>
       </div>

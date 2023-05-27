@@ -230,12 +230,12 @@ export default function(props){
                                 disabled={stock===0?true:false}
                                 onClick={() =>
                                     {
-                                        setQuantity(temp)
-                                    setCart([...cart, {product:props,selectedWeight:parseInt(selectedWeight), sp: sp, mrp: mrp,quantity:parseInt(temp)}])
-                                    setQuantityLocal([...quantityLocal,{product:props._id,selectedWeight:parseInt(selectedWeight),quantity:parseInt(temp)}])
-                                    localStorage.setItem('quantityLocal',JSON.stringify([...quantityLocal,{product:props._id,selectedWeight:parseInt(selectedWeight),quantity:parseInt(temp)}]))
+                                        setQuantity(temp||1)
+                                    setCart([...cart, {product:props,selectedWeight:parseInt(selectedWeight), sp: sp, mrp: mrp,quantity:parseInt(temp || 1)}])
+                                    setQuantityLocal([...quantityLocal,{product:props._id,selectedWeight:parseInt(selectedWeight),quantity:parseInt(temp || 1)}])
+                                    localStorage.setItem('quantityLocal',JSON.stringify([...quantityLocal,{product:props._id,selectedWeight:parseInt(selectedWeight),quantity:parseInt(temp || 1)}]))
                                     console.log(cart)
-                                    localStorage.setItem('cart', JSON.stringify([...cart, {product:props,selectedWeight:parseInt(selectedWeight), sp: sp, mrp: mrp, quantity: parseInt(temp)}]))
+                                    localStorage.setItem('cart', JSON.stringify([...cart, {product:props,selectedWeight:parseInt(selectedWeight), sp: sp, mrp: mrp, quantity: parseInt(temp || 1)}]))
                                     toast.success('Item added to cart')
                                 }}>
                                 <span style={{display:'flex','align-items':'center',
