@@ -3,6 +3,7 @@
     "express-session": "^1.17.3",
     "passport": "^0.6.0",
     "passport-google-oauth20": "^2.0.0",
+    "react-helmet": "^6.1.0",
     "react-icons": "^4.8.0"
   }
 }

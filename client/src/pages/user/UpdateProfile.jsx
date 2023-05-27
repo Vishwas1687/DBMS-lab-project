@@ -74,7 +74,7 @@ const UpdateProfilePage = () => {
   };
 
   return (
-    <Layout>
+    <Layout title={`Dashboard - ${auth.user.username} update profile`}>
         
     <div className="container-fluid">
     <div className="row">

@@ -2,12 +2,13 @@ import React, { useEffect, useState } from "react";
 import Layout from "./../../components/Layout/Layout";
 import UserMenu from "../../components/Layout/UserMenu";
 import {Link} from 'react-router-dom'
+import { useAuth } from "../../context/auth";
 import axios from "axios";
 import toast from "react-hot-toast";
 
 const UserOrders = () => {
   const [orders, setOrders] = useState([]);
-
+  const [auth,setAuth]=useAuth()
   useEffect(() => {
     const fetchOrders = async () => {
       try {
@@ -27,7 +28,7 @@ const UserOrders = () => {
 
   return (
     <>
-      <Layout title={"DashBoard - User Orders"}>
+      <Layout title={`Dashboard - ${auth.user.username} Orders`}>
         <div className="container-fluid m-3 p-3 dashboard">
           <div className="row">
             <div className="col-md-3">
