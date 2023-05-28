@@ -105,6 +105,7 @@ const CartPage = () => {
       localStorage.removeItem("cart");
       setCart([]);
       localStorage.removeItem('quantityLocal')
+      setQuantityLocal([])
       navigate("/user/orders");
       toast.success("Payment Completed Successfully ");
     } catch (error) {
@@ -219,9 +220,9 @@ const CartPage = () => {
                     <DropIn
                       options={{
                         authorization: clientToken,
-                        paypal: {
-                          flow: "vault",
-                        },
+                        // paypal: {
+                        //   flow: "vault",
+                        // },
                       }}
                       onInstance={(instance) => setInstance(instance)}
                     />

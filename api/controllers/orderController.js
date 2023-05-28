@@ -69,8 +69,6 @@ const updateOrderController=async(req,res)=>{
         const {order_id}=req.params
         if(!status)
         return res.send({message:'Enter status'})
-        if(!delivery_in_hours)
-        return res.send({message:'Delivery date is changed'})
         if(!order_id)
         return res.send({message:'Enter order id'})
    
@@ -83,10 +81,44 @@ const updateOrderController=async(req,res)=>{
                 success:false
             })
         }
-
-        const updatedOrder=await OrderModel.findOneAndUpdate(existingOrder._id,{
-            $set:{delivery_date:new Date(delivery_in_hours * 60 * 60 * 1000+Date.now()),status:status}
+        let updatedOrder
+        if(status==='placed' && existingOrder.status!=='placed')
+        {
+            return res.send({
+                message:'Shipped and delivered orders cant be placed again',
+                success:false
+            })
+        }
+        else if(status==='shipping' && !delivery_in_hours)
+        {
+            return res.send({
+                message:'Add delivery in hours',
+                success:false
+            })
+        }
+        else if(existingOrder.status!=='delivered' && status!=='delivered')
+        {
+            updatedOrder=await OrderModel.findOneAndUpdate(existingOrder._id,{
+            $set:{delivery_date:new Date(delivery_in_hours * 60 * 60 * 1000+Date.now())||existingOrder.delivery_date,status:status}
         })
+        }
+        else if(existingOrder.status!=='delivered' && status==='delivered')
+        {
+             updatedOrder=await OrderModel.findOneAndUpdate(existingOrder._id,{
+            $set:{delivery_date:new Date(Date.now()),status:status}})
+             return res.send({
+                message:'Order successfully updated',
+                success:true
+             })
+        }
+        else
+        {
+            return res.send({
+                message:'Delivered orders cant be updated',
+                success:false
+             })
+        }
+        
 
         res.send({
             message:'Order successfully updated',

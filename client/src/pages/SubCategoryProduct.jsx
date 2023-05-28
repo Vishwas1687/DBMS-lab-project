@@ -10,7 +10,7 @@ import Layout from '../components/Layout/Layout'
 
 const SubCategoryProduct = () => {
    const [category,setCategory]=useState('')
-   const perPage=3;
+   const perPage=9;
    const [totalProducts,setTotalProducts]=useState(null)
    const [loading,setLoading]=useState(true)
    const [priceFilters,setPriceFilters]=useState([0,100000])
@@ -232,7 +232,7 @@ const SubCategoryProduct = () => {
                 <div className="row no-gutters">
                  {!loading && products.length!==0 && products.map((product,index)=>(
                        <>
-                          <div className="col-md-3">
+                          <div className="col-md-4">
                             <Card {...product}/>
                           </div>
                        </>

@@ -65,6 +65,7 @@ const AdminOrders = () => {
 
           } else {
             toast.error(data.message);
+            setVisible(false)
           }
         } catch (error) {
           toast.error("Something went wrong");
@@ -167,6 +168,7 @@ const AdminOrders = () => {
           <br></br>
           <select value={status} onChange={(e)=>setStatus(e.target.value)}
           style={{height:'3rem','font-size':'1.5rem','width':'10rem',cursor:'pointer'}}>
+            <option value='placed'>Placed</option>
             <option value='shipping'>shipping</option>
             <option value='delivered'>delivered</option>
           </select>

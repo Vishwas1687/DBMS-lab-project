@@ -13,7 +13,7 @@ const CategoryProduct = () => {
    const [loading,setLoading]=useState(true)
    const [totalProducts,setTotalProducts]=useState(null)
    const location=useLocation()
-   const perPage=3;
+   const perPage=9;
    const [brands,setBrands]=useState([])
    const [brandFilters,setBrandFilters]=useState([])
    const [priceFilters,setPriceFilters]=useState([0,100000])
@@ -250,7 +250,7 @@ const CategoryProduct = () => {
                 <div className="row no-gutters">
                  {!loading && products.length!==0 && products.map((product,index)=>(
                        <>
-                          <div className="col-md-3">
+                          <div className="col-md-4">
                             <Card {...product}/>
                           </div>
                        </>

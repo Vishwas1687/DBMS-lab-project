@@ -54,7 +54,7 @@ const UpdateProfilePage = () => {
        })
        if(data.success)
        {
-          localStorage.setItem('auth',JSON.stringify(user))
+          localStorage.setItem('auth',JSON.stringify(data.user))
           setUser({
             username:'',
             phone_number:'',
