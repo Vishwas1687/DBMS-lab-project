@@ -6,7 +6,11 @@ import Card from '../components/Layout/Card.jsx'
 import {prices} from './../components/prices.js'
 import toast from 'react-hot-toast'
 import axios from 'axios'
+import '../components/styles/SearchBar.css'
 import Layout from '../components/Layout/Layout'
+import { CaretDown,CaretUp } from 'phosphor-react'
+import {AiOutlineClose} from 'react-icons/ai'
+import { BiSearch } from 'react-icons/bi'
 
 const CategoryProduct = () => {
    const [category,setCategory]=useState('')
@@ -21,6 +25,9 @@ const CategoryProduct = () => {
    const [products,setProducts]=useState([])
    const [currentPage,setCurrentPage]=useState(1)
     const [totalPages,setTotalPages]=useState(null)
+   const [brandSearch,setBrandSearch]=useState('') 
+   const [subcategorySearch,setSubCategorySearch]=useState('')
+    
    const params=useParams()
    const getCategory=async()=>{
     try{
@@ -195,33 +202,78 @@ const CategoryProduct = () => {
                     </div>
                 </div>
                 )} 
-
-                 <div className="cont">
-                  <h3>BrandFilters</h3>
-                   {brands?.map((c) => (
+                 <h3>BrandFilters</h3>
+                 <div className='search'>
+                 <div className='searchInput mb-3' style={{'border':'1px solid #111'}}>
+                 <input type="text" value={brandSearch}
+                 placeholder="Enter the brand" onChange={(e)=>setBrandSearch(e.target.value)}/>
+                 
+                  <div className="searchIcon">
+                {brandSearch ? <AiOutlineClose id="clearBtn" onClick={()=>{setBrandSearch("")}}/> :  <BiSearch />}
+                 </div>
+                 </div>
+                 </div>
+                
+                 <div className="cont" style={{height:'200px',overflow:'auto','background-color':'#fff'}}>
+                  
+                   {brands?.filter((c)=>{
+                    if (brandSearch === '') return c;
+                    else if (c.brand_name.toLowerCase().includes(brandSearch.toLowerCase())){
+                      return c;
+                    }
+                  })
+                   ?.map((c) => (
+                    <li style={{"list-style-type":"none",display:'flex','align-items':'center'}}>
               <Checkbox
                 key={c._id}
                 onChange={(e) => handleFilterBrand(e.target.checked,c._id)}
               >
+                <span style={{'font-size':'1.3rem',}}>
                 {c.brand_name}
+                </span>
               </Checkbox>
-            ))}
-
+                 </li>  
+            ))   
+            }
+            
+         
                  </div>
-
-                  <div className="cont">
-                  <h3>SubCategoryFilters</h3>
-                   {category.subcategories?.map((subcat) => (
+                   <br></br>
+                   <h3>SubCategoryFilters</h3>
+                   <div className='search'>
+                 <div className='searchInput mb-3' style={{'border':'1px solid #111'}}>
+                 <input type="text" value={subcategorySearch}
+                 placeholder="Enter the subcategory" onChange={(e)=>setSubCategorySearch(e.target.value)}/>
+                 
+                  <div className="searchIcon">
+                {subcategorySearch ? <AiOutlineClose id="clearBtn" onClick={()=>{setSubCategorySearch("")}}/> :  <BiSearch />}
+                 </div>
+                 </div>
+                 </div>
+                  <div className="cont" style={{height:'150px',overflow:'auto','background-color':'#fff'}}>
+                  
+                   {category.subcategories?.
+                   filter((c)=>{
+                    if (subcategorySearch === '') return c;
+                    else if (c.subcategory_name.toLowerCase().includes(subcategorySearch.toLowerCase())){
+                      return c;
+                    }
+                  })
+                   ?.map((subcat) => (
+                    <li style={{"list-style-type":"none",display:'flex','align-items':'center'}}>
               <Checkbox
                 key={subcat._id}
                 onChange={(e) => handleFilterSubCategory(e.target.checked,subcat.subcategory_name)}
-              >
+              > <span style={{'font-size':'1.3rem'}}>
                 {subcat.subcategory_name}
+                </span>
               </Checkbox>
+              </li>
             ))}
 
                  </div>
 
+                <br></br>
 
                 
                 <div className="cont">
@@ -230,13 +282,13 @@ const CategoryProduct = () => {
                    {prices.map((price,index)=>(
                     <div key={index}>
                       <Radio key={index} value={price.array} onChange={(e)=>setPriceFilters(e.target.value)}
-                      > <span className="h6 text-black">{price.name}</span>
+                      > <span className="h4 text-black">{price.name}</span>
                       </Radio>
                     </div>
                    ))}
                    </Radio.Group>
                 </div>
-
+                <br></br>
                 <button type="button" className="btn btn-success" onClick={()=>{
                   window.location.href = window.location.pathname;
                 }}>
