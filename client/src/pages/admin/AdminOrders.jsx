@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import Layout from "./../../components/Layout/Layout";
 import {Link} from 'react-router-dom'
 import AdminMenu from "./../../components/AdminMenu";
+import { AiOutlineClose } from "react-icons/ai";
+import { BiSearch } from "react-icons/bi";
 import CategoryForm from '../../components/Form/CategoryForm';
 import Modal from 'antd/es/modal/Modal';
 import toast from "react-hot-toast";
@@ -15,6 +17,7 @@ const AdminOrders = () => {
   const [deliveryTime,setDeliveryTime]=useState('')
   const [selectedOrder, setSelectedOrder] = useState('');
   const [editStatus, setEditStatus] = useState("");
+  const [orderSearch,setOrderSearch]=useState('')
 
     const getAllOrders = async () => {
         try {
@@ -94,6 +97,18 @@ const AdminOrders = () => {
     <div className="col-md-9">
     <h1>Orders</h1>
     <br></br>
+
+    <div className='search'>
+        <div className='searchInput mb-3' style={{'border':'1px solid #111','width':'25%'}}>
+          <input type="text" value={orderSearch}
+          placeholder="Enter order info..." onChange={(e)=>setOrderSearch(e.target.value)}/>
+                 
+         <div className="searchIcon">
+          {orderSearch ? <AiOutlineClose id="clearBtn" onClick={()=>{setOrderSearch("")}}/> :  <BiSearch />}
+          </div>
+      </div>
+    </div>
+      
     <div>
     <table className="table">
     <thead>
@@ -112,7 +127,24 @@ const AdminOrders = () => {
     </thead>
 
     <tbody>
-        {orders.map((c) => (
+        {orders?.filter((c)=>{
+                        
+                    if (orderSearch === '') return c;
+                   else {
+                    const formattedOrderDate = `${new Date(c.order_date).getDate()}/${new Date(c.order_date).getMonth()}/${new Date(c.order_date).getFullYear()} ${new Date(c.order_date).getHours()}:${new Date(c.order_date).getMinutes()}:${new Date(c.order_date).getSeconds()}`;
+                    const deliveredOrderDate = `${new Date(c.delivery_date).getDate()}/${new Date(c.delivery_date).getMonth()}/${new Date(c.delivery_date).getFullYear()} ${new Date(c.delivery_date).getHours()}:${new Date(c.delivery_date).getMinutes()}:${new Date(c.delivery_date).getSeconds()}`;
+                   return (
+                  c.status.toLowerCase().includes(orderSearch.toLowerCase()) ||
+                  c.customer.username.toLowerCase().includes(orderSearch.toLowerCase())||
+                  deliveredOrderDate.toLowerCase().includes(orderSearch.toLowerCase()) ||
+                  formattedOrderDate.toLowerCase().includes(orderSearch.toLowerCase()) ||
+                  c.order_id.toLowerCase().includes(orderSearch.toLowerCase()) ||
+                  c.shipping_address.toLowerCase().includes(orderSearch.toLowerCase())||
+                  c.total_amount.toString().includes(orderSearch)
+      );
+    }
+                  })
+                   ?.map((c) => (
 
             <>
             <tr key={c.order_id}>

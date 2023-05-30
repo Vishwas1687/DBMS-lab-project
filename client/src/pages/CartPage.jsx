@@ -158,13 +158,13 @@ const CartPage = () => {
                                   <p>Weight:{p.weight} {p.weightUnits}</p>
                                   <p>Quantity: {p.quantity}</p>
                                 </div>
-                              <button style={{'margin-left':'8rem',width:'10rem',
+                              <button style={{'margin-left':'8rem',width:'7rem',
                               display:'flex','alignItems':'center'}} className="remove-button"
                                onClick={() => removeCartItem(p.product._id,p.selectedWeight)}> 
-                               <span style={{'font-size':'1.5rem'}}>
+                               <span style={{'font-size':'1rem'}}>
                                  Remove
                                </span>
-                               <Trash size="28"/>
+                               <Trash size="20"/>
                                </button>
                           </div>
                             ))

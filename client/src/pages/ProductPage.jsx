@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import Layout from '../components/Layout/Layout';
 import { useParams } from 'react-router-dom';
 import '../components/styles/ProductPage.css';
+import '../components/styles/Card.css'
 import { useCart } from '../context/cart';
 import { useQuantityLocal } from '../context/quantity';
 import { ShoppingBagOpen } from 'phosphor-react';
@@ -224,18 +225,20 @@ const ProductPage = () => {
                   MRP: <s>Rs.{info.weights.find(weigh=>weigh.weight_id===parseInt(selectedWeight))?.mrp||info.weights[0]?.mrp}</s>
                 </div>
                 <div className='sp_'>
-                  PRICE: Rs.{info.weights.find(weigh=>weigh.weight_id===parseInt(selectedWeight))?.sp||info.weights[0]?.sp}
+                  <span style={{'font-size':'1.5rem'}}>PRICE: Rs.{info.weights.find(weigh=>weigh.weight_id===parseInt(selectedWeight))?.sp||info.weights[0]?.sp}</span>
                 </div>
                 <div className='weightS'>
-                  <div>Select quantity:</div>
-                  <select onChange={handleWeightChange}>
+                  <div style={{'font-size':'1.4rem'}}>Select quantity:</div>
+                  <select onChange={handleWeightChange} 
+                  style={{width:'14rem','text-align':'center',height:'3rem',
+                  'font-size':'1.5rem','background-color':'white','border':'1px solid #111','cursor':'pointer'}}>
                     {info
                       ? info.weights.map((weight) => (
                           <option
                             value={weight.weight_id}
                             key={weight.weight_id}
                           >
-                            {weight.weight} {weight.weight_units}
+                            {weight.weight} {weight.weight_units} {` - Rs. ${weight.sp}`}
                           </option>
                         ))
                       : ""}
@@ -353,6 +356,8 @@ const ProductPage = () => {
               )}
             </div>
           </div>
+          <br></br>
+          <br></br>
         </Layout>
       ) : (
         <Layout>
@@ -368,6 +373,8 @@ const ProductPage = () => {
             <div className='spinner-border text-center' role='status'></div>
             <h1 className='text-center'>{`Loading product ${slug}`}</h1>
           </div>
+          <br></br>
+          <br></br>
         </Layout>
       )}
     </>
