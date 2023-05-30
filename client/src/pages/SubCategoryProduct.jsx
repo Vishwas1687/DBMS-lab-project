@@ -6,6 +6,8 @@ import Card from '../components/Layout/Card.jsx'
 import {prices} from './../components/prices.js'
 import toast from 'react-hot-toast'
 import axios from 'axios'
+import { AiOutlineClose } from 'react-icons/ai'
+import { BiSearch } from 'react-icons/bi'
 import Layout from '../components/Layout/Layout'
 
 const SubCategoryProduct = () => {
@@ -18,6 +20,7 @@ const SubCategoryProduct = () => {
    const [brands,setBrands]=useState([])
    const [brandFilters,setBrandFilters]=useState([])
    const [currentPage,setCurrentPage]=useState(1)
+   const [brandSearch,setBrandSearch]=useState('')
     const [totalPages,setTotalPages]=useState(null)
    const params=useParams()
    const getCategory=async()=>{
@@ -191,33 +194,57 @@ const SubCategoryProduct = () => {
                 </div>
                 )} 
 
-                 <div className="cont">
-                  <h3>BrandFilters</h3>
-                   {brands?.map((c) => (
+                <h3>Brand Filters</h3>
+                <div className='search'>
+                 <div className='searchInput mb-3' style={{'border':'1px solid #111'}}>
+                 <input type="text" value={brandSearch}
+                 placeholder="Enter the brand" onChange={(e)=>setBrandSearch(e.target.value)}/>
+                 
+                  <div className="searchIcon">
+                {brandSearch ? <AiOutlineClose id="clearBtn" onClick={()=>{setBrandSearch("")}}/> :  <BiSearch />}
+                 </div>
+                 </div>
+                 </div>
+                 <div className="cont" style={{height:'200px',overflow:'auto','background-color':'#fff'}}>
+                  
+                   {brands?.filter((c)=>{
+                    if (brandSearch === '') return c;
+                    else if (c.brand_name.toLowerCase().includes(brandSearch.toLowerCase())){
+                      return c;
+                    }
+                  })
+                   ?.map((c) => (
+                    <li style={{"list-style-type":"none",display:'flex','align-items':'center'}}>
               <Checkbox
                 key={c._id}
                 onChange={(e) => handleFilter(e.target.checked,c._id)}
               >
+                <span style={{'font-size':'1.3rem',}}>
                 {c.brand_name}
+                </span>
               </Checkbox>
-            ))}
-
+                 </li>  
+            ))   
+            }
+            
+         
                  </div>
  
 
-                
+                <br></br>
                 <div className="cont">
                   <h3>Price Filters</h3>
                   <Radio.Group>
                    {prices.map((price,index)=>(
                     <div key={index}>
                       <Radio key={index} value={price.array} onChange={(e)=>setPriceFilters(e.target.value)}
-                      > <span className="h6 text-black">{price.name}</span>
+                      > <span className="h5 text-black">{price.name}</span>
                       </Radio>
                     </div>
                    ))}
                    </Radio.Group>
-
+                   <br></br>
+                   <br></br>
                    <button type="button" className="btn btn-success" onClick={()=>{
                   window.location.href = window.location.pathname;
                 }}>
