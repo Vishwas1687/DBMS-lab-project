@@ -264,7 +264,7 @@ const SubCategoryProduct = () => {
                  ))
                   }
                   </div>
-                  
+                  <br></br>
                    {!loading && products.length !== 0 ?(
                   <>
                   <div className="pagination-container" style={{textAlign:"center"}}>
@@ -287,7 +287,7 @@ const SubCategoryProduct = () => {
               {index + 1}
             </button>
             ))}
-
+         
          <button type="button" className="btn btn-success"  onClick={()=>{
           handleForward();window.scrollTo({top:0,behavior:'smooth'})}}>
         
@@ -302,6 +302,9 @@ const SubCategoryProduct = () => {
         </div>}   
             </div>
         </div>
+
+         <br></br>
+       <br></br>
     </Layout>
   )
 }
