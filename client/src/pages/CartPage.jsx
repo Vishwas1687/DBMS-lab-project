@@ -31,7 +31,7 @@ const CartPage = () => {
         try {
             let total = 0
             cart?.map((item) => {
-                total = total + item.sp
+                total = total + item.sp*item.quantity
             })
             return total
         } catch (error) {
