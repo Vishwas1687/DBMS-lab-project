@@ -158,9 +158,11 @@ const CategoryProduct = () => {
    }
 
    useEffect(()=>{
+    setLoading(true)
     getCategory()
     getAllCategoryProducts()
     getAllBrands()
+    setLoading(false)
    },[params.slug])
 
    useEffect(() => {
@@ -316,8 +318,9 @@ const CategoryProduct = () => {
                  {!loading?(
                   <>
                   <div className="pagination-container" style={{textAlign:"center"}}>
-        <button type="button" className="btn btn-success"
-        onClick={handleBackward}>
+        <button type="button" className="btn btn-success" onClick={()=>{
+          handleBackward();window.scrollTo({top:0,behavior:'smooth'})}}>
+        
             <span style={{textAlign:"center",alignItems:"center"}}><FaAngleLeft/></span>
         </button>
          
@@ -328,14 +331,16 @@ const CategoryProduct = () => {
             type="button"
             className={`btn ${index + 1 === currentPage ? 'btn-primary' : 'btn-secondary'}`}
             style={{ margin: '3px' }}
-            onClick={() => setCurrentPage(index + 1)}
+            onClick={() => {setCurrentPage(index + 1);
+                window.scrollTo({top:0,behavior:'smooth'})}}
              >
               {index + 1}
             </button>
             ))}
 
-         <button type="button" className="btn btn-success"
-         onClick={handleForward}>
+         <button type="button" className="btn btn-success" onClick={()=>{
+          handleForward();window.scrollTo({top:0,behavior:'smooth'})}}>
+         
           <span style={{textAlign:"center",alignItems:"center"}}><FaAngleRight/></span>
          </button>
       </div>
