@@ -12,9 +12,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-     "start": "npm run server & npm run client",
+     "start": "concurrently \"npm run server\" \"npm run client\"",
   "server": "node server.js --prefix ./api",
-  "client": "npm start --prefix ./client",
+  "client": "npm start --prefix ./client"
   },
   "repository": {
     "type": "git",
