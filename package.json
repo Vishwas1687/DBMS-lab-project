@@ -12,9 +12,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "server": "nodemon server.js --prefix ./api",
-    "client": "npm start --prefix ./client",
-    "start": "concurrently \"npm run server\" \"npm run client\""
+     "start": "concurrently \"npm run server\" \"npm run client\"",
+  "server": "node server.js --prefix ./api",
+  "client": "npm start --prefix ./client"
   },
   "repository": {
     "type": "git",

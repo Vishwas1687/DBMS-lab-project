@@ -90,7 +90,7 @@ const CategoryProduct = () => {
 
   const getFilterProducts=async()=>{
     try{
-       setLoading(true)
+      setLoading(true)
        const {data}=await axios.get('http://localhost:5000/api/products/get-all-products-based-on-category-filters',
        {
         params:{
