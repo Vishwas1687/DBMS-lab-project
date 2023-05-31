@@ -1,9 +1,30 @@
 {
   "dependencies": {
+    "concurrently": "^8.0.1",
     "express-session": "^1.17.3",
     "passport": "^0.6.0",
     "passport-google-oauth20": "^2.0.0",
     "react-helmet": "^6.1.0",
     "react-icons": "^4.8.0"
-  }
+  },
+  "name": "dbms-lab-project",
+  "description": "",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "server": "nodemon server.js --prefix ./api",
+    "client": "npm start --prefix ./client",
+    "start": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Vishwas1687/DBMS-lab-project.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Vishwas1687/DBMS-lab-project/issues"
+  },
+  "homepage": "https://github.com/Vishwas1687/DBMS-lab-project#readme"
 }
