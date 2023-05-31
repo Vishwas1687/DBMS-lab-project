@@ -8,6 +8,7 @@ import CategoryForm from '../../components/Form/CategoryForm';
 import Modal from 'antd/es/modal/Modal';
 import toast from "react-hot-toast";
 import axios from "axios";
+import '../../components/styles/ProductPage.css'
 
 const AdminOrders = () => {
 
@@ -18,15 +19,18 @@ const AdminOrders = () => {
   const [selectedOrder, setSelectedOrder] = useState('');
   const [editStatus, setEditStatus] = useState("");
   const [orderSearch,setOrderSearch]=useState('')
+  const [loading,setLoading] = useState(false);
 
     const getAllOrders = async () => {
         try {
+          setLoading(true);
           const { data } = await axios.get(
             "http://localhost:5000/api/orders/get-all-orders"
           );
           if (data?.success) {
             setOrders(data?.orders);
           }
+          setLoading(false);
         } catch (error) {
           console.log(error);
           toast.error("Something went wrong in getting orders");
@@ -127,7 +131,7 @@ const AdminOrders = () => {
     </thead>
 
     <tbody>
-        {orders?.filter((c)=>{
+        { !loading ? orders?.filter((c)=>{
                         
                     if (orderSearch === '') return c;
                    else {
@@ -180,7 +184,9 @@ const AdminOrders = () => {
             </td>
             </tr>
             </>
-        ))}
+        )): <tr>
+          <td colspan='8' className='myLoad'style={{height:100+'px',background:'lightgray',animation:'flicker 1s infinite'}}><div style={{display:'flex',height:100+'%',alignItems:'center',justifyContent:'center'}}>Loading...</div></td>
+          </tr>}
 
 
     </tbody>

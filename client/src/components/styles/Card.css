@@ -84,6 +84,10 @@ section {
 	box-sizing: border-box;
 }
 
+.loadText{
+	z-index: 10;
+
+}
 
 .card_img {
 	background-size: contain;
@@ -219,3 +223,13 @@ section {
 	-webkit-transition-delay: .2s;
 			transition-delay: .2s;
   }
+
+  @keyframes flicker {
+	0%, 100% {
+	  opacity: 1;
+	}
+	50% {
+	  opacity: 0.5;
+	}
+  }
+  

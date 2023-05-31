@@ -9,6 +9,7 @@ import axios from 'axios'
 import { AiOutlineClose } from 'react-icons/ai'
 import { BiSearch } from 'react-icons/bi'
 import Layout from '../components/Layout/Layout'
+import '../components/styles/ProductPage.css'
 
 const SubCategoryProduct = () => {
    const [category,setCategory]=useState('')
@@ -103,14 +104,12 @@ const SubCategoryProduct = () => {
 
   const getTotalProducts=async()=>{
     try{
-      
       const {data}=await axios.get(`http://localhost:5000/api/products/get-total-products-in-subcategory-page/${params.slug}/${params.subcategory_id}`)
       if(data.success)
       {
         setTotalProducts(data.count)
         
       }
-      
     }catch(error)
     {
       toast.error('Something went wrong')
@@ -226,7 +225,6 @@ const SubCategoryProduct = () => {
                  </li>  
             ))   
             }
-            
          
                  </div>
  
@@ -267,7 +265,7 @@ const SubCategoryProduct = () => {
                   }
                   </div>
                   
-                   {!loading?(
+                   {!loading && products.length !== 0 ?(
                   <>
                   <div className="pagination-container" style={{textAlign:"center"}}>
         <button type="button" className="btn btn-success" onClick={()=>{
@@ -296,11 +294,12 @@ const SubCategoryProduct = () => {
           <span style={{textAlign:"center",alignItems:"center"}}><FaAngleRight/></span>
          </button>
       </div>
-      </>):''}
-
-                  
-
-                  
+      </>):loading ? <div className='myLoad' style={{background:'lightgray',height:100+'%',width:100+'%',animation: 'flicker 1s infinite'}}>
+      </div> : <div>
+        <h5>
+          No products found...
+        </h5>
+        </div>}   
             </div>
         </div>
     </Layout>

@@ -12,9 +12,11 @@ const UserOrders = () => {
   const [orders, setOrders] = useState([]);
   const [orderSearch,setOrderSearch]=useState('')
   const [auth,setAuth]=useAuth()
+  const [loading,setLoading] = useState(false);
   useEffect(() => {
     const fetchOrders = async () => {
       try {
+        setLoading(true);
         const { data } = await axios.get("http://localhost:5000/api/orders/get-order-by-user");
         if (data?.success) {
           setOrders(data.order);
@@ -22,6 +24,7 @@ const UserOrders = () => {
         } else {
           toast.error(data.message);
         }
+        setLoading(false);
       } catch (error) {
         toast.error("Something went wrong");
       }
@@ -68,7 +71,7 @@ const UserOrders = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {orders && orders.length > 0 ? (
+                    {!loading ? orders && orders.length > 0 ? (
                       orders?.filter((c)=>{
                         
                     if (orderSearch === '') return c;
@@ -105,7 +108,7 @@ const UserOrders = () => {
                       <tr>
                         <td colSpan="7">No orders found.</td>
                       </tr>
-                    )}
+                    ): <div>Loading...</div>}
                   </tbody>
                 </table>
               </div>

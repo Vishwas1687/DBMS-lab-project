@@ -167,3 +167,11 @@ hr{
 .card-body{
     text-align: center;
 }
+
+.productSlider{
+    overflow: auto;
+}
+
+.myLoad{
+    border-radius: 10px;
+}
