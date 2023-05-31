@@ -31,6 +31,7 @@ export default function(props){
     const [mrp, setMrp] = useState(weights[0].mrp)
     const [stock, setStock] = useState((weights[0].stock) > 0 ? true : false)
     const [temp,setTemp]=useState('')
+    const [imgLoad,setImgLoad] = useState(false);
     const navigate=useNavigate()
 
     const [quantity, setQuantity] = useState(parseInt(quantityLocal.map((quant)=>{
@@ -115,6 +116,10 @@ export default function(props){
 
     }
 
+    const handleImageLoad = ()=>{
+        setImgLoad(true);
+    }
+
     const handleIncrement=()=>{
         setQuantity((quan)=>parseInt(quan)+1)
 
@@ -160,9 +165,10 @@ export default function(props){
     <div className="card">
         <div className="wrapper">
             <img className="card_img" src = {`http://localhost:5000/api/products/get-photo/${props.slug}` } 
-            style={{cursor:'pointer'}}
+            style={{cursor:'pointer',backgroundColor: imgLoad ? '' : 'lightgray',animation: !imgLoad ? 'flicker 1s infinite' : 'none'}}
+            onLoad={handleImageLoad}
              onClick={()=>navigate(`/product/${props.slug}`)}/>
-
+            
             <div className="cardInfo">
                 <h1 style={{cursor:'pointer',"font-size":"1.3rem"}}
              onClick={()=>navigate(`/product/${props.slug}`)}>{props.product_name}</h1>

@@ -20,6 +20,7 @@ const HomePage = () => {
   const [totalPages, setTotalPages] = useState(null);
   const navigate = useNavigate();
 
+
   const getPaginatedProducts = async () => {
     try {
       const { data } = await axios.get('http://localhost:5000/api/products/get-paginated-products-for-homepage', {
@@ -106,9 +107,11 @@ const HomePage = () => {
       </Slider>
 
       <div className="cards-list">
-        {products.map((item) => (
+        {!loading ? products.map((item) => (
           <Card key={item.product_id} {...item} />
-        ))}
+        )) : <div style={{textAlign:'center'}}>
+          <h5 >Loading...</h5>
+          </div>}
       </div>
 
       <br />
