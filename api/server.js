@@ -10,7 +10,7 @@ const orderRoutes=require('./routes/orderRoutes');
 const brandRoutes=require('./routes/brandRoutes')
 const categoryRoutes=require('./routes/categoryRoutes');
 const productRoutes=require('./routes/productRoutes');
-const path=require('path');
+
 
 
 const mongoose = require('mongoose');
@@ -33,7 +33,6 @@ connect.then((db) => {
 app.use(express.json())
 app.use(morgan('dev'))
 app.use(cors({credentials:true,origin:'http://localhost:3000'}))
-app.use(express.static(path.join(__dirname,'../client/build')))
 
 // Sessions
 app.use(session({
@@ -45,9 +44,7 @@ app.use(session({
 // passport middleware
 app.use(passport.initialize())
 app.use(passport.session())
-app.use('*',function(req,res){
-   res.sendFile(path.join(__dirname,'../client/build/index.html'))
-})
+
 
 //routes
 app.use('/api/auth',authRoutes)
