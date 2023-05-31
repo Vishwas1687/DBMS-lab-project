@@ -116,7 +116,8 @@ const HomePage = () => {
       <br />
 
       <div className="pagination-container" style={{ textAlign: 'center' }}>
-        <button type="button" className="btn btn-success" onClick={handleBackward}>
+        <button type="button" className="btn btn-success" onClick={()=>{
+          handleBackward();window.scrollTo({top:window.innerHeight*0.65,behavior:'smooth'})}}>
           <span style={{ textAlign: 'center', alignItems: 'center' }}>
             <FaAngleLeft />
           </span>
@@ -129,7 +130,8 @@ const HomePage = () => {
                 type="button"
                 className={`btn ${index + 1 === currentPage ? 'btn-primary' : 'btn-secondary'}`}
                 style={{ margin: '3px' }}
-                onClick={() => setCurrentPage(index + 1)}
+                onClick={() => {setCurrentPage(index + 1);
+                window.scrollTo({top:window.innerHeight*0.65,behavior:'smooth'})}}
               >
                 {index + 1}
               </button>
@@ -138,7 +140,8 @@ const HomePage = () => {
         ) : (
           ''
         )}
-        <button type="button" className="btn btn-success" onClick={handleForward}>
+        <button type="button" className="btn btn-success" onClick={()=>{
+          handleForward();window.scrollTo({top:window.innerHeight*0.65,behavior:'smooth'})}}>
           <span style={{ textAlign: 'center', alignItems: 'center' }}>
             <FaAngleRight />
           </span>
