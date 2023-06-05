@@ -187,7 +187,7 @@ const ProductPage = () => {
                 ? info.category.subcategories.map((subcat, index) => (
                     <Link
                       key={index}
-                      to={`/subcategory/${info.category.category_name}/${subcat.subcategory_id}`}
+                      to={`/subcategory/${info.category.slug}/${subcat.subcategory_id}`}
                     >
                       {info.subcategory === subcat.subcategory_name ? (
                         <span className='subcat matchedSubCat'>
