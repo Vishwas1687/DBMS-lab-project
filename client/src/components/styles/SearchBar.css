@@ -33,7 +33,7 @@ input:focus{
     width:25vw;
     border-radius: 10px;
     overflow: auto;
-    background-color: #fffbfb;
+    background-color: white;
     max-height: 200px;
     overflow:hidden;
     overflow-y: auto;
@@ -45,6 +45,7 @@ input:focus{
     display: flex;
     align-items: center;
     text-align: center;
+    background-color: black;
 }
 
 .results::-webkit-scrollbar{
@@ -57,9 +58,15 @@ input:focus{
 .productName{
     margin-left: 5px;
 }
-
-.hoverEffect:hover{
-    background-color: #e6e5e5;
+.resultItem:hover{
+   background-color: white;
+}
+.resultItem span{
+    color:white;
+    font-weight: bold;
+}
+.resultItem:hover span{ 
+    color:black;
     cursor: pointer;
 }
 

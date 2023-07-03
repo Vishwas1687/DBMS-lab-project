@@ -1,7 +1,19 @@
 .positionDropdown{
-    right:2px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
     text-align: center;
     cursor:pointer;
+    background-color: black;
+}
+.positionDropdown a{
+    color:white;
+}
+.positionDropdown:hover a{
+    color:black;
+}
+.positionDropdown:hover{
+    background-color: white;
 }
 
 .dropdown-hover:hover .positionDropdown{

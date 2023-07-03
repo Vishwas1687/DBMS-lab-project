@@ -5,7 +5,7 @@ import axios from 'axios'
 import toast from 'react-hot-toast'
 import { useCart } from "../context/cart"
 import { useAuth } from "../context/auth"
-import { useNavigate ,Link} from "react-router-dom"
+import { useNavigate ,Link,useLocation} from "react-router-dom"
 import { Trash } from 'phosphor-react'
 import "../components/styles/Cart.css"
 import { useQuantityLocal } from "../context/quantity";
@@ -19,6 +19,14 @@ const CartPage = () => {
     const navigate = useNavigate()
     const [quantityLocal,setQuantityLocal]=useQuantityLocal()
     const [order,setOrder]=useState([])
+    const location=useLocation()
+     const [user,setUser] =useState([])
+    const [clearedLocation, setClearedLocation] = useState(null);
+  
+
+    useEffect(()=>{
+       setClearedLocation({...location,state:null})
+    },[location.pathname])
     const [singleProduct,setSingleProduct]=useState({
         product:null,
         quantity:1,
@@ -26,12 +34,28 @@ const CartPage = () => {
         weight_units:'',
         price:''
     })
+
+    const getUserData=async()=>{
+     const {data}=await axios.get(`http://localhost:5000/api/auth/get-single-user/${auth.token}`)
+     if(data?.success)
+     {
+        setUser(data.user)
+     }
+     else
+     {
+      toast.error('Something went wrong')
+     }
+
+  }
+  useEffect(()=>{
+    getUserData() 
+  },[])
     
     const totalPrice = () => {
         try {
             let total = 0
             cart?.map((item) => {
-                total = total + item.sp
+                total = total + item.sp*item.quantity
             })
             return total
         } catch (error) {
@@ -47,13 +71,13 @@ const CartPage = () => {
             let index = myCart.findIndex(item => item.product._id === pid && item.selectedWeight === w_id) 
             myCart.splice(index, 1)
             setCart(myCart)
-            localStorage.setItem('cart', JSON.stringify(myCart))
+            // localStorage.setItem('cart', JSON.stringify(myCart))
 
             let myQuantityLocal = [...quantityLocal]
             let index2 = myQuantityLocal.findIndex(item => item.product._id === pid && item.selectedWeight === w_id) 
             myQuantityLocal.splice(index2, 1)
             setQuantityLocal(myQuantityLocal)
-            localStorage.setItem('quantityLocal', JSON.stringify(myQuantityLocal))
+            // localStorage.setItem('quantityLocal', JSON.stringify(myQuantityLocal))
         } catch(error){
             console.log(error)
         }
@@ -158,7 +182,7 @@ const CartPage = () => {
                                   <p>Weight:{p.weight} {p.weightUnits}</p>
                                   <p>Quantity: {p.quantity}</p>
                                 </div>
-                              <button style={{'margin-left':'8rem',width:'7rem',
+                              <button style={{'margin-left':'6.5rem',width:'7rem',
                               display:'flex','alignItems':'center'}} className="remove-button"
                                onClick={() => removeCartItem(p.product._id,p.selectedWeight)}> 
                                <span style={{'font-size':'1rem'}}>
@@ -171,20 +195,23 @@ const CartPage = () => {
                         }
                     </div>
                 
-                <div className="cart-summary">
-                    <h2>Cart Summary</h2>
-                    <p>Total|Checkout|Payment</p>
-                    <hr style={{width: "200px"}}/>
-                    <h1>Total: {totalPrice()}</h1>
-                    {auth?.user?.address!=="undefined" && auth?.token ? (
+                <div className="cart-summary" style={{'background-color':'#444444'}}>
+                    <h2 style={{'color':'white'}}>Cart Summary</h2>
+                    <p style={{'color':'white'}}>Total|Checkout|Payment</p>
+                    <hr style={{width: "200px",color:'white'}}/>
+                    <h1 style={{'color':'white'}}>Total: {totalPrice()}</h1>
+                    {user?.address!=="undefined" && auth?.token ? (
                     
                         <div className="mb-3">
-                            <h4>Current Address</h4>
-                            <h5>
-                                {auth?.user?.address}
+                            <h4 style={{'color':'white'}} >Current Address</h4>
+                            <h5 style={{'color':'white'}}>
+                                {user?.address}
                             </h5>
                             <button className="btn btn-primary"
-                            onClick={() => navigate('/user/update-profile')}>Update Address</button>
+                            onClick={() => navigate('/user/update-profile',
+                            {
+                              state:{returnPath:clearedLocation.pathname}
+                            })}>Update Address</button>
                         </div>
                     
                     ) : (
@@ -199,11 +226,16 @@ const CartPage = () => {
                                   </Link>
                                     
                                 ) : (
-                                  <Link to={'/'}>
-                                      <button type="button" className="btn btn-primary">
+                                  
+                                      <button type="button" className="btn btn-primary"
+                                      onClick={()=>navigate('/',{
+                                        state:{
+                                          returnPath:location.pathname
+                                        }
+                                      })}>
                                         Please login to proceed
                                       </button>
-                                  </Link>
+                                  
                                     
                                 )
                             }
@@ -213,7 +245,7 @@ const CartPage = () => {
                     
 
                 <div >
-                {!clientToken || !auth?.token || !cart?.length ||auth?.user?.address==='undefined' ? (
+                {!clientToken || !auth?.token || !cart?.length ||user?.address==='undefined' ? (
                   ""
                 ) : (
                   <>

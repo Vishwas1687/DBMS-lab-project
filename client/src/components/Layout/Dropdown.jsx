@@ -1,18 +1,19 @@
-import React from 'react'
+import React,{useRef} from 'react'
 import {User} from 'phosphor-react'
 import { NavLink , Link} from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import '../styles/Dropdown.css'
 import { useAuth } from '../../context/auth';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,useLocation } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import axios from 'axios';
 
 export default function Dropdown() {
 
     const navigate = useNavigate();
-
+    const location=useLocation()
     const [auth,setAuth] = useAuth();
+    const anchorRef=useRef(null)
 
     const [isAdmin,setIsAdmin] = useState(false);
 
@@ -28,15 +29,25 @@ export default function Dropdown() {
       if (auth?.token) authCheck();
     }, [auth?.token]);
 
+    const [returnPath,setReturnPath]=useState(null)
+
+    useEffect(()=>{
+     setReturnPath(location.state?.returnPath||'/')
+    //  if(location.state?.returnPath)
+    //  anchorRef.current.click()
+  },[])
+
+
     return (
     <div className="dropdown dropdown-hover">
         <NavLink className='nav-link'>
-        <User size={32} />
+        <User size={32} style={{'font-weight':'bold',color:'white'}}/>
         </NavLink>
       
-      { !(auth.user) ? (<>
+      { !(auth.token) ? (<>
         <div className={`dropdown-menu positionDropdown`} >
-        <a className="dropdown-item " href="#" data-toggle="modal" data-target="#exampleModalCenter">Log In</a>
+        <a className="dropdown-item " href="#" data-toggle="modal" data-target="#exampleModalCenter" ref={anchorRef}
+        >Log In</a>
       </div>
       </>) :
       (<>
@@ -48,7 +59,7 @@ export default function Dropdown() {
           localStorage.removeItem('quantityLocal');
           navigate('/');
           window.location.reload();
-          setAuth({...auth, user:null,token:''});localStorage.removeItem('auth');toast('Logged out!');
+          setAuth({...auth, token:''});localStorage.removeItem('auth');toast('Logged out!');
         }}>Logout</a>
 
       </div>

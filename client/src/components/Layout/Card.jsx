@@ -93,10 +93,10 @@ export default function(props){
         })
          
          setQuantityLocal(tempQuantity)
-         localStorage.setItem('quantityLocal',JSON.stringify(tempQuantity))
+        //  localStorage.setItem('quantityLocal',JSON.stringify(tempQuantity))
 
             setCart(tempCart)
-            localStorage.setItem('cart', JSON.stringify(tempCart))
+            // localStorage.setItem('cart', JSON.stringify(tempCart))
         }
         else
         {
@@ -107,10 +107,10 @@ export default function(props){
 
             const tempCart=cart.filter((cartItem)=>cartItem.quantity>1)
             setCart(tempCart)
-            localStorage.setItem('cart', JSON.stringify(tempCart))
+            // localStorage.setItem('cart', JSON.stringify(tempCart))
 
             setQuantityLocal(tempQuantity)
-            localStorage.setItem('quantityLocal',JSON.stringify(tempQuantity))
+            // localStorage.setItem('quantityLocal',JSON.stringify(tempQuantity))
         }
         
 
@@ -134,7 +134,7 @@ export default function(props){
             })
 
         setCart(tempCart)
-        localStorage.setItem('cart', JSON.stringify(tempCart))
+        // localStorage.setItem('cart', JSON.stringify(tempCart))
 
         const tempQuantity=quantityLocal.filter((quantLocal)=>{
             if(quantLocal.product===props._id && quantLocal.selectedWeight===selectedWeight)
@@ -147,7 +147,7 @@ export default function(props){
         })
          
          setQuantityLocal(tempQuantity)
-         localStorage.setItem('quantityLocal',JSON.stringify(tempQuantity))
+        //  localStorage.setItem('quantityLocal',JSON.stringify(tempQuantity))
     }
 
     useEffect(()=>{
@@ -170,10 +170,10 @@ export default function(props){
              onClick={()=>navigate(`/product/${props.slug}`)}/>
             
             <div className="cardInfo">
-                <h1 style={{cursor:'pointer',"font-size":"1.3rem"}}
+                <h1 style={{cursor:'pointer',"font-size":"1rem"}}
              onClick={()=>navigate(`/product/${props.slug}`)}>{props.product_name}</h1>
 
-                <p className="date_" style={{cursor:'pointer',"font-size":"1.3rem"}}
+                <p className="date_" style={{cursor:'pointer',"font-size":"1rem"}}
              onClick={()=>navigate(`/product/${props.slug}`)}>
                     {props.brand.brand_name}
                 </p>
@@ -225,12 +225,12 @@ export default function(props){
                               <>
                                 <span style={{display:'flex',"align-items":'center',
                                 'margin-left':"1rem",width:"30rem"}}>
-                                <label style={{border:"1px solid #111",padding:"5px", "font-size":"1.5rem",
-                                "background-color":"#ccc","border-radius":"15%"}}> Qty </label>  
+                                <label style={{border:"1px solid white",padding:"5px", "font-size":"1.2rem",
+                                "background-color":"black","border-radius":"15%"}}> Qty </label>  
 
-                                <input type="text" value={temp} style={{padding:"5px",width:"4rem",height:'3rem',
-                                "font-size":'1.5rem','font-weight':'bold',
-                                "text-align":"center","margin-right":"6rem","border-radius":"15%"}} 
+                                <input type="text" value={temp} style={{padding:"5px",width:"3rem",height:'2.5rem',
+                                "font-size":'1.2rem','font-weight':'bold','color':'black',
+                                "text-align":"center","margin-right":"4rem","border-radius":"15%"}} 
                                 onChange={
                                     (e)=>{setTemp(e.target.value)
                                   }}/>
@@ -242,13 +242,13 @@ export default function(props){
                                         setQuantity(temp||1)
                                     setCart([...cart, {product:props,selectedWeight:parseInt(selectedWeight), sp: sp, mrp: mrp,weight:weight,weightUnits:weightUnits,quantity:parseInt(temp || 1)}])
                                     setQuantityLocal([...quantityLocal,{product:props._id,selectedWeight:parseInt(selectedWeight),weightUnits:weightUnits,quantity:parseInt(temp || 1)}])
-                                    localStorage.setItem('quantityLocal',JSON.stringify([...quantityLocal,{product:props._id,selectedWeight:parseInt(selectedWeight),weightUnits:weightUnits,quantity:parseInt(temp || 1)}]))
+                                    // localStorage.setItem('quantityLocal',JSON.stringify([...quantityLocal,{product:props._id,selectedWeight:parseInt(selectedWeight),weightUnits:weightUnits,quantity:parseInt(temp || 1)}]))
                                     console.log(cart)
-                                    localStorage.setItem('cart', JSON.stringify([...cart, {product:props,selectedWeight:parseInt(selectedWeight), sp: sp, mrp: mrp,weightUnits:weightUnits, quantity: parseInt(temp || 1)}]))
+                                    // localStorage.setItem('cart', JSON.stringify([...cart, {product:props,selectedWeight:parseInt(selectedWeight), sp: sp, mrp: mrp,weightUnits:weightUnits, quantity: parseInt(temp || 1)}]))
                                     toast.success('Item added to cart')
                                 }}>
                                 <span style={{display:'flex','align-items':'center',
-                                gap:'0.5rem',"padding-left":"1.8rem"}}>
+                                gap:'0.5rem',"padding-left":"1rem"}}>
                                   Add
                                  <ShoppingBagOpen/>
                                  </span>

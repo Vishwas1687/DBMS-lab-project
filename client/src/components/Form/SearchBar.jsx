@@ -38,15 +38,22 @@ const SearchBar = () => {
   return (
     <div className='search'>
         <div className="searchInput">
-            <input type="text" placeholder='Type to search...' value={input} onChange={handleSearch}/>
-            <div className="searchIcon">
-                {input ? <AiOutlineClose id="clearBtn" onClick={()=>{setInput("")}}/> :  <BiSearch />}
+            <input type="text" placeholder='Enter the product....' value={input} onChange={handleSearch}
+            style={{
+             outline: 'none',
+             border: '3px solid #111',
+             color:'black',
+             'box-shadow':'2px 2px 2px 2px rgba(0,252,252,0.4)'
+              }}  />
+            <div className="searchIcon" style={{'border':'2px solid #111'}}>
+                {input ? <AiOutlineClose style={{'color':'black'}} id="clearBtn" onClick={()=>{setInput("")}}/> :  <BiSearch style={{'color':'black'}}/>}
             </div>
         </div>
         <div className="results" style={input ? {display:'block',zIndex:1}: {display:'none'}}>
             { (results.length) ? 
                 results.slice(0,10).map((product,index) => (
-                        <Link to={`/product/${product.slug}`} key={index} className='resultItem hoverEffect' onClick={()=>{setInput('')}}>
+                        <Link to={`/product/${product.slug}`} key={index} className='resultItem' onClick={()=>{setInput('')}} 
+                        >
                             <span className="productName" style={{padding:"2px"}}>{product.product_name}</span>
                         </Link>
                 ))

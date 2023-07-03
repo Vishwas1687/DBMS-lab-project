@@ -10,17 +10,18 @@ const SamplePage = () => {
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
     const token = searchParams.get('token');
-    const user = JSON.parse(searchParams.get('user'));
+    // const user = JSON.parse(searchParams.get('user'));
     // Set the auth object in local storage
     localStorage.setItem(
       'auth',
-      JSON.stringify({ user: user, token: token })
+      JSON.stringify({ token: token })
     );
 
     // Set the auth object in the state
-    setAuth({ user: user, token: token });
+    setAuth({ token: token });
     navigate('/')
   }, [location.search]);
+
 
   return <div>Sample</div>;
 };

@@ -1,5 +1,5 @@
-import React from 'react'
-import { useState,useRef} from 'react';
+
+import { useState,useRef,useEffect} from 'react';
 import axios from 'axios'
 import { NavLink , Link} from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
@@ -32,14 +32,13 @@ export default function Modal() {
         toast.success(res.data.message);
         setAuth({
           ...auth,
-          user: res.data.user,
           token: res.data.token,
         });
-        localStorage.setItem('auth',JSON.stringify(res.data));
+        localStorage.setItem('auth',JSON.stringify(auth));
         setPassword('');
         setEmail('');
         closeRef.current.click();
-        navigate('/');
+        navigate(returnPath);
       }else{
         toast.error(res.data.message);
       }
@@ -51,6 +50,14 @@ export default function Modal() {
       }
     }
   };
+
+  const [returnPath,setReturnPath]=useState(null)
+    useEffect(()=>{
+     setReturnPath(location.state?.returnPath||'/')
+  },[])
+
+  
+
 
   return (
     <div className="modal fade" id="exampleModalCenter" tabIndex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" >

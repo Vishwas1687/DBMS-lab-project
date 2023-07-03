@@ -252,7 +252,33 @@ const getAllUsersController=async(req,res)=>{
   }
 }
 
+const getSingleUserController=async(req,res)=>{
+     try{
+       const {token}=req.params
+       const decode=jwt.verify(req.headers.authorization, process.env.JWT_TOKEN)
+       req.user=decode
+       const User=await UserModel.findById(req.user._id)
+       if(!User)
+       {
+           return res.send({
+           message:'User is not valid and is not authorised',
+          success:false
+          })
+        }
+        res.send({
+          message:'User data is fetched',
+          success:true,
+          user:User
+        })
+     }catch{
+          res.send({
+            message:'Something went wrong',
+            success:false,
+            error:error.message
+          })
+     }
+}
 
 
-module.exports = { registerController,loginController,
+module.exports = { registerController,loginController,getSingleUserController,
   forgotPasswordController,updateProfileController,getAllUsersController};

@@ -187,7 +187,7 @@ const ProductPage = () => {
                 ? info.category.subcategories.map((subcat, index) => (
                     <Link
                       key={index}
-                      to={`/subcategory/${info.category.category_name}/${subcat.subcategory_id}`}
+                      to={`/subcategory/${info.category.slug}/${subcat.subcategory_id}`}
                     >
                       {info.subcategory === subcat.subcategory_name ? (
                         <span className='subcat matchedSubCat'>
@@ -230,8 +230,8 @@ const ProductPage = () => {
                 <div className='weightS'>
                   <div style={{'font-size':'1.4rem'}}>Select quantity:</div>
                   <select onChange={handleWeightChange} 
-                  style={{width:'14rem','text-align':'center',height:'3rem',
-                  'font-size':'1.5rem','background-color':'white','border':'1px solid #111','cursor':'pointer'}}>
+                  style={{width:'10rem','text-align':'center',height:'2.5rem',
+                  'font-size':'1.2rem','background-color':'white','border':'1px solid #111','cursor':'pointer'}}>
                     {info
                       ? info.weights.map((weight) => (
                           <option
@@ -248,7 +248,7 @@ const ProductPage = () => {
                 <div className="cart">
                             {quantity?
                               <>
-                                <span className="quantity-btn">
+                                <span className="quantity-btn" style={{'margin-left':'6rem'}}>
                                     <span>
                                         <button className="decrement-btn" onClick={handleDecrement}>
                                              -
@@ -273,12 +273,12 @@ const ProductPage = () => {
 
                                 <input type="text" value={temp} style={{padding:"5px",width:"4rem",height:'3rem',
                                 "font-size":'1.5rem','font-weight':'bold',
-                                "text-align":"center","margin-right":"6rem","border-radius":"15%"}} 
+                                "text-align":"center","margin-right":"5rem","border-radius":"15%"}} 
                                 onChange={
                                     (e)=>{setTemp(e.target.value)
                                   }}/>
                                  <button type="button" 
-                                className='add_to_cart_btn'
+                                className='add_to_cart_btn' style={{'height':'3rem'}}
                                 disabled={stock===0?true:false}
                                 onClick={() =>
                                     {
@@ -290,11 +290,16 @@ const ProductPage = () => {
                                     localStorage.setItem('cart', JSON.stringify([...cart, {product:info,selectedWeight:parseInt(selectedWeight), sp: sp, mrp: mrp,weightUnits:weightUnits, quantity: parseInt(temp || 1)}]))
                                     toast.success('Item added to cart')
                                 }}>
-                                <span style={{display:'flex','align-items':'center',
-                                gap:'0.5rem',"padding-left":"1.8rem"}}>
-                                  Add
-                                 <ShoppingBagOpen/>
+                                <span style={{display: 'flex', 'align-items': 'center', 
+                                'justify-content': 'center', gap: '0.3rem', 'padding-left': '1rem', 'font-size': '1.5rem'}}>
+                                 <p>
+                                 Add
+                                 </p>
+                                 <span style={{'font-size': '2rem','padding-bottom':'1.5rem'}}>
+                                <ShoppingBagOpen/>
                                  </span>
+                                </span>
+
                             </button>
                                  </span>
                               </>}

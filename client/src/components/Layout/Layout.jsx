@@ -12,6 +12,7 @@ const Layout = ({ children,title,description,keywords,author }) => {
         <meta name="author" content={author} />
         <title>{title}</title>
       </Helmet>
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap"></link>
       <Header />
       <main style={{ minHeight: "70vh" }}>
         {children}

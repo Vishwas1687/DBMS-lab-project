@@ -38,6 +38,7 @@ import SingleOrder from "./pages/SingleOrder";
 import AdminOrders from "./pages/admin/AdminOrders";
 import Sample from "./pages/SamplePage";
 import AdminSingleOrder from './pages/admin/AdminSingleOrder';
+import './App.css';
 
 
 
