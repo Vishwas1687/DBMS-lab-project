@@ -53,42 +53,88 @@ const UserOrders = () => {
     getUserData()
   },[])
 
+
+const tableHeaderStyle = {
+  backgroundColor: '#006400',
+  color: '#fff',
+  padding: '10px',
+  textAlign: 'left',
+  fontWeight: 'bold',
+  border: '2px solid #111',
+  fontFamily: 'Arial, sans-serif',
+};
+
+const tableCellStyle = {
+  padding: '10px',
+  borderBottom: '2px solid #000',
+  borderRight: '2px solid #000',
+  fontFamily: 'Arial, sans-serif',
+  color:'black'
+};
+
+const viewButtonStyle = {
+  backgroundColor: 'green',
+  color: '#fff',
+  border:'2px solid #000',
+  padding: '8px 16px',
+  borderRadius: '4px',
+  cursor: 'pointer',
+  fontFamily: 'Arial, sans-serif',
+};
+
+const noOrdersCellStyle = {
+  padding: '10px',
+  textAlign: 'center',
+  fontStyle: 'italic',
+  backgroundColor: '#f5f5f5',
+  fontFamily: 'Arial, sans-serif',
+};
+
+const loadingCellStyle = {
+  padding: '10px',
+  textAlign: 'center',
+  backgroundColor: '#f5f5f5',
+  fontFamily: 'Arial, sans-serif',
+};
+
+
+
   return (
     <>
       <Layout title={`Dashboard - ${user.username} Orders`}>
-        <div className="container-fluid m-3 p-3 dashboard">
+        <div className="container-fluid dashboard" style={{'overflow':'hidden'}}>
           <div className="row">
-            <div className="col-md-3">
+            <div className="col-md-3" style={{'margin-top':'2rem'}}>
               <UserMenu />
             </div>
-            <div className="col-md-9">
+            <div className="col-md-9" style={{'margin-top':'2rem'}}>
               <h1>Orders</h1>
               <br />
 
             
                 <div className='search'>
-                 <div className='searchInput mb-3' style={{'border':'1px solid #111','width':'25%'}}>
+                 <div className='searchInput mb-3' style={{'border':'2px solid #111','width':'25%'}}>
                  <input type="text" value={orderSearch}
                  placeholder="Enter order info..." onChange={(e)=>setOrderSearch(e.target.value)}/>
                  
                   <div className="searchIcon">
-                {orderSearch ? <AiOutlineClose id="clearBtn" onClick={()=>{setOrderSearch("")}}/> :  <BiSearch />}
+                {orderSearch ? <AiOutlineClose style={{'font-size':'1.5rem'}} id="clearBtn" onClick={()=>{setOrderSearch("")}}/> :  <BiSearch style={{'font-size':'1.5rem'}}/>}
                  </div>
                  </div>
                  </div>
 
               <div>
-                <table className="table">
+                <table className="table" style={{'border-collapse':'collapse',width:'100%','border':'2px solid #111'}}>
                   <thead>
                     <tr>
-                      <th scope="col">Order ID</th>
+                      <th style={tableHeaderStyle} scope="col">Order ID</th>
                       {/* <th scope="col">Customer</th> */}
-                      <th scope="col">Status</th>
-                      <th scope="col">Shipping Address</th>
-                      <th scope="col">Total Amount</th>
-                      <th scope="col">Order Date</th>
-                      <th scope="col">Delivery Date</th>
-                      <th scope="col">Actions</th>
+                      <th style={tableHeaderStyle} scope="col">Status</th>
+                      <th style={tableHeaderStyle} scope="col">Shipping Address</th>
+                      <th style={tableHeaderStyle} scope="col">Total Amount</th>
+                      <th style={tableHeaderStyle} scope="col">Order Date</th>
+                      <th style={tableHeaderStyle} scope="col">Delivery Date</th>
+                      <th style={tableHeaderStyle} scope="col">Actions</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -109,27 +155,27 @@ const UserOrders = () => {
       );
     }
                   })
-                   ?.map((c) => (
-                        <tr key={c.order_id}>
-                          <td>{c.order_id}</td>
+                   ?.map((c,index) => (
+                        <tr key={c.order_id} style={{backgroundColor:index%2==1?'#4CAF50':'#3CB371'}}>
+                          <td style={tableCellStyle}>{c.order_id}</td>
                           {/* <td>{c.customer.username}</td> */}
-                          <td>{c.status}</td>
-                          <td>{c.shipping_address}</td>
-                          <td>{c.total_amount}</td>
-                          <td>{`${new Date(c.order_date).getDate()}/${new Date(c.order_date).getMonth()}/${new Date(c.order_date).getFullYear()}   ${new Date(c.order_date)?.getHours()}:${new Date(c.order_date)?.getMinutes()}:${new Date(c.order_date)?.getSeconds()}`}</td>
-                          <td>{c.delivery_date?`${new Date(c.delivery_date)?.getDate()}/${new Date(c.delivery_date)?.getMonth()}/${new Date(c.delivery_date)?.getFullYear()}    ${new Date(c.delivery_date)?.getHours()}:${new Date(c.delivery_date)?.getMinutes()}:${new Date(c.delivery_date)?.getSeconds()}`:''}</td>
-                          <td>
+                          <td style={tableCellStyle}>{c.status}</td>
+                          <td style={tableCellStyle}>{c.shipping_address}</td>
+                          <td style={tableCellStyle}>{c.total_amount}</td>
+                          <td style={tableCellStyle}>{`${new Date(c.order_date).getDate()}/${new Date(c.order_date).getMonth()}/${new Date(c.order_date).getFullYear()}   ${new Date(c.order_date)?.getHours()}:${new Date(c.order_date)?.getMinutes()}:${new Date(c.order_date)?.getSeconds()}`}</td>
+                          <td style={tableCellStyle}>{c.delivery_date?`${new Date(c.delivery_date)?.getDate()}/${new Date(c.delivery_date)?.getMonth()}/${new Date(c.delivery_date)?.getFullYear()}    ${new Date(c.delivery_date)?.getHours()}:${new Date(c.delivery_date)?.getMinutes()}:${new Date(c.delivery_date)?.getSeconds()}`:''}</td>
+                          <td style={tableCellStyle}>
                             <Link to={`/user/single-order/${c.order_id}`}>
-                            <button className="btn btn-info ms-2">View</button>
+                            <button className="btn btn-info ms-2"  style={viewButtonStyle}>View</button>
                             </Link>
                           </td>
                         </tr>
                       ))
                     ) : (
                       <tr>
-                        <td colSpan="7">No orders found.</td>
+                        <td colSpan="7" style={noOrdersCellStyle}>No orders found.</td>
                       </tr>
-                    ): <div>Loading...</div>}
+                    ): <div style={loadingCellStyle}>Loading...</div>}
                   </tbody>
                 </table>
               </div>

@@ -5,6 +5,8 @@ import axios from "axios";
 import Layout from "../../../components/Layout/Layout";
 import AdminMenu from "../../../components/AdminMenu";
 import { useParams ,useNavigate} from "react-router-dom";
+import { AiOutlineClose } from "react-icons/ai";
+import { BiSearch } from "react-icons/bi";
 import { Link } from "react-router-dom";
 
 
@@ -47,37 +49,101 @@ const GetProduct = () => {
     }
   };
 
+const tableHeaderStyle = {
+  backgroundColor: '#006400',
+  color: '#fff',
+  padding: '10px',
+  textAlign: 'left',
+  fontWeight: 'bold',
+  border: '2px solid #111',
+  fontFamily: 'Arial, sans-serif',
+};
+
+const tableCellStyle = {
+  padding: '10px',
+  borderBottom: '2px solid #000',
+  borderRight: '2px solid #000',
+  fontFamily: 'Arial, sans-serif',
+  color:'black',
+  fontWeight:'bold'
+};
+
+const viewButtonStyle = {
+  backgroundColor: 'green',
+  color: '#fff',
+  border:'2px solid #000',
+  padding: '8px 8px',
+  borderRadius: '4px',
+  cursor: 'pointer',
+  fontFamily: 'Arial, sans-serif',
+};
+
+const editButtonStyle = {
+  backgroundColor: 'blue',
+  color: '#fff',
+  border:'2px solid #000',
+  padding: '8px 8px',
+  borderRadius: '4px',
+  cursor: 'pointer',
+  fontFamily: 'Arial, sans-serif',
+};
+
+const deleteButtonStyle = {
+  backgroundColor: 'red',
+  color: '#fff',
+  border:'2px solid #000',
+  padding: '8px 8px',
+  borderRadius: '4px',
+  cursor: 'pointer',
+  fontFamily: 'Arial, sans-serif',
+};
+
+const noOrdersCellStyle = {
+  padding: '10px',
+  textAlign: 'center',
+  fontStyle: 'italic',
+  backgroundColor: '#f5f5f5',
+  fontFamily: 'Arial, sans-serif',
+};
+
+const loadingCellStyle = {
+  padding: '10px',
+  textAlign: 'center',
+  backgroundColor: '#f5f5f5',
+  fontFamily: 'Arial, sans-serif',
+};   
+
 
   return (
     <Layout title="DashBoard - Manage Category">
-      <div className="container-fluid m-3 p-3 dashboard">
+      <div className="container-fluid dashboard">
         <div className="row">
-          <div className="col-md-3 p-5">
+          <div className="col-md-3 p-5" style={{'margin-top':'2rem'}}>
             <AdminMenu />
           </div>
-          <div className="col-md-9 p-5">
+          <div className="col-md-9 p-5" style={{'margin-top':'2rem'}}>
             <h1 className="pb-3">{prod.product_name}</h1>
             <h2 className="mb-4">{`Product ID: ${prod.product_id}`}</h2>
 
             
-            <table className="table w-75">
+            <table className="table">
               <thead>
                 <tr>
-                  <th scope="col">Seller ID</th>
-                  <th scope="col">Brand</th>
-                  <th scope="col">Category</th>
-                  <th scope="col">Subcategory</th>
-                  <th scope="col">Tags</th>
+                  <th style={tableHeaderStyle} scope="col">Seller ID</th>
+                  <th style={tableHeaderStyle} scope="col">Brand</th>
+                  <th style={tableHeaderStyle} scope="col">Category</th>
+                  <th style={tableHeaderStyle} scope="col">Subcategory</th>
+                  <th style={tableHeaderStyle} scope="col">Tags</th>
                   
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td>{prod.seller_id}</td>
-                  <td>{prod.brand?.brand_name}</td>
-                  <td>{prod.category?.category_name}</td>
-                  <td>{prod.subcategory}</td>
-                  <td>{prod.tags?.join(', ')}</td>
+                  <td style={tableCellStyle}>{prod.seller_id}</td>
+                  <td style={tableCellStyle}>{prod.brand?.brand_name}</td>
+                  <td style={tableCellStyle}>{prod.category?.category_name}</td>
+                  <td style={tableCellStyle}>{prod.subcategory}</td>
+                  <td style={tableCellStyle}>{prod.tags?.join(', ')}</td>
                 </tr>
               </tbody>
             </table>
@@ -95,7 +161,8 @@ const GetProduct = () => {
         <Link to = {`/admin/get-product/create-weight/${prod.slug}`}>
              <>
             <div className="text-left">
-            <button className="btn btn-primary ms-2">Create Weight</button>
+            <button className="btn btn-primary ms-2"
+            style={{'border':'2px solid #111','margin-bottom':'1rem'}}>Create Weight</button>
              </div>
            </>  
         </Link>
@@ -104,30 +171,31 @@ const GetProduct = () => {
             <table className="table w-75">
               <thead>
                 <tr>
-                  <th scope="col">Weight ID</th>
-                  <th scope="col">Weight</th>
-                  <th scope="col">Weight Units</th>
-                  <th scope="col">MRP</th>
-                  <th scope="col">SP</th>
-                  <th scope="col">Stock</th>
-                  <th scope="col">Actions</th>
+                  <th style={tableHeaderStyle} scope="col">Weight ID</th>
+                  <th style={tableHeaderStyle} scope="col">Weight</th>
+                  <th style={tableHeaderStyle} scope="col">Weight Units</th>
+                  <th style={tableHeaderStyle} scope="col">MRP</th>
+                  <th style={tableHeaderStyle} scope="col">SP</th>
+                  <th style={tableHeaderStyle} scope="col">Stock</th>
+                  <th style={tableHeaderStyle} scope="col">Actions</th>
                 </tr>
               </thead>
               <tbody>
-                {prod.weights?.map((weight) => (
-                  <tr key={weight.weight_id}>
-                    <td>{weight.weight_id}</td>
-                    <td>{weight.weight}</td>
-                    <td>{weight.weight_units}</td>
-                    <td>{weight.mrp}</td>
-                    <td>{weight.sp}</td>
-                    <td>{weight.stock}</td>
-                    <td><button className="btn btn-primary ms-2" 
+                {prod.weights?.map((weight,index) => (
+                  <tr key={weight.weight_id} style={{backgroundColor:index%2==1?'#4CAF50':'#3CB371'}}>
+                    <td style={tableCellStyle}>{weight.weight_id}</td>
+                    <td style={tableCellStyle}>{weight.weight}</td>
+                    <td style={tableCellStyle}>{weight.weight_units}</td>
+                    <td style={tableCellStyle}>{weight.mrp}</td>
+                    <td style={tableCellStyle}>{weight.sp}</td>
+                    <td style={tableCellStyle}>{weight.stock}</td>
+                    <td style={tableCellStyle}><button className="btn btn-primary ms-2" 
+                    style={editButtonStyle}
                     onClick={()=>navigate(`/admin/update-weight/${prod.slug}/${weight.weight_id}`)}>
                         Edit
                     </button>
-                    <button className="btn btn-danger ms-2" onClick={(e)=>handleDeleteWeight(weight.weight_id)
-                    }>
+                    <button className="btn btn-danger ms-2" onClick={(e)=>handleDeleteWeight(weight.weight_id) 
+                    } style={deleteButtonStyle}>
                         Delete
                     </button>
                     </td>
@@ -137,15 +205,6 @@ const GetProduct = () => {
             </table>
           </div>
         </div>
-        {/* <Link to = {`/admin/get-product/create-weight/${prod.slug}`}>
-        <>
-        <div className="container-fluid m-3 p-3 dashboard">
-         <div style={{position: 'fixed', bottom: '50px', right: '50px'}}>
-          <button className="btn btn-primary ms-2">Create Weight</button>
-         </div>
-         </div>
-           </>  
-        </Link> */}
 
         </div>
         

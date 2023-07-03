@@ -5,6 +5,8 @@ import AdminMenu from '../../components/AdminMenu';
 import { toast } from 'react-hot-toast';
 import CategoryForm from '../../components/Form/CategoryForm';
 import Modal from 'antd/es/modal/Modal';
+import { AiOutlineClose } from "react-icons/ai";
+import { BiSearch } from "react-icons/bi";
 
 const ManageBrand = () => {
 
@@ -104,32 +106,98 @@ const ManageBrand = () => {
         }
       };
 
+const tableHeaderStyle = {
+  backgroundColor: '#006400',
+  color: '#fff',
+  padding: '10px',
+  textAlign: 'left',
+  fontWeight: 'bold',
+  border: '2px solid #111',
+  fontFamily: 'Arial, sans-serif',
+};
+
+const tableCellStyle = {
+  padding: '10px',
+  borderBottom: '2px solid #000',
+  borderRight: '2px solid #000',
+  fontWeight:'bold',
+  fontFamily: 'Arial, sans-serif',
+  color:'black'
+};
+
+const viewButtonStyle = {
+  backgroundColor: 'green',
+  color: '#fff',
+  border:'2px solid #000',
+  padding: '8px 8px',
+  borderRadius: '4px',
+  cursor: 'pointer',
+  fontFamily: 'Arial, sans-serif',
+};
+
+const editButtonStyle = {
+  backgroundColor: 'blue',
+  color: '#fff',
+  border:'2px solid #000',
+  padding: '8px 8px',
+  borderRadius: '4px',
+  cursor: 'pointer',
+  fontFamily: 'Arial, sans-serif',
+};
+
+const deleteButtonStyle = {
+  backgroundColor: 'red',
+  color: '#fff',
+  border:'2px solid #000',
+  padding: '8px 8px',
+  borderRadius: '4px',
+  cursor: 'pointer',
+  fontFamily: 'Arial, sans-serif',
+};
+
+const noOrdersCellStyle = {
+  padding: '10px',
+  textAlign: 'center',
+  fontStyle: 'italic',
+  backgroundColor: '#f5f5f5',
+  fontFamily: 'Arial, sans-serif',
+};
+
+const loadingCellStyle = {
+  padding: '10px',
+  textAlign: 'center',
+  backgroundColor: '#f5f5f5',
+  fontFamily: 'Arial, sans-serif',
+};        
+
   return (
     <>
     <Layout  title = {"Dashboard- Manage Brand"}>
-    <div className="container-fluid m-3 p-3 dashboard">
+    <div className="container-fluid dashboard">
     <div className="row">
-    <div className="col-md-3">
+    <div className="col-md-3" style={{'margin-top':'2rem'}}>
             <AdminMenu />
           </div>
-          <div className="col-md-9">
+          <div className="col-md-7" style={{'margin-top':'2rem'}}>
             <h1>Manage Brand</h1>
             <br></br>
 
-            <button type="button" className='btn btn-primary' onClick={()=>setCreateVisible(true)}>
+            <button type="button" className='btn btn-primary' 
+            style={{'margin-bottom':'2rem','border':'2px solid #111'}} onClick={()=>setCreateVisible(true)}>
                Create Brand
             </button>
             <br></br>
             <div>
-              <input type='text' value={search__} onChange={e => {setSearch__(e.target.value)}} className='mt-3 mb-2' placeholder="Search..." style={{border:'1px solid #656363',padding:'10px'}}/>
-            </div>
+                  <input type='text' value={search__} onChange={e => {setSearch__(e.target.value)}} className='mb-5' placeholder="Search..." style={{border:'2px solid #656363',padding:'10px'}}/> 
+                   {search__ ? <AiOutlineClose style={{'font-size':'2.9rem','border':'2px solid #111'}} id="clearBtn" onClick={()=>{setSearch__("")}}/> :  <BiSearch style={{'font-size':'2.9rem','border':'2px solid #111'}}/>}
+                </div>
             <div>
               <table className="table">
                 <thead>
                   <tr>
-                    <th scope="col">ID</th>
-                    <th scope="col">Name</th>          
-                    <th scope="col">Actions</th>
+                    <th style={tableHeaderStyle} scope="col">ID</th>
+                    <th style={tableHeaderStyle} scope="col">Name</th>          
+                    <th style={tableHeaderStyle} scope="col">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -138,13 +206,13 @@ const ManageBrand = () => {
                     else if (c.brand_name.toLowerCase().includes(search__.toLowerCase())){
                       return c;
                     }
-                  }).map((c) => (
+                  }).map((c,index) => (
 
                     <>
-                    <tr key={c.brand_name}>
-                        <td>{c.brand_id}</td>
-                        <td>{c.brand_name}</td>
-                        <td>
+                    <tr key={c.brand_name} style={{backgroundColor:index%2==1?'#4CAF50':'#3CB371'}}>
+                        <td style={tableCellStyle}>{c.brand_id}</td>
+                        <td style={tableCellStyle}>{c.brand_name}</td>
+                        <td style={tableCellStyle}>
                         <button
                             className="btn btn-primary ms-2"
                             onClick={() => {
@@ -152,12 +220,15 @@ const ManageBrand = () => {
                               setUpdatedName(c.brand_name);
                               setSelected(c);
                             }}
+                            style={editButtonStyle}
                           >
                             Edit
                           </button>
 <button className="btn btn-danger ms-2"
+style={deleteButtonStyle}
 onClick={() => {
     handleDeleteBrand(c.brand_id)
+    
   }}>
 
     
