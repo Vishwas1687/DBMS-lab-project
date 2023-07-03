@@ -922,6 +922,8 @@ const getAllProductsByCategoryFiltersController=async(req,res)=>{
       const brandFilters=JSON.parse(req.query.brandFilters)
       const subcategoryFilters=JSON.parse(req.query.subcategoryFilters)
       const slug=req.query.slug
+      const currentPage=req.query.currentPage
+      const perPage=req.query.perPage
         let products=[]
         const category=await CategoryModel.findOne({slug})
         if(!category)
@@ -1073,11 +1075,15 @@ const getAllProductsByCategoryFiltersController=async(req,res)=>{
             })
             products=sortedWeightProducts
         }
-        
+        const startIndex = (currentPage - 1) * perPage;
+        const endIndex = startIndex + perPage;
+        const newproducts = products.slice(startIndex, endIndex);
+        const size=products.length
         res.send({
             message:'Products fetched',
             success:true,
-            products
+            products:newproducts,
+            productLength:size
         })
 
     }catch(error)
@@ -1096,6 +1102,8 @@ const getAllProductsBySubCategoryFiltersController=async(req,res)=>{
       const slug=req.query.slug
       const subcategory_id=req.query.subcategory_id
       const category=await CategoryModel.findOne({slug})
+      const currentPage=req.query.currentPage
+      const perPage=req.query.perPage
       let brandFilters=JSON.parse(req.query.brandFilters)
       if(!category)
       return res.send({
@@ -1187,11 +1195,16 @@ const getAllProductsBySubCategoryFiltersController=async(req,res)=>{
             })
             products=sortedWeightProducts
         }
+        const startIndex = (currentPage - 1) * perPage;
+        const endIndex = startIndex + perPage;
+        const newproducts = products.slice(startIndex, endIndex);
+        const size=products.length
         
         res.send({
             message:'Products fetched',
             success:true,
-            products
+            products:newproducts,
+            productLength:size
         })
 
     }catch(error)

@@ -12,6 +12,7 @@ import { CaretDown,CaretUp } from 'phosphor-react'
 import {AiOutlineClose} from 'react-icons/ai'
 import { BiSearch } from 'react-icons/bi'
 import '../components/styles/ProductPage.css'
+import './styles/CategoryProduct.css'
 
 
 const CategoryProduct = () => {
@@ -63,6 +64,7 @@ const CategoryProduct = () => {
        if(data.success)
        {
            setProducts(data.products)
+           
        }
        else
        {
@@ -78,7 +80,7 @@ const CategoryProduct = () => {
     const getAllBrands=async()=>{
     try{
 
-      const {data}=await axios.get('http://localhost:5000/api/brands/get-all-brands')
+      const {data}=await axios.get(`http://localhost:5000/api/brands/get-all-brands-by-cat/${params.slug}`)
       if(data.success)
       setBrands(data.brands)
 
@@ -97,11 +99,17 @@ const CategoryProduct = () => {
          priceFilters:JSON.stringify(priceFilters),
          slug:params.slug,
          subcategoryFilters:JSON.stringify(subcategoryFilters),
-         brandFilters:JSON.stringify(brandFilters)
+         brandFilters:JSON.stringify(brandFilters),
+         perPage:perPage,
+         currentPage:currentPage
         }
        })
        if(data.success)
-       setProducts(data.products)
+       {
+           setProducts(data.products)
+           setTotalProducts(data.productLength)
+       }
+       
        setLoading(false)
     }
     catch(error)
@@ -116,7 +124,6 @@ const CategoryProduct = () => {
       if(data.success)
       {
         setTotalProducts(data.count)
-        
       }
     }catch(error)
     {
@@ -168,16 +175,18 @@ const CategoryProduct = () => {
    },[params.slug])
 
    useEffect(() => {
-      getAllCategoryProducts()
+      // getAllCategoryProducts()
+      getFilterProducts()
     },[currentPage]);
 
    useEffect(()=>{
+    setCurrentPage(1)
         getFilterProducts()
    },[priceFilters,brandFilters,subcategoryFilters])
 
- useEffect(()=>{
-      getTotalProducts()
-    },[products])
+//  useEffect(()=>{
+//       getTotalProducts()
+//     },[products])
 
     useEffect(()=>{
        setTotalPages(Math.ceil(totalProducts/perPage))
@@ -189,36 +198,36 @@ const CategoryProduct = () => {
 
   return (
     <Layout title={`Products by ${params.slug}`}>
-        <div className="row m-2">
-            <div className="col-md-2 text-left p-3 bg-light">
-                <h1>Filters</h1>
-                {loading?<h3>Loading...</h3>:(
-                <div className="cont">
-                    <h4 className="text-black">{category.category_name}</h4> 
-                    <div className="p-1">
+        <div className="row m-2" style={{'overflow-x':'hidden','background-color':'white'}}>
+            <div className="col-md-2 text-left p-3" style={{'background-color':'#444444'}}>
+                <h1 style={{'color':'white','border-bottom':'1px solid #fff'}}>Filters</h1>
+                {loading?<h3 style={{'color':'white'}}>Loading...</h3>:(
+                <div className="cont" style={{'border-bottom':'1px solid #fff'}}>
+                    <h4 style={{'color':'white','border-bottom':'1px solid #fff'}}>{category.category_name}</h4> 
+                    <div className=" p-1">
                        {category && category.subcategories.map((subcat,index)=>(
-                       <div key={index}>
-                        <Link to={`/subcategory/${category.slug}/${subcat.subcategory_id}`} className="text-decoration-none text-secondary">
-                            <p>{subcat.subcategory_name}</p>
+                       <div key={index} className="subcategories-CategoryPage">
+                        <Link to={`/subcategory/${category.slug}/${subcat.subcategory_id}`}  >
+                            <p style={{'color':'white'}} >{subcat.subcategory_name}</p>
                         </Link>
                         </div>
                        ))}
                     </div>
                 </div>
                 )} 
-                 <h3>BrandFilters</h3>
+                 <h3 style={{'color':'white','margin-top':'1rem','border-bottom':'1px solid white'}}>BrandFilters</h3>
                  <div className='search'>
-                 <div className='searchInput mb-3' style={{'border':'1px solid #111'}}>
-                 <input type="text" value={brandSearch}
+                 <div className='searchInput mb-3 mr-2' style={{'border':'1px solid #111'}}>
+                 <input type="text" value={brandSearch} style={{'width':'11rem','font-size':'1rem'}}
                  placeholder="Enter the brand" onChange={(e)=>setBrandSearch(e.target.value)}/>
                  
-                  <div className="searchIcon">
+                  <div className="searchIcon" style={{'width':'2.5rem'}}>
                 {brandSearch ? <AiOutlineClose id="clearBtn" onClick={()=>{setBrandSearch("")}}/> :  <BiSearch />}
                  </div>
                  </div>
                  </div>
                 
-                 <div className="cont" style={{height:'200px',overflow:'auto','background-color':'#fff'}}>
+                 <div className="cont" style={{'padding-left':'1rem',height:'200px',overflow:'auto','background-color':'#fff'}}>
                   
                    {brands?.filter((c)=>{
                     if (brandSearch === '') return c;
@@ -232,7 +241,7 @@ const CategoryProduct = () => {
                 key={c._id}
                 onChange={(e) => handleFilterBrand(e.target.checked,c._id)}
               >
-                <span style={{'font-size':'1.3rem',}}>
+                <span style={{'font-size':'1.3rem'}}>
                 {c.brand_name}
                 </span>
               </Checkbox>
@@ -243,10 +252,10 @@ const CategoryProduct = () => {
          
                  </div>
                    <br></br>
-                   <h3>SubCategoryFilters</h3>
+                   <h3 style={{'color':'white','margin-top':'1rem','border-bottom':'1px solid white'}}>SubCategoryFilters</h3>
                    <div className='search'>
                  <div className='searchInput mb-3' style={{'border':'1px solid #111'}}>
-                 <input type="text" value={subcategorySearch}
+                 <input type="text" value={subcategorySearch} style={{'width':'11rem','font-size':'0.9rem'}}
                  placeholder="Enter the subcategory" onChange={(e)=>setSubCategorySearch(e.target.value)}/>
                  
                   <div className="searchIcon">
@@ -254,7 +263,7 @@ const CategoryProduct = () => {
                  </div>
                  </div>
                  </div>
-                  <div className="cont" style={{height:'150px',overflow:'auto','background-color':'#fff'}}>
+                  <div className="cont" style={{'padding-left':'1rem',height:'150px',overflow:'auto','background-color':'#fff'}}>
                   
                    {category.subcategories?.
                    filter((c)=>{
@@ -281,12 +290,12 @@ const CategoryProduct = () => {
 
                 
                 <div className="cont">
-                  <h3>Price Filters</h3>
+                  <h3 style={{'color':'white','border-bottom':'1px solid white'}}>Price Filters</h3>
                   <Radio.Group>
                    {prices.map((price,index)=>(
                     <div key={index}>
                       <Radio key={index} value={price.array} onChange={(e)=>setPriceFilters(e.target.value)}
-                      > <span className="h4 text-black">{price.name}</span>
+                      > <span className="h5 text-white">{price.name}</span>
                       </Radio>
                     </div>
                    ))}

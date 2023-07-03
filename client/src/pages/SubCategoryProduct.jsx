@@ -10,6 +10,7 @@ import { AiOutlineClose } from 'react-icons/ai'
 import { BiSearch } from 'react-icons/bi'
 import Layout from '../components/Layout/Layout'
 import '../components/styles/ProductPage.css'
+import './styles/CategoryProduct.css'
 
 const SubCategoryProduct = () => {
    const [category,setCategory]=useState('')
@@ -78,11 +79,17 @@ const SubCategoryProduct = () => {
          priceFilters:JSON.stringify(priceFilters),
          slug:params.slug,
          subcategory_id:params.subcategory_id,
-         brandFilters:JSON.stringify(brandFilters)
+         brandFilters:JSON.stringify(brandFilters),
+         perPage:perPage,
+         currentPage:currentPage
         }
        })
        if(data.success)
-       setProducts(data.products)
+       {
+           setProducts(data.products)
+           setTotalProducts(data.productLength)
+       }
+       
        setLoading(false)
     }
     catch(error)
@@ -93,7 +100,7 @@ const SubCategoryProduct = () => {
 
   const getAllBrands=async()=>{
     try{
-      const {data}=await axios.get('http://localhost:5000/api/brands/get-all-brands')
+      const {data}=await axios.get(`http://localhost:5000/api/brands/get-all-brands-by-subcat/${params.slug}/${params.subcategory_id}`)
       if(data.success)
       setBrands(data.brands)
     }catch(error)
@@ -108,7 +115,6 @@ const SubCategoryProduct = () => {
       if(data.success)
       {
         setTotalProducts(data.count)
-        
       }
     }catch(error)
     {
@@ -147,45 +153,45 @@ const SubCategoryProduct = () => {
    },[params.slug,params.subcategory_id])
 
    useEffect(() => {
-      getAllSubCategoryProducts()
+      // getAllSubCategoryProducts()
+      getFilterProducts()
     },[currentPage]);
 
    useEffect(()=>{
+        setCurrentPage(1)
         getFilterProducts()
    },[priceFilters,brandFilters])
 
-   useEffect(()=>{
-      getTotalProducts()
-    },[products])
+  //  useEffect(()=>{
+  //     getTotalProducts()
+  //   },[products])
 
     useEffect(()=>{
        setTotalPages(Math.ceil(totalProducts/perPage))
     },[totalProducts])
 
-    // useEffect(()=>{
-    //   console.log(totalProducts)
-    // },[totalProducts])
 
 
 
   return (
     <Layout title={`Products by category ${params.slug}`}>
-        <div className="row m-2">
-            <div className="col-md-2 text-left p-3 bg-light">
-                <h1>Filters</h1>
+        <div className="row m-2" style={{'overflow-x':'hidden','background-color':'white'}}>
+            <div className="col-md-2 text-left p-3" style={{'background-color':'#444444'}}>
+                <h1 style={{'color':'white','border-bottom':'1px solid #fff'}}>Filters</h1>
                 {loading?<h3>Loading...</h3>:(
                 <div className="cont">
                   <Link to={`/category/${category.slug}`}>
-                    <h4 className="text-black">{category.category_name}</h4> 
+                    <h4 style={{'color':'white','border-bottom':'1px solid #fff'}}>
+                      {category.category_name}</h4> 
                     </Link>
                     <div className="p-1">
                      
                        {category && category.subcategories.map((subcat,index)=>(
-                       <div key={index}>
+                       <div key={index} className="subcategories-CategoryPage">
                         <Link to={`/subcategory/${category.slug}/${subcat.subcategory_id}`} className="text-decoration-none">
                           {subcat.subcategory_id===parseInt(params.subcategory_id)?
                           (<p className="text-primary">{subcat.subcategory_name}</p>)
-                           :(<p className="text-secondary">{subcat.subcategory_name}</p>)}
+                           :(<p className="text-white">{subcat.subcategory_name}</p>)}
                         </Link>
                         </div>
                        ))}
@@ -193,10 +199,10 @@ const SubCategoryProduct = () => {
                 </div>
                 )} 
 
-                <h3>Brand Filters</h3>
+                <h3 style={{'color':'white','margin-top':'1rem','border-bottom':'1px solid white'}}>Brand Filters</h3>
                 <div className='search'>
                  <div className='searchInput mb-3' style={{'border':'1px solid #111'}}>
-                 <input type="text" value={brandSearch}
+                 <input type="text" value={brandSearch} style={{'width':'11rem','font-size':'1rem'}}
                  placeholder="Enter the brand" onChange={(e)=>setBrandSearch(e.target.value)}/>
                  
                   <div className="searchIcon">
@@ -204,7 +210,7 @@ const SubCategoryProduct = () => {
                  </div>
                  </div>
                  </div>
-                 <div className="cont" style={{height:'200px',overflow:'auto','background-color':'#fff'}}>
+                 <div className="cont" style={{'padding-left':'1rem',height:'200px',overflow:'auto','background-color':'#fff'}}>
                   
                    {brands?.filter((c)=>{
                     if (brandSearch === '') return c;
@@ -231,12 +237,12 @@ const SubCategoryProduct = () => {
 
                 <br></br>
                 <div className="cont">
-                  <h3>Price Filters</h3>
+                  <h3 style={{'color':'white','margin-top':'1rem','border-bottom':'1px solid white'}}>Price Filters</h3>
                   <Radio.Group>
                    {prices.map((price,index)=>(
                     <div key={index}>
                       <Radio key={index} value={price.array} onChange={(e)=>setPriceFilters(e.target.value)}
-                      > <span className="h5 text-black">{price.name}</span>
+                      > <span className="h5 text-white">{price.name}</span>
                       </Radio>
                     </div>
                    ))}
@@ -264,6 +270,9 @@ const SubCategoryProduct = () => {
                  ))
                   }
                   </div>
+
+                  <br></br>
+                  <br></br>
                   
                    {!loading && products.length !== 0 ?(
                   <>
@@ -302,6 +311,7 @@ const SubCategoryProduct = () => {
         </div>}   
             </div>
         </div>
+        <br></br>
     </Layout>
   )
 }

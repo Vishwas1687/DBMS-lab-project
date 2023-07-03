@@ -5,7 +5,7 @@ import Layout from "../../components/Layout/Layout";
 import {useAuth} from '../../context/auth'
 import toast from 'react-hot-toast'
 import PasswordForm from '../../components/Form/PasswordForm';
-import {useNavigate} from 'react-router-dom'
+import {useNavigate,useLocation} from 'react-router-dom'
 import Modal from 'antd/es/modal/Modal';
 
 const UpdateProfilePage = () => {
@@ -13,13 +13,10 @@ const UpdateProfilePage = () => {
   const [answerVisible,setAnswerVisible]=useState(false)
   const [passwordVisible,setPasswordVisible]=useState(false)
   const [auth,setAuth]=useAuth()
-  const [user,setUser]=useState({
-    username:auth.user.username,
-    address:auth.user.address,
-    phone_number:auth.user.phone_number
-  })
+  const [user,setUser]=useState([])
   const [password,setPassword]=useState(null)
   const [answer,setAnswer]=useState(null)
+  const location=useLocation()
 
   const handleChange = (event) => {
     setUser({
@@ -54,13 +51,13 @@ const UpdateProfilePage = () => {
        })
        if(data.success)
        {
-          localStorage.setItem('auth',JSON.stringify(data.user))
           setUser({
             username:'',
             phone_number:'',
             address:''
           })
-          navigate('/user')
+           const returnPath = location.state?.returnPath || '/user';
+          navigate(returnPath); 
           toast.success(data.message)
        }
        else
@@ -73,8 +70,27 @@ const UpdateProfilePage = () => {
     }
   };
 
+  const getUserData=async()=>{
+     try{
+        const {data}=await axios.get(`http://localhost:5000/api/auth/get-single-user/${auth.token}`)
+        if(data?.success)
+     {
+        setUser(data.user)
+     }
+     else
+     {
+      toast.error('Something went wrong')
+     }
+     }catch{
+
+     }
+  }
+
+  useEffect(()=>{
+    getUserData()
+  },[])
   return (
-    <Layout title={`Dashboard - ${auth.user.username} update profile`}>
+    <Layout title={`Dashboard - ${user.username} update profile`}>
         
     <div className="container-fluid">
     <div className="row">

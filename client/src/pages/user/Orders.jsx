@@ -12,6 +12,7 @@ const UserOrders = () => {
   const [orders, setOrders] = useState([]);
   const [orderSearch,setOrderSearch]=useState('')
   const [auth,setAuth]=useAuth()
+  const [user,setUser]=useState([])
   const [loading,setLoading] = useState(false);
   useEffect(() => {
     const fetchOrders = async () => {
@@ -32,9 +33,29 @@ const UserOrders = () => {
     fetchOrders();
   }, []);
 
+  const getUserData=async()=>{
+     try{
+        const {data}=await axios.get(`http://localhost:5000/api/auth/get-single-user/${auth.token}`)
+        if(data?.success)
+     {
+        setUser(data.user)
+     }
+     else
+     {
+      toast.error('Something went wrong')
+     }
+     }catch{
+
+     }
+  }
+
+  useEffect(()=>{
+    getUserData()
+  },[])
+
   return (
     <>
-      <Layout title={`Dashboard - ${auth.user.username} Orders`}>
+      <Layout title={`Dashboard - ${user.username} Orders`}>
         <div className="container-fluid m-3 p-3 dashboard">
           <div className="row">
             <div className="col-md-3">

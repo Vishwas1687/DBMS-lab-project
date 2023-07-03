@@ -14,11 +14,7 @@ const UpdateAdminProfile = () => {
   const [answerVisible,setAnswerVisible]=useState(false)
   const [passwordVisible,setPasswordVisible]=useState(false)
   const [auth,setAuth]=useAuth()
-  const [user,setUser]=useState({
-    username:auth.user.username,
-    address:auth.user.address,
-    phone_number:auth.user.phone_number
-  })
+  const [user,setUser]=useState([])
   const [password,setPassword]=useState(null)
   const [answer,setAnswer]=useState(null)
 
@@ -73,6 +69,26 @@ const UpdateAdminProfile = () => {
         toast.error('Something went wrong')
     }
   };
+
+  const getUserData=async()=>{
+     try{
+        const {data}=await axios.get(`http://localhost:5000/api/auth/get-single-user/${auth.token}`)
+        if(data?.success)
+     {
+        setUser(data.user)
+     }
+     else
+     {
+      toast.error('Something went wrong')
+     }
+     }catch{
+
+     }
+  }
+
+  useEffect(()=>{
+    getUserData()
+  },[])
 
   return (
     <Layout title={"Dashboard - Update Profile"}>
