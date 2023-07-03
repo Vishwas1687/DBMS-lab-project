@@ -5,6 +5,8 @@ import toast from 'react-hot-toast';
 import axios from "axios";
 import {useParams} from 'react-router-dom';
 import { Modal } from "antd";
+import { AiOutlineClose } from "react-icons/ai";
+import { BiSearch } from "react-icons/bi";
 
 
 const GetCategory = () => {
@@ -103,28 +105,93 @@ const GetCategory = () => {
         getCategory();
     }, [params.slug]);
 
+const tableHeaderStyle = {
+  backgroundColor: '#006400',
+  color: '#fff',
+  padding: '10px',
+  textAlign: 'left',
+  fontWeight: 'bold',
+  border: '2px solid #111',
+  fontFamily: 'Arial, sans-serif',
+};
+
+const tableCellStyle = {
+  padding: '10px',
+  borderBottom: '2px solid #000',
+  borderRight: '2px solid #000',
+  fontFamily: 'Arial, sans-serif',
+  color:'black',
+  fontWeight:'bold'
+};
+
+const viewButtonStyle = {
+  backgroundColor: 'green',
+  color: '#fff',
+  border:'2px solid #000',
+  padding: '8px 8px',
+  borderRadius: '4px',
+  cursor: 'pointer',
+  fontFamily: 'Arial, sans-serif',
+};
+
+const editButtonStyle = {
+  backgroundColor: 'blue',
+  color: '#fff',
+  border:'2px solid #000',
+  padding: '8px 8px',
+  borderRadius: '4px',
+  cursor: 'pointer',
+  fontFamily: 'Arial, sans-serif',
+};
+
+const deleteButtonStyle = {
+  backgroundColor: 'red',
+  color: '#fff',
+  border:'2px solid #000',
+  padding: '8px 8px',
+  borderRadius: '4px',
+  cursor: 'pointer',
+  fontFamily: 'Arial, sans-serif',
+};
+
+const noOrdersCellStyle = {
+  padding: '10px',
+  textAlign: 'center',
+  fontStyle: 'italic',
+  backgroundColor: '#f5f5f5',
+  fontFamily: 'Arial, sans-serif',
+};
+
+const loadingCellStyle = {
+  padding: '10px',
+  textAlign: 'center',
+  backgroundColor: '#f5f5f5',
+  fontFamily: 'Arial, sans-serif',
+};       
+
     return (
       
     <Layout title={"DashBoard - Get Category"}>
-      <div className="container-fluid m-3 p-3 dashboard">
+      <div className="container-fluid dashboard">
         <div className="row">
-          <div className="col-md-3 p-5">
+          <div className="col-md-3 p-5" style={{'margin-top':'2rem'}}>
             <AdminMenu />
           </div>
-          <div className="col-md-9 p-5">
+          <div className="col-md-9 p-5" style={{'margin-top':'2rem'}}>
              <h1 className="pb-3">{cat.category_name}</h1>
              <h2 className="mb-4">{`Category id : ${cat.category_id}`}</h2>
-             <button className="btn btn-primary mb-4"
-               onClick={()=>setCreateVisible(true)}>Create Sub category</button>
-               <div>
-              <input type='text' value={search__} onChange={e => {setSearch__(e.target.value)}} className='my-2' placeholder="Search..." style={{border:'1px solid #656363',padding:'10px'}}/>
+             <button className="btn btn-primary mb-4" style={{'border':'2px solid #111'}}
+               onClick={()=>setCreateVisible(true)} >Create Sub category</button>
+            <div>
+                  <input type='text' value={search__} onChange={e => {setSearch__(e.target.value)}} className='mb-5' placeholder="Search..." style={{border:'2px solid #656363',padding:'10px'}}/> 
+                   {search__ ? <AiOutlineClose style={{'font-size':'2.9rem','border':'2px solid #111'}} id="clearBtn" onClick={()=>{setSearch__("")}}/> :  <BiSearch style={{'font-size':'2.9rem','border':'2px solid #111'}}/>}
             </div>
              <table className="table w-75">
                 <thead>
                  <tr>
-                  <th scope="col">Subcategory id</th>
-                  <th scope="col">Subcategory name</th>
-                  <th scope="col">Actions</th>
+                  <th style={tableHeaderStyle} scope="col">Subcategory id</th>
+                  <th style={tableHeaderStyle} scope="col">Subcategory name</th>
+                  <th style={tableHeaderStyle}scope="col">Actions</th>
                  </tr>
                 </thead>
                 <tbody>
@@ -136,22 +203,24 @@ const GetCategory = () => {
                 }).map((subcat,index)=>{
                     return (
                       <>
-                         <tr key={index}>
-                            <td>
+                         <tr key={index} style={{backgroundColor:index%2==1?'#4CAF50':'#3CB371'}}>
+                            <td style={tableCellStyle}>
                               {subcat.subcategory_id}
                             </td>
-                            <td>
+                            <td style={tableCellStyle}>
                               {subcat.subcategory_name}
                             </td>
-                            <td>
+                            <td style={tableCellStyle}>
                                <button type="button" className="btn btn-primary ms-2"
                                   onClick={()=>
                                     {  setSelected(subcat);
                                        setVisible(true);
-                                    }}>
+                                    }}
+                                    style={editButtonStyle}>
                                   Edit
                                </button>
                                <button type="button" className="btn btn-danger ms-2"
+                               style={deleteButtonStyle}
                                  onClick={(e)=>{setSelected(subcat);
                                   handleDelete(e,subcat)
                                    }}>

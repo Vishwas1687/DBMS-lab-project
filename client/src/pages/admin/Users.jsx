@@ -4,6 +4,8 @@ import AdminMenu from '../../components/AdminMenu'
 import Dashboard from '../user/Dashboard'
 import { useState,useEffect } from 'react'
 import axios from 'axios'
+import { AiOutlineClose } from "react-icons/ai";
+import { BiSearch } from "react-icons/bi";
 import '../../components/styles/Users.css'
 
 const Users = () => {
@@ -30,30 +32,96 @@ const Users = () => {
       getAllUsers()
     },[]);
 
+
+ const tableHeaderStyle = {
+  backgroundColor: '#006400',
+  color: '#fff',
+  padding: '10px',
+  textAlign: 'left',
+  fontWeight: 'bold',
+  border: '2px solid #111',
+  fontFamily: 'Arial, sans-serif',
+};
+
+const tableCellStyle = {
+  padding: '10px',
+  borderBottom: '2px solid #000',
+  borderRight: '2px solid #000',
+  fontFamily: 'Arial, sans-serif',
+  color:'black',
+  fontWeight:'bold'
+};
+
+const viewButtonStyle = {
+  backgroundColor: 'green',
+  color: '#fff',
+  border:'2px solid #000',
+  padding: '8px 8px',
+  borderRadius: '4px',
+  cursor: 'pointer',
+  fontFamily: 'Arial, sans-serif',
+};
+
+const editButtonStyle = {
+  backgroundColor: 'blue',
+  color: '#fff',
+  border:'2px solid #000',
+  padding: '8px 8px',
+  borderRadius: '4px',
+  cursor: 'pointer',
+  fontFamily: 'Arial, sans-serif',
+};
+
+const deleteButtonStyle = {
+  backgroundColor: 'red',
+  color: '#fff',
+  border:'2px solid #000',
+  padding: '8px 8px',
+  borderRadius: '4px',
+  cursor: 'pointer',
+  fontFamily: 'Arial, sans-serif',
+};
+
+const noOrdersCellStyle = {
+  padding: '10px',
+  textAlign: 'center',
+  fontStyle: 'italic',
+  backgroundColor: '#f5f5f5',
+  fontFamily: 'Arial, sans-serif',
+};
+
+const loadingCellStyle = {
+  padding: '10px',
+  textAlign: 'center',
+  backgroundColor: '#f5f5f5',
+  fontFamily: 'Arial, sans-serif',
+};      
+
   return (
     <Layout title = {"Dashboard-All Users"}>
-        <div className="container-fluid m-3 p-3 dashboard">
+        <div className="container-fluid dashboard">
     <div className="row">
-    <div className="col-md-3">
+    <div className="col-md-3" style={{'margin-top':'2rem'}}>
             <AdminMenu />
           </div>
 
-            <div className='col-md-9'>
+            <div className='col-md-9' style={{'margin-top':'2rem'}}>
                 <h1>All Users</h1>
                 <div>
                 <div>
-                  <input type='text' value={search__} onChange={e => {setSearch__(e.target.value)}} className='mb-5' placeholder="Search..." style={{border:'1px solid #656363',padding:'10px'}}/>
+                  <input type='text' value={search__} onChange={e => {setSearch__(e.target.value)}} className='mb-5' placeholder="Search..." style={{border:'2px solid #656363',padding:'10px'}}/> 
+                   {search__ ? <AiOutlineClose style={{'font-size':'2.9rem','border':'2px solid #111'}} id="clearBtn" onClick={()=>{setSearch__("")}}/> :  <BiSearch style={{'font-size':'2.9rem','border':'2px solid #111'}}/>}
                 </div>
                 </div>
                 <div>
                 <table className="table">
                 <thead>
                   <tr>
-                    <th scope="col">ID</th>
-                    <th scope="col">Username</th>          
-                    <th scope="col">Email</th>
-                    <th scope="col">Phone Number</th>
-                    <th scope="col">Address</th>
+                    <th style={tableHeaderStyle} scope="col">ID</th>
+                    <th style={tableHeaderStyle} scope="col">Username</th>          
+                    <th style={tableHeaderStyle} scope="col">Email</th>
+                    <th style={tableHeaderStyle} scope="col">Phone Number</th>
+                    <th style={tableHeaderStyle} scope="col">Address</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -66,12 +134,12 @@ users.filter((c)=>{
   }
 }).map((user,index)=>(
   <>
-      <tr key={user.user_id}>
-      <td>{user.user_id}</td>
-      <td>{user.username}</td>
-      <td>{user.email}</td>
-      <td>{user.phone_number}</td>
-      <td>{user.address ? user.address : "No address"}</td>
+      <tr key={user.user_id} style={{backgroundColor:index%2==1?'#4CAF50':'#3CB371'}}>
+      <td style={tableCellStyle}>{user.user_id}</td>
+      <td style={tableCellStyle}>{user.username}</td>
+      <td style={tableCellStyle}>{user.email}</td>
+      <td style={tableCellStyle}>{user.phone_number}</td>
+      <td style={tableCellStyle}>{user.address ? user.address : "No address"}</td>
       </tr>
     
   </>

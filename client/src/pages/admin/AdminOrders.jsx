@@ -88,20 +88,82 @@ const AdminOrders = () => {
       };
 
 
-      
+const tableHeaderStyle = {
+  backgroundColor: '#006400',
+  color: '#fff',
+  padding: '10px',
+  textAlign: 'left',
+  fontWeight: 'bold',
+  border: '2px solid #111',
+  fontFamily: 'Arial, sans-serif',
+};
+
+const tableCellStyle = {
+  padding: '10px',
+  borderBottom: '2px solid #000',
+  borderRight: '2px solid #000',
+  fontFamily: 'Arial, sans-serif',
+  color:'black',
+  // fontWeight:'bold'
+};
+
+const viewButtonStyle = {
+  backgroundColor: 'green',
+  color: '#fff',
+  border:'2px solid #000',
+  padding: '8px 8px',
+  borderRadius: '4px',
+  cursor: 'pointer',
+  fontFamily: 'Arial, sans-serif',
+};
+
+const editButtonStyle = {
+  backgroundColor: 'blue',
+  color: '#fff',
+  border:'2px solid #000',
+  padding: '8px 8px',
+  borderRadius: '4px',
+  cursor: 'pointer',
+  fontFamily: 'Arial, sans-serif',
+};
+
+const deleteButtonStyle = {
+  backgroundColor: 'red',
+  color: '#fff',
+  border:'2px solid #000',
+  padding: '8px 8px',
+  borderRadius: '4px',
+  cursor: 'pointer',
+  fontFamily: 'Arial, sans-serif',
+};
+
+const noOrdersCellStyle = {
+  padding: '10px',
+  textAlign: 'center',
+  fontStyle: 'italic',
+  backgroundColor: '#f5f5f5',
+  fontFamily: 'Arial, sans-serif',
+};
+
+const loadingCellStyle = {
+  padding: '10px',
+  textAlign: 'center',
+  backgroundColor: '#f5f5f5',
+  fontFamily: 'Arial, sans-serif',
+};  
     
 
 
   return (
     <>
     <Layout title={"DashBoard - Manage Category"}>
-    <div className="container-fluid m-3 p-3 dashboard">
+    <div className="container-fluid dashboard">
     <div className="row">
-    <div className="col-md-3">
+    <div className="col-md-3"  style={{'margin-top':'2rem'}}>
     <AdminMenu />
 
     </div>
-    <div className="col-md-9">
+    <div className="col-md-9" style={{'margin-top':'2rem'}}>
     <h1>Orders</h1>
     <br></br>
 
@@ -111,7 +173,7 @@ const AdminOrders = () => {
           placeholder="Enter order info..." onChange={(e)=>setOrderSearch(e.target.value)}/>
                  
          <div className="searchIcon">
-          {orderSearch ? <AiOutlineClose id="clearBtn" onClick={()=>{setOrderSearch("")}}/> :  <BiSearch />}
+          {orderSearch ? <AiOutlineClose style={{'font-size':'1.5rem'}} id="clearBtn" onClick={()=>{setOrderSearch("")}}/> :  <BiSearch style={{'font-size':'1.5rem'}}/>}
           </div>
       </div>
     </div>
@@ -121,15 +183,15 @@ const AdminOrders = () => {
     <thead>
 
     <tr>
-    <th scope="col">Order ID</th>
-    <th scope="col">Customer</th>
+    <th style={tableHeaderStyle} scope="col">Order ID</th>
+    <th style={tableHeaderStyle} scope="col">Customer</th>
     {/* <th scope="col">Payment</th> */}
-    <th scope="col">Status</th>
-    <th scope="col">Shipping Address</th>
-    <th scope="col">Total Amount</th>
-    <th scope="col">Order Date</th>
-    <th scope="col">Delivery Date</th>
-    <th scope="col">Actions</th>
+    <th style={tableHeaderStyle} scope="col">Status</th>
+    <th style={tableHeaderStyle} scope="col">Shipping Address</th>
+    <th style={tableHeaderStyle} scope="col">Total Amount</th>
+    <th style={tableHeaderStyle} scope="col">Order Date</th>
+    <th style={tableHeaderStyle} scope="col">Delivery Date</th>
+    <th style={tableHeaderStyle} scope="col">Actions</th>
     </tr>
     </thead>
 
@@ -151,39 +213,41 @@ const AdminOrders = () => {
       );
     }
                   })
-                   ?.map((c) => (
-
+                   ?.map((c,index) => (
             <>
-            <tr key={c.order_id}>
-            <td>{c.order_id}</td>
-            <td>{c.customer.username}</td>
+            <tr key={c.order_id} style={{backgroundColor:index%2==1?'#4CAF50':'#3CB371'}}>
+            <td style={tableCellStyle}>{c.order_id}</td>
+            <td style={tableCellStyle}>{c.customer.username}</td>
             {/* <td>{c.payment}</td> */}
-            <td>{c.status}</td>
-            <td>{c.shipping_address}</td>
-            <td>{c.total_amount}</td>
-            <td>{`${new Date(c.order_date).getDate()}/${new Date(c.order_date).getMonth()}/${new Date(c.order_date).getFullYear()}   ${new Date(c.order_date)?.getHours()}:${new Date(c.order_date)?.getMinutes()}:${new Date(c.order_date)?.getSeconds()}`}</td>
-            <td>{c.delivery_date?`${new Date(c.delivery_date)?.getDate()}/${new Date(c.delivery_date)?.getMonth()}/${new Date(c.delivery_date)?.getFullYear()}    ${new Date(c.delivery_date)?.getHours()}:${new Date(c.delivery_date)?.getMinutes()}:${new Date(c.delivery_date)?.getSeconds()}`:''}</td>
-            <td>
+            <td style={tableCellStyle}>{c.status}</td>
+            <td style={tableCellStyle}>{c.shipping_address}</td>
+            <td style={tableCellStyle}>{c.total_amount}</td>
+            <td style={tableCellStyle}>{`${new Date(c.order_date).getDate()}/${new Date(c.order_date).getMonth()}/${new Date(c.order_date).getFullYear()}   ${new Date(c.order_date)?.getHours()}:${new Date(c.order_date)?.getMinutes()}:${new Date(c.order_date)?.getSeconds()}`}</td>
+            <td style={tableCellStyle}>{c.delivery_date?`${new Date(c.delivery_date)?.getDate()}/${new Date(c.delivery_date)?.getMonth()}/${new Date(c.delivery_date)?.getFullYear()}    ${new Date(c.delivery_date)?.getHours()}:${new Date(c.delivery_date)?.getMinutes()}:${new Date(c.delivery_date)?.getSeconds()}`:''}</td>
+            <td style={tableCellStyle}>
             <button
               className="btn btn-primary ms-2"
               onClick={(e)=>{setStatus(c.status);
                 setSelectedOrder(c)
-               setVisible(true)}}           
+               setVisible(true)}}     
+               style={editButtonStyle}      
              >
               Edit
               </button>
             <Link to={`/admin/single-order/${c.order_id}`}>         
-            <button className="btn btn-info ms-2">
+            <button className="btn btn-info ms-2" style={viewButtonStyle}>
                 View
             </button>
             </Link>    
-
+            <Link>
             <button className="btn btn-danger ms-2"
+            style={deleteButtonStyle}
             onClick={() => {
               handleDelete(c.order_id);
             }}>
                 Delete
             </button>
+            </Link>
             </td>
             </tr>
             </>
