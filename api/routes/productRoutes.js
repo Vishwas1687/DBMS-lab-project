@@ -12,7 +12,8 @@ const {createProductController,updateProductController,
       getPaginatedProductsController,getDocumentProductsController,
       getCategoryDocumentProductsController,getSubCategoryDocumentProductsController,
       getProductsByCategoryPaginatedController,getProductsBySubCategoryPaginatedController,
-    getAllProductsByCategoryFiltersController,getAllProductsBySubCategoryFiltersController}
+    getAllProductsByCategoryFiltersController,getAllProductsBySubCategoryFiltersController,
+    getBrandDocumentProductsController}
       =require('../controllers/productController')
 
 const {requiresSignIn,isAdmin}=require('../middlewares/authmiddleware')      
@@ -60,6 +61,8 @@ router.get('/get-total-products-in-homepage',getDocumentProductsController)
 router.get('/get-total-products-in-category-page/:slug',getCategoryDocumentProductsController)
 
 router.get('/get-total-products-in-subcategory-page/:slug/:subcategory_id',getSubCategoryDocumentProductsController)
+
+router.get('/get-total-products-by-brand/:brand_id',getBrandDocumentProductsController)
 
 router.get('/get-products-by-category-paginated/:slug',getProductsByCategoryPaginatedController)
 

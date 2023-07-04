@@ -2,6 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import Layout from "../../components/Layout/Layout";
 import AdminMenu from "../../components/AdminMenu";
+import toast from 'react-hot-toast'
 
 const CreateCategory = ({ categoryId, categoryName }) => {
   const [subCategories,setSubcategories]=useState([{
@@ -43,7 +44,7 @@ const CreateCategory = ({ categoryId, categoryName }) => {
         formDataWithSubcategories
       );
       if (data?.success) {
-        alert(`${formData.category_name} is added`);
+        toast.success(`${formData.category_name} is added`);
         setFormData({
           category_id: "",
           category_name: "",
@@ -52,10 +53,10 @@ const CreateCategory = ({ categoryId, categoryName }) => {
       subcategory_id:"",subcategory_name:""
     }])
       } else {
-        alert(data.message);
+        toast.error(data.message)
       }
     } catch (error) {
-      console.log(error);
+      toast.error('Something went wrong')
     }
   };
 
@@ -68,11 +69,11 @@ const CreateCategory = ({ categoryId, categoryName }) => {
             <AdminMenu />
           </div>
           <div className="col-md-9">
-            <h1>Create Category</h1>
+            <h1 style={{'padding-left':'18rem','font-weight':'bold'}}>Create Category</h1>
             <br></br>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} style={{'margin-left':'15rem'}}>
               <div className="form-group text-left">
-                <label htmlFor="category_id">Category ID</label>
+                <label htmlFor="category_id" style={{'font-weight':'bold'}}>Category ID</label>
                 <input
                   type="text"
                   className="form-control"
@@ -81,11 +82,12 @@ const CreateCategory = ({ categoryId, categoryName }) => {
                   placeholder="Enter category id"
                   value={formData.category_id}
                   onChange={handleChange}
+                  style={{'width':'25rem','border':'2px solid #111'}}
                 />
               </div>
               <br></br>
               <div className="form-group text-left">
-                <label htmlFor="category_name">Category Name</label>
+                <label htmlFor="category_name" style={{'font-weight':'bold'}}>Category Name</label>
                 <input
                   type="text"
                   className="form-control"
@@ -94,6 +96,7 @@ const CreateCategory = ({ categoryId, categoryName }) => {
                   placeholder="Enter category name"
                   value={formData.category_name}
                   onChange={handleChange}
+                   style={{'width':'25rem','border':'2px solid #111'}}
                 />
               </div>
               <br></br>
@@ -101,7 +104,7 @@ const CreateCategory = ({ categoryId, categoryName }) => {
                 return (
                   <>
                     <div className="form-group text-left">
-                    <label>{`Subcategory id ${index+1}`}</label>
+                    <label style={{'font-weight':'bold'}}>{`Subcategory id ${index+1}`}</label>
                     <input
                     type="text"
                     className="form-control"
@@ -109,11 +112,12 @@ const CreateCategory = ({ categoryId, categoryName }) => {
                     placeholder="Enter subcategory id"
                     value={subCategories[index].subcategory_id}
                     onChange={(e)=>{handleSubCategoryChange(index,"subcategory_id",e.target.value)}}
+                     style={{'width':'25rem','border':'2px solid #111'}}
                     />
                     </div>
                     <br></br>
                     <div className="form-group text-left">
-                    <label>{`Subcategory name ${index+1}`}</label>
+                    <label style={{'font-weight':'bold'}}>{`Subcategory name ${index+1}`}</label>
                     <input
                     type="text"
                     className="form-control"
@@ -121,6 +125,7 @@ const CreateCategory = ({ categoryId, categoryName }) => {
                     placeholder="Enter subcategory name"
                     value={subCategories[index].subcategory_name}
                     onChange={(e)=>{handleSubCategoryChange(index,"subcategory_name",e.target.value)}}
+                     style={{'width':'25rem','border':'2px solid #111'}}
                     />
                     </div>
                     <br></br>
@@ -128,11 +133,12 @@ const CreateCategory = ({ categoryId, categoryName }) => {
                 )
               })}
               
-              <button className="btn btn-primary" onClick={handleAddSubCategory}>Create sub category</button>
+              <button className="btn btn-primary" onClick={handleAddSubCategory}
+              style={{'font-weight':'bold'}}>Create sub category</button>
                <br></br>
                <br></br>
 
-              <button type="submit" className="btn btn-success" style={{'font-size':'1.5rem','width':'31rem'}}>
+              <button type="submit" className="btn btn-success" style={{'font-size':'1.5rem','width':'25rem','font-weight':'bold'}}>
                 Create
               </button>
             </form>

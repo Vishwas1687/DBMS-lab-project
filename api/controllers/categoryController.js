@@ -16,7 +16,8 @@ const createCategoryController=async(req,res)=>{
     // return res.send({message:'Sub category photo should be entered'})
 
     const existingCategory=await CategoryModel.findOne({category_id})
-    if(existingCategory)
+    const existingCategoryName=await CategoryModel.findOne({category_name})
+    if(existingCategory || existingCategoryName)
     {
         return res.send({
             message:'Category already exists',

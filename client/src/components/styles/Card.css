@@ -146,17 +146,17 @@ section {
 	margin-left:2rem;
 	width:18rem;
 	height: 2.5rem;
-	color: white;
+	color: black;
 }
 
 .quantity-btn span{
 	font-size: 1.5rem;
-	color:white;
+	color:black;
 }
 
 .quantity-btn span button{
 	width:2rem;
-	color: white;
+	color:black;
 }
 
 .increment-btn{

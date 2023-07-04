@@ -12,18 +12,13 @@ const ManageBrand = () => {
 
     const [brands, setBrands] = useState([]);
     const [visible, setVisible] = useState(false);
-    const [selected, setSelected] = useState(null);
+    const [selected, setSelected] = useState({});
     const [updatedName, setUpdatedName] = useState("");
     const [createVisible,setCreateVisible]=useState(false)
     const [brand,setBrand]=useState('')
     const [search__,setSearch__] = useState('');
-
-
-    // useEffect(() => {
-    //     axios.get('/api/brands').then((response) => {
-    //       setBrands(response.data);
-    //     });
-    //   }, []);
+    const [deleteModal,setDeleteModal]=useState(false)
+    const [numberOfDeleteProducts,setNumberOfDeleteProducts]=useState(0)
 
 
     const getAllBrand = async() => {
@@ -96,7 +91,6 @@ const ManageBrand = () => {
           );
           if (data.success) {
             toast.success(`brand is deleted`);
-    
             getAllBrand();
           } else {
             toast.error(data.message);
@@ -105,6 +99,25 @@ const ManageBrand = () => {
           toast.error("Something went wrong");
         }
       };
+
+
+ const getDocumentProducts=async(brand_id)=>{
+       try{
+          const {data}=await axios.get(`http://localhost:5000/api/products/get-total-products-by-brand/${brand_id}`)
+          if(data?.success)
+          {
+            setNumberOfDeleteProducts(data.count)
+            if(data.count==0)
+            {
+               handleDeleteBrand(selected.brand_id)
+            }
+            else
+            setDeleteModal(true)
+          }
+       }catch{
+          toast.error('Something went wrong')
+       }
+    }      
 
 const tableHeaderStyle = {
   backgroundColor: '#006400',
@@ -227,8 +240,8 @@ const loadingCellStyle = {
 <button className="btn btn-danger ms-2"
 style={deleteButtonStyle}
 onClick={() => {
-    handleDeleteBrand(c.brand_id)
-    
+    getDocumentProducts(c.brand_id);
+    setSelected(c);
   }}>
 
     
@@ -267,6 +280,24 @@ Delete
     handleSubmit={(e) => handleCreateBrand(e,brand)}
   />
 </Modal>
+
+<Modal onCancel={()=>setDeleteModal(false)}
+            footer={null}
+            visible={deleteModal}>
+          <div>
+            <h3 style={{'color':'red'}}>{`Do you want to really delete the brand ${selected.brand_name}`}</h3>
+            <h5 style={{'font-weight':'bold'}}>{`The Brand contains ${numberOfDeleteProducts} products`}</h5>
+             <button className="btn btn-primary" type="button" 
+               onClick={(e)=>{handleDeleteBrand(selected.brand_id);setDeleteModal(false)}}
+               style={{'background-color':'red','color':'white','margin-right':'2rem'}}>
+              Delete all products
+             </button>
+             <button className="btn btn-primary" type="button" 
+               onClick={(e)=>{setDeleteModal(false)}}>
+              Cancel
+             </button>
+          </div>
+          </Modal>
 
             </div>
     </div>

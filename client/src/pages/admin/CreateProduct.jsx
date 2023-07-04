@@ -163,12 +163,12 @@ useEffect(() => {
           <div className="col-md-9 create-category-section">
           {loading?(<h1>Loading.....</h1>):
             <>
-            <h1>Create Product</h1>
+            <h1 style={{'padding-left':'22rem','font-weight':'bold'}}>Create Product</h1>
             <br></br>
-            <form onSubmit={handleSubmit} className="w-75">
+            <form onSubmit={handleSubmit} className="w-75" style={{'margin-left':'15rem'}}>
               <div className="form-group text-left">
                 <div className="form-group text-left">
-                <label htmlFor="product_name">Product Name</label>
+                <label htmlFor="product_name" style={{'font-weight':'bold'}}>Product Name</label>
                 <input
                   type="text"
                   className="form-control"
@@ -177,12 +177,12 @@ useEffect(() => {
                   placeholder="Enter product name"
                   value={formData.product_name}
                   onChange={handleChange}
-                  
+                  style={{'border':'2px solid #111'}}
                 />
               </div>
               <br></br>
               <div className="form-group text-left">
-                <label htmlFor="seller_id">Seller ID</label>
+                <label htmlFor="seller_id" style={{'font-weight':'bold'}}>Seller ID</label>
                 <input
                   type="text"
                   className="form-control"
@@ -191,13 +191,14 @@ useEffect(() => {
                   placeholder="Enter seller id"
                   value={formData.seller_id}
                   onChange={handleChange}
-                  
+                  style={{'border':'2px solid #111'}}
                 />
               </div>
               <br></br>
 
               <div className="form-group text-left">
-                <label className="btn btn-outline-secondary" style={{'width':'31rem'}}>
+                <label className="btn btn-outline-secondary" style={{'width':'31rem','font-weight':'bold'}}
+                 >
                   {photo?photo.name:"Upload Photo"}
                  <input
                   type="file"
@@ -205,6 +206,7 @@ useEffect(() => {
                   accept="image/*"
                   onChange={(e)=>setPhoto(e.target.files[0])}
                   hidden
+                  style={{'border':'2px solid #111'}}
                  />
                  </label>
                  <br></br>
@@ -226,10 +228,10 @@ useEffect(() => {
 
 
               <div className="form-group text-left">
-                <label htmlFor="brand">Brand</label>
+                <label htmlFor="brand" style={{'font-weight':'bold'}}>Brand</label>
                 <br></br>
                 <select className="w-50 h-25 p-2 " onChange={(e)=>{handleBrand(e)}}
-                style={{'cursor':'pointer','font-size':'1.5rem','width':'23rem'}}>
+                style={{'cursor':'pointer','font-size':'1.5rem','width':'23rem','border':'2px solid #111','font-weight':'bold'}}>
                 {Object.keys(formData.brand).length===0 && <option value="1">None</option>}
                 {brands.map((brand) => (
               <option key={brand._id} value={brand._id} name="brand">
@@ -241,10 +243,10 @@ useEffect(() => {
               <br></br>
         
               <div className="form-group text-left">
-              <label htmlFor="category">Category</label>
+              <label htmlFor="category"  style={{'font-weight':'bold'}}>Category</label>
               <br></br>
               <select className="w-50 h-25 p-2 " onChange={(e)=>{handleCategory(e)}}
-              style={{'cursor':'pointer','font-size':'1.5rem','width':'23rem'}}>
+              style={{'cursor':'pointer','font-size':'1.5rem','width':'23rem','font-weight':'bold','border':'2px solid #111'}}>
                 {Object.keys(category).length===0 && <option value="1">None</option>}
                 {categories.map((cat) => (
               <option key={cat._id} value={cat._id} name="category">
@@ -257,11 +259,11 @@ useEffect(() => {
               <br></br>
             {index?
                (<div className="form-group text-left">
-                <label htmlFor="subcategory">Subcategory</label>
+                <label htmlFor="subcategory" style={{'font-weight':'bold'}}>Subcategory</label>
                 <br></br>
                   
                  <select className="w-50 h-25 p-2 " onChange={(e)=>{handleSubCategory(e)}}
-                 style={{'cursor':'pointer','font-size':'1.5rem','width':'23rem'}}>
+                 style={{'cursor':'pointer','font-size':'1.5rem','width':'23rem','font-weight':'bold','border':'2px solid #111'}}>
                   {Object.keys(formData.subcategory).length===0 && <option value="1">None</option>}
                 {category?.subcategories.map((subcat) => (
               <option key={subcat._id} value={subcat.subcategory_name} name="subcategory">
@@ -279,7 +281,7 @@ useEffect(() => {
                   <>
 
 <div className="form-group text-left">
-                    <label>{`Weight id ${index+1}`}</label>
+                    <label style={{'font-weight':'bold'}}>{`Weight id ${index+1}`}</label>
                     <input
                     type="text"
                     className="form-control"
@@ -288,11 +290,12 @@ useEffect(() => {
                     required="true"
                     value={weights[index].weight_id}
                     onChange={(e)=>{handleWeightChange(index,"weight_id",e.target.value)}}
+                    style={{'border':'2px solid #111'}}
                     />
                     </div>
                     <br></br>
                     <div className="form-group text-left">
-                    <label>{`Weight ${index+1}`}</label>
+                    <label style={{'font-weight':'bold'}}>{`Weight ${index+1}`}</label>
                     <input
                     type="text"
                     className="form-control"
@@ -301,11 +304,12 @@ useEffect(() => {
                     value={weights[index].weight}
                     required="true"
                     onChange={(e)=>{handleWeightChange(index,"weight",e.target.value)}}
+                    style={{'border':'2px solid #111'}}
                     />
                     </div>
                     <br></br>
                     <div className="form-group text-left">
-                    <label>{`Weight Units ${index+1}`}</label>
+                    <label style={{'font-weight':'bold'}}>{`Weight Units ${index+1}`}</label>
                     <input
                     type="text"
                     className="form-control"
@@ -314,12 +318,13 @@ useEffect(() => {
                     placeholder="Enter weight units"
                     value={weights[index].weight_units}
                     onChange={(e)=>{handleWeightChange(index,"weight_units",e.target.value)}}
+                    style={{'border':'2px solid #111'}}
                     />
                     </div>
                     <br></br>
 
                     <div className="form-group text-left">
-                    <label>{`MRP ${index+1}`}</label>
+                    <label style={{'font-weight':'bold'}}>{`MRP ${index+1}`}</label>
                     <input
                     type="text"
                     className="form-control"
@@ -328,11 +333,12 @@ useEffect(() => {
                     placeholder="Enter mrp"
                     value={weights[index].mrp}
                     onChange={(e)=>{handleWeightChange(index,"mrp",e.target.value)}}
+                    style={{'border':'2px solid #111'}}
                     />
                     </div>
                     <br></br>
                     <div className="form-group text-left">
-                    <label>{`SP ${index+1}`}</label>
+                    <label style={{'font-weight':'bold'}}>{`SP ${index+1}`}</label>
                     <input
                     type="text"
                     className="form-control"
@@ -341,12 +347,13 @@ useEffect(() => {
                     placeholder="Enter sp"
                     value={weights[index].sp}
                     onChange={(e)=>{handleWeightChange(index,"sp",e.target.value)}}
+                    style={{'border':'2px solid #111'}}
                     />
                     </div>
                     <br></br>
 
                     <div className="form-group text-left">
-                    <label>{`Stock ${index+1}`}</label>
+                    <label style={{'font-weight':'bold'}}>{`Stock ${index+1}`}</label>
                     <input
                     type="text"
                     className="form-control"
@@ -355,6 +362,7 @@ useEffect(() => {
                     placeholder="Enter stock"
                     value={weights[index].stock}
                     onChange={(e)=>{handleWeightChange(index,"stock",e.target.value)}}
+                    style={{'border':'2px solid #111'}}
                     />
                     </div>
                     <br></br>
@@ -362,26 +370,29 @@ useEffect(() => {
                 )
               })}
 
-<button type="button"  className="btn btn-primary" onClick={handleAddWeight}>Create Weight</button>
+<button type="button"  className="btn btn-primary" onClick={handleAddWeight}
+style={{'font-weight':'bold','border':'2px solid #111'}}>Create Weight</button>
                <br></br>
                <br></br>
               {tags.map((tag,index)=>(
                    <div className="form-group text-left">
-                    <label>Tag {index+1}</label>
+                    <label style={{'font-weight':'bold'}}>Tag {index+1}</label>
                     <input type="text" className="form-control" name="tag" 
                     placeholder="Enter the tag" required="true"
                     value={tags[index]} onChange={(e)=>handleTag(e,index)}
+                    style={{'border':'2px solid #111'}}
                     />
                     </div>
               ))}
                <br></br>
-              <button type="button" className="btn btn-success" onClick={addTag}>Create Another Tag</button>
+              <button type="button" className="btn btn-success" onClick={addTag}
+              style={{'font-weight':'bold','border':'2px solid #111'}}>Create Another Tag</button>
               
 
               </div>
               <br></br>
 
-              <button type="submit" className="btn btn-primary" style={{width:'31rem','font-size':'1.5rem'}}>
+              <button type="submit" className="btn btn-primary" style={{width:'31rem','font-size':'1.5rem','font-weight':'bold','border':'2px solid #111'}}>
                 Create
               </button>
               <br></br>

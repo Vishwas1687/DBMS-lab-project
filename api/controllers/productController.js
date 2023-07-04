@@ -1216,6 +1216,29 @@ const getAllProductsBySubCategoryFiltersController=async(req,res)=>{
         })
     }
 }
+
+const getBrandDocumentProductsController = async (req, res) => {
+   try {
+      const { brand_id } = req.params;
+      if (!brand_id) {
+         return res.send({ message: 'Enter the brand id' });
+      }
+      const products = await ProductModel.find().populate('brand');
+      const filteredProducts = products.filter(product => product.brand.brand_id === brand_id);
+      const count = filteredProducts.length;
+      res.send({
+         message: 'Count of total products fetched',
+         success: true,
+         count
+      });
+   } catch (error) {
+       res.send({
+        message: 'Something went wrong',
+        success: false,
+        error: error.message
+       });
+   }
+};
 module.exports={createProductController,updateProductController,
             deleteProductController,getAllProductsController,getSingleProductController,
         getProductsBySubCategoryController,createWeightsController,
@@ -1226,4 +1249,4 @@ module.exports={createProductController,updateProductController,
          getDocumentProductsController,getCategoryDocumentProductsController,
          getSubCategoryDocumentProductsController,getProductsBySubCategoryPaginatedController,
         getProductsByCategoryPaginatedController,getAllProductsByCategoryFiltersController,
-       getAllProductsBySubCategoryFiltersController}
+       getAllProductsBySubCategoryFiltersController,getBrandDocumentProductsController}
