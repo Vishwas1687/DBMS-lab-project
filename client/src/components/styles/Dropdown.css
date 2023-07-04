@@ -9,10 +9,18 @@
 .positionDropdown a{
     color:white;
 }
-.positionDropdown:hover a{
+.positionDropdown .login:hover a{
     color:black;
 }
-.positionDropdown:hover{
+.positionDropdown .login:hover{
+    background-color: white;
+}
+
+.positionDropdown .dashboard:hover a {
+    color: black;
+}
+
+.positionDropdown .dashboard:hover {
     background-color: white;
 }
 

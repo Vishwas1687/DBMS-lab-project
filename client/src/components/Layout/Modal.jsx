@@ -79,10 +79,10 @@ export default function Modal() {
     <input type="password" value={password} onChange={(e)=>{setPassword(e.target.value)}} className="form-control my-2" id="exampleInputPassword1" placeholder="Password" />
   </div>
   <NavLink style={{textAlign:'center'}} to="/forgot-password" className="nav-link mb-3 underline" onClick={()=>{closeRef.current.click();navigate('/forgot-password');}} >
-            Forgot Password?
+            <button className='btn btn-primary'>Forgot Password?</button>
   </NavLink>
   <div>
-  <button type="submit" className="btn btn-primary" style={{'margin-left':'8rem'}}>Log In</button>
+  <button type="submit" className="btn btn-success" style={{'margin-left':'8rem'}}>Log In</button>
   <button className="btn btn-danger" style={{'height':'2.5rem',padding:"0",'position':'absolute','margin-left':'1rem'}}>
   <a href="http://localhost:5000/api/auth/google" style={{display:'block',width:"100%",
   height:"100%",'position':'relative','top':'17%'}}>
@@ -95,7 +95,8 @@ export default function Modal() {
       </div>
       <div className="modal-footer" style={{justifyContent:'center'}} >
         <NavLink to="/register" className="nav-link underline" onClick={()=>{closeRef.current.click();navigate('/register');}} >
-            New User? Click here to register.
+          <button className="btn btn-primary"> New User? Click here to register. </button>
+            
           </NavLink>
         </div>
     </div>

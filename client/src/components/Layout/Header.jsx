@@ -7,10 +7,41 @@ import DropdownCategories from './DropdownCategories';
 import SearchBar from '../Form/SearchBar';
 import { useCart } from '../../context/cart';
 import { Badge } from 'antd'
+import {Menu,Dropdown as AntDropdown} from 'antd'
 
 const Header = () => {
 
   const [cart] = useCart()
+
+  const totalPrice = () => {
+        try {
+            let total = 0
+            cart?.map((item) => {
+                total = total + item.sp*item.quantity
+            })
+            return total
+        } catch (error) {
+            
+        }
+    }
+
+  const menu = (
+  <Menu style={{'border':'3px solid #111','min-height':'2rem','max-height':'25rem','overflow-y':'auto'}}>
+    <Menu.Item style={{'font-weight':'bold','font-size':'1.4rem','text-align':'center'}}>Basket Summary</Menu.Item>
+    {cart.map((item, index) => (
+      <Menu.Item key={index} style={{'font-size':'1.2rem','border':'2px solid #111','margin-bottom':'0.2rem'}}>
+        <Link to={`/product/${item.product.slug}`}>
+          <img src={`http://localhost:5000/api/products/get-photo/${item.product.slug}`}
+          height={'50px'}/>
+           {item.quantity} {item.product.product_name} -  {item.weight}{item.weightUnits} = {item.sp}*{item.quantity}={item.sp*item.quantity}
+        </Link>
+      </Menu.Item>
+    ))}
+    <Menu.Item>
+         <li style={{'font-size':'1.2rem','color':'blue','font-weight':'bold'}}>{`Total basket price - ${totalPrice()}`}</li>
+    </Menu.Item>
+  </Menu>
+);
 
   return (
     <>
@@ -43,13 +74,15 @@ const Header = () => {
         <li className="nav-item" style={{'margin-right':'1rem'}}>
           <Dropdown />
         </li>
-        <li className="nav-item" style={{'margin-left':'1rem','margin-right':'1rem'}}>
-          <Badge count={cart?.length} showZero>
-            <NavLink to="/cart" className="nav-link" href="#">
-              <ShoppingCart size={32} style={{'font-weight':'bold',color:'white'}}/>
-            </NavLink>
-          </Badge>
-        </li>
+         <li className="nav-item" style={{ marginLeft: '1rem', marginRight: '1rem' }}>
+    <Badge count={cart?.length} showZero>
+      <AntDropdown overlay={menu} placement="bottomRight" arrow>
+        <NavLink to="/cart" className="nav-link" href="#">
+          <ShoppingCart size={32} style={{ fontWeight: 'bold', color: 'white' }} />
+        </NavLink>
+      </AntDropdown>
+    </Badge>
+  </li>
       </ul>
     </div>
   </div>

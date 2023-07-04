@@ -194,7 +194,7 @@ const CartPage = () => {
                             ))
                         }
                     </div>
-                
+       
                 <div className="cart-summary" style={{'background-color':'#444444'}}>
                     <h2 style={{'color':'white'}}>Cart Summary</h2>
                     <p style={{'color':'white'}}>Total|Checkout|Payment</p>

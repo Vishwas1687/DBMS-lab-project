@@ -45,13 +45,13 @@ export default function Dropdown() {
         </NavLink>
       
       { !(auth.token) ? (<>
-        <div className={`dropdown-menu positionDropdown`} >
+        <div className={`dropdown-menu positionDropdown login`} >
         <a className="dropdown-item " href="#" data-toggle="modal" data-target="#exampleModalCenter" ref={anchorRef}
         >Log In</a>
       </div>
       </>) :
       (<>
-        <div className={`dropdown-menu positionDropdown`} >
+        <div className={`dropdown-menu positionDropdown dashboard`} >
         <Link className="dropdown-item" to={`/${ isAdmin ? 'admin' : 'user'}/`} >Dashboard</Link>
         <div className="dropdown-divider"></div>
         <a className="dropdown-item " onClick={()=>{

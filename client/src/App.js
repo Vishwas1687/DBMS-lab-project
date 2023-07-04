@@ -38,6 +38,7 @@ import SingleOrder from "./pages/SingleOrder";
 import AdminOrders from "./pages/admin/AdminOrders";
 import Sample from "./pages/SamplePage";
 import AdminSingleOrder from './pages/admin/AdminSingleOrder';
+import GetSubCategory from './pages/admin/Category/GetSubCategory';
 import './App.css';
 
 
@@ -69,6 +70,7 @@ function App() {
         <Route path = "/admin/create-category" element={<CreateCategory/>}></Route>
         <Route path = "/admin/manage-product" element = {<ManageProduct />} /> 
         <Route path = "/admin/manage-product/product/:slug" element = {<GetProduct />} />
+        <Route path = '/admin/get-subcategory-page/product/:slug/:subcategory_id' element={<GetSubCategory/>}/>
         <Route path = "/admin/update-product/:slug" element = {<UpdateProduct/>} />
         <Route path = "/admin/create-product" element = {<CreateProduct />} />
         <Route path = "/admin/update-category/:slug" element = {<UpdateCategory/>}/>

@@ -3,7 +3,7 @@ import Layout from "./../../../components/Layout/Layout";
 import AdminMenu from "./../../../components/AdminMenu";
 import toast from 'react-hot-toast';
 import axios from "axios";
-import {useParams} from 'react-router-dom';
+import {useParams,Link} from 'react-router-dom';
 import { Modal } from "antd";
 import { AiOutlineClose } from "react-icons/ai";
 import { BiSearch } from "react-icons/bi";
@@ -16,8 +16,10 @@ const GetCategory = () => {
       subcategory_name:''
     })
     const [selected,setSelected]=useState({})
+    const [deleteModal,setDeleteModal]=useState(false)
     const [visible,setVisible]=useState(false)
     const [createVisible,setCreateVisible]=useState(false)
+    const [numberOfDeleteProducts,setNumberOfDeleteProducts]=useState(0)
     const params=useParams()
   const [search__,setSearch__] = useState('');
 
@@ -62,13 +64,13 @@ const GetCategory = () => {
   const handleDelete=async(e,subcat)=>{
     e.preventDefault()
       try{
-        console.log(subcat)
+        
         const {data}=await axios.delete(`http://localhost:5000/api/categories/get-category/${cat.slug}/${subcat.subcategory_id}/delete`) 
-        console.log(data)
         if(data?.success)
         {
             console.log(data.message)
             getCategory()
+            toast.success('Sub category successfully deleted')
         }
         else{
            console.log(data.message)
@@ -104,6 +106,25 @@ const GetCategory = () => {
     useEffect(() => {
         getCategory();
     }, [params.slug]);
+
+
+    const getDocumentProducts=async(e,subcat)=>{
+       try{
+          const {data}=await axios.get(`http://localhost:5000/api/products/get-total-products-in-subcategory-page/${params.slug}/${subcat.subcategory_id}`)
+          if(data?.success)
+          {
+            setNumberOfDeleteProducts(data.count)
+            if(data.count==0)
+            {
+               handleDelete(e,subcat)
+            }
+            else
+            setDeleteModal(true)
+          }
+       }catch{
+          toast.error('Something went wrong')
+       }
+    }
 
 const tableHeaderStyle = {
   backgroundColor: '#006400',
@@ -222,10 +243,17 @@ const loadingCellStyle = {
                                <button type="button" className="btn btn-danger ms-2"
                                style={deleteButtonStyle}
                                  onClick={(e)=>{setSelected(subcat);
-                                  handleDelete(e,subcat)
+                                  getDocumentProducts(e,subcat)
                                    }}>
                                   Delete
                                </button>
+                              <Link to={`/admin/get-subcategory-page/product/${cat.slug}/${subcat.subcategory_id}`}>
+                               <button type="button" className="btn btn-danger ms-2"
+                               style={viewButtonStyle}
+                                 >
+                                  {`View ${subcat.subcategory_name} products`}
+                               </button>
+                               </Link>
                             </td>
                          </tr>
                       </>
@@ -276,6 +304,26 @@ const loadingCellStyle = {
              </button>
           </div>
           </Modal>
+ 
+          <Modal onCancel={()=>setDeleteModal(false)}
+            footer={null}
+            visible={deleteModal}>
+          <div>
+            <h3 style={{'color':'red'}}>{`Do you want to really delete the subcategory ${selected.subcategory_name}`}</h3>
+            <h5 style={{'font-weight':'bold'}}>{`The Subcategory contains ${numberOfDeleteProducts} products`}</h5>
+             <button className="btn btn-primary" type="button" 
+               onClick={(e)=>{handleDelete(e,selected);setDeleteModal(false)}}
+               style={{'background-color':'red','color':'white','margin-right':'2rem'}}>
+              Delete all products
+             </button>
+             <button className="btn btn-primary" type="button" 
+               onClick={(e)=>{setDeleteModal(false)}}>
+              Cancel
+             </button>
+          </div>
+          </Modal>
+
+
 
         </div>
       </div>

@@ -67,15 +67,15 @@ const CreateWeight = ({ weightId, weight , weightUnits , mrp, sp, stock }) => {
       <br></br>
       <div className="container-fluid">
         <div className="row">
-          <div className="col-md-2">
+          <div className="col-md-3">
             <AdminMenu />
           </div>
-          <div className="col-md-10 create-category-section">
-            <h1>Create Weight</h1>
+          <div className="col-md-9 create-category-section">
+            <h1 style={{'font-weight':'bold','padding-left':'20rem'}}>Create Weight</h1>
             <br></br>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} style={{'margin-left':'12rem'}}>
               <div className="form-group text-left">
-                <label htmlFor="weight_id">Weight ID</label>
+                <label htmlFor="weight_id" style={{'font-weight':'bold'}}>Weight ID</label>
                 <input
                   type="text"
                   className="form-control"
@@ -84,25 +84,26 @@ const CreateWeight = ({ weightId, weight , weightUnits , mrp, sp, stock }) => {
                   placeholder="Enter weight id"
                   value={formData.weight_id}
                   onChange={handleChange}
+                  style={{'border':'2px solid #111'}}
                 />
               </div>
               <br></br>
               <div className="form-group text-left">
-                <label htmlFor="weight">Weight</label>
+                <label htmlFor="weight" style={{'font-weight':'bold'}}>Weight</label>
                 <input
                   type="text"
                   className="form-control"
-                  id="weight"
+                  id="weights"
                   name="weight"
                   placeholder="Enter weight"
                   value={formData.weight}
                   onChange={handleChange}
-                  
+                  style={{'border':'2px solid #111'}}
                 />
               </div>
               <br></br>
               <div className="form-group text-left">
-                <label htmlFor="weight_units">Weight Units</label>
+                <label htmlFor="weight_units" style={{'font-weight':'bold'}}>Weight Units</label>
                 <input
                   type="text"
                   className="form-control"
@@ -111,12 +112,12 @@ const CreateWeight = ({ weightId, weight , weightUnits , mrp, sp, stock }) => {
                   placeholder="Enter weight units"
                   value={formData.weight_units}
                   onChange={handleChange}
-                  
+                  style={{'border':'2px solid #111'}}
                 />
               </div>
               <br></br>
               <div className="form-group text-left">
-                <label htmlFor="mrp">MRP</label>
+                <label htmlFor="mrp" style={{'font-weight':'bold'}}>MRP</label>
                 <input
                   type="text"
                   className="form-control"
@@ -125,12 +126,12 @@ const CreateWeight = ({ weightId, weight , weightUnits , mrp, sp, stock }) => {
                   placeholder="Enter MRP"
                   value={formData.mrp}
                   onChange={handleChange}
-                  
+                  style={{'border':'2px solid #111'}}
                 />
               </div>
               <br></br>
               <div className="form-group text-left">
-                <label htmlFor="sp">SP</label>
+                <label htmlFor="sp" style={{'font-weight':'bold'}}>SP</label>
                 <input
                   type="text"
                   className="form-control"
@@ -139,12 +140,12 @@ const CreateWeight = ({ weightId, weight , weightUnits , mrp, sp, stock }) => {
                   placeholder="Enter SP"
                   value={formData.sp}
                   onChange={handleChange}
-                  
+                  style={{'border':'2px solid #111'}}
                 />
               </div>
               <br></br>
               <div className="form-group text-left">
-                <label htmlFor="stock">Stock</label>
+                <label htmlFor="stock" style={{'font-weight':'bold'}}>Stock</label>
                 <input
                   type="text"
                   className="form-control"
@@ -153,12 +154,13 @@ const CreateWeight = ({ weightId, weight , weightUnits , mrp, sp, stock }) => {
                   placeholder="Enter stock"
                   value={formData.stock}
                   onChange={handleChange}
-                  
+                  style={{'border':'2px solid #111'}}
                 />
               </div>
               <br></br>
 
-              <button type="submit" className="btn btn-primary">
+              <button type="submit" className="btn btn-primary" 
+              style={{'font-weight':'bold','border':'2px solid #111','width':'32rem'}}>
                 Create
               </button>
               </form>

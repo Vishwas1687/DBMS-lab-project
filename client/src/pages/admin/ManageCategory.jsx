@@ -14,8 +14,10 @@ const ManageCategory = () => {
   const [name, setName] = useState("");
   const [id, setId] = useState("");
   const navigate=useNavigate()
-
+  const [deleteModal,setDeleteModal]=useState(false)
+  const [numberOfDeleteProducts,setNumberOfDeleteProducts]=useState(0)
   const [search__,setSearch__] = useState('');
+  const [selected,setSelected]=useState({})
 
 
   const handleDelete = async (slug) => {
@@ -25,7 +27,6 @@ const ManageCategory = () => {
       );
       if (data.success) {
         toast.success(`category is deleted`);
-
         getAllCategory();
       } else {
         toast.error(data.message);
@@ -48,6 +49,24 @@ const ManageCategory = () => {
       toast.error("Something went wrong in getting category");
     }
   };
+
+  const getDocumentProducts=async(slug)=>{
+       try{
+          const {data}=await axios.get(`http://localhost:5000/api/products/get-total-products-in-category-page/${slug}`)
+          if(data?.success)
+          {
+            setNumberOfDeleteProducts(data.count)
+            if(data.count==0)
+            {
+               handleDelete(slug)
+            }
+            else
+            setDeleteModal(true)
+          }
+       }catch{
+          toast.error('Something went wrong')
+       }
+    }
 
   useEffect(() => {
     getAllCategory();
@@ -173,7 +192,8 @@ const loadingCellStyle = {
             className="btn btn-danger ms-2"
             style={deleteButtonStyle}
             onClick={() => {
-              handleDelete(c.slug);
+              getDocumentProducts(c.slug);
+              setSelected(c);
             }}
           >
             Delete
@@ -195,8 +215,27 @@ const loadingCellStyle = {
 
                         </div>
                     </div>
+<Modal onCancel={()=>setDeleteModal(false)}
+            footer={null}
+            visible={deleteModal}>
+          <div>
+            <h3 style={{'color':'red'}}>{`Do you want to really delete the category ${selected.category_name}`}</h3>
+            <h5 style={{'font-weight':'bold'}}>{`The Category contains ${numberOfDeleteProducts} products`}</h5>
+             <button className="btn btn-primary" type="button" 
+               onClick={(e)=>{handleDelete(selected.slug);setDeleteModal(false)}}
+               style={{'background-color':'red','color':'white','margin-right':'2rem'}}>
+              Delete all products
+             </button>
+             <button className="btn btn-primary" type="button" 
+               onClick={(e)=>{setDeleteModal(false)}}>
+              Cancel
+             </button>
+          </div>
+          </Modal>                     
                 </div>
             </div>
+
+            
         </Layout>
     )
 }
