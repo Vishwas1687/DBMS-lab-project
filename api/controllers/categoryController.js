@@ -24,7 +24,7 @@ const createCategoryController=async(req,res)=>{
             success:false
         })
     }
-
+      
       for (const subcategory of subcategories) {
       if (!subcategory.subcategory_id) {
         return res.send({ message: 'Subcategory id is not entered' });
@@ -73,7 +73,14 @@ const updateCategoryController=async(req,res)=>{
     return res.send({message:'Enter the list of subcategories for the category'})
 
     const existingCategory=await CategoryModel.findOne({slug:slug})
-
+    
+    const CategoriesName=await CategoryModel.findOne({category_name})
+    if(CategoriesName && existingCategory.category_name!==CategoriesName.category_name)
+    return res.send({
+        message:'Category name already exists',
+        success:false,
+    })
+    
     const updatedCategory=await CategoryModel.findByIdAndUpdate(existingCategory._id,{
           category_id:existingCategory.category_id,
           category_name:category_name,
@@ -137,7 +144,7 @@ const deleteCategoryController=async(req,res)=>{
 
 const getAllCategoriesController=async(req,res)=>{
     try{
-        const categories=await CategoryModel.find({})
+        const categories=await CategoryModel.find({}).sort('slug')
         res.send({
             message:'All categories are fetched',
             success:true,
@@ -309,11 +316,19 @@ const createSubCategoryController=async(req,res)=>{
         if(!category)
         return res.send({message:'Category does not exist'})
         
-        const existingSubCategory=category.subcategories.filter((subcat)=>subcat.subcategory_id===parseInt(subcategory_id))[0]
+        let existingSubCategory=category.subcategories.filter((subcat)=>subcat.subcategory_id===parseInt(subcategory_id))[0]
         if(existingSubCategory)
         {
             return res.send({
                 message:'sub category id already exists',
+                success:false
+            })
+        }
+        existingSubCategory=category.subcategories.filter((subcat)=>subcat.subcategory_name===subcategory_name)[0]
+        if(existingSubCategory)
+        {
+            return res.send({
+                message:'sub category name already exists',
                 success:false
             })
         }

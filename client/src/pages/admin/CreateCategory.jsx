@@ -3,6 +3,7 @@ import axios from "axios";
 import Layout from "../../components/Layout/Layout";
 import AdminMenu from "../../components/AdminMenu";
 import toast from 'react-hot-toast'
+import {useNavigate} from 'react-router-dom'
 
 const CreateCategory = ({ categoryId, categoryName }) => {
   const [subCategories,setSubcategories]=useState([{
@@ -12,6 +13,7 @@ const CreateCategory = ({ categoryId, categoryName }) => {
     category_id: categoryId || "",
     category_name: categoryName || "",
   });
+  const navigate=useNavigate()
 
 
   const handleAddSubCategory=()=>{
@@ -52,6 +54,7 @@ const CreateCategory = ({ categoryId, categoryName }) => {
         setSubcategories([{
       subcategory_id:"",subcategory_name:""
     }])
+       navigate('/admin/manage-category')
       } else {
         toast.error(data.message)
       }
