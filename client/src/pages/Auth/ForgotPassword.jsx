@@ -41,26 +41,31 @@ const ForgotPassword = () => {
     <>
     <Header />
     <Toaster position="top-center" />
-      <div className='container-fluid w-25' style={{marginTop: '7%',border:'1px solid #e6e5e5',borderRadius:'10px',padding:'20px'}}>
+    <h2 style={{'font-weight':'bold','margin':'5rem 0 0 40rem'}}>Forgot Password</h2>
+      <div className='container-fluid w-25' style={{marginTop: '2%',border:'2px solid #111',borderRadius:'10px',padding:'20px'}}>
       <form onSubmit={resetPassword}>
   <div className="form-group">
-    <label htmlFor="exampleInputEmail1">Email</label>
-    <input type="email" required value={email} onChange={(e)=>setEmail(e.target.value)} className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" />
+    <label htmlFor="exampleInputEmail1" style={{'font-weight':'bold'}}>Email</label>
+    <input type="email" required value={email} onChange={(e)=>setEmail(e.target.value)} className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" 
+    style={{'border':'2px solid #111'}}/>
   </div>
   <div className="form-group mt-3">
-    <label htmlFor="exampleInputPassword1">Password</label>
-    <input type="password" required value={password} onChange={(e)=>setPassword(e.target.value)} className="form-control" id="exampleInputPassword1" placeholder="Password" />
+    <label htmlFor="exampleInputPassword1" style={{'font-weight':'bold'}}>Password</label>
+    <input type="password" required value={password} onChange={(e)=>setPassword(e.target.value)} className="form-control" id="exampleInputPassword1" placeholder="Password"
+    style={{'border':'2px solid #111'}} />
   </div>
   <div className="form-group mt-3">
-    <label htmlFor="confirmPassword">Confirm Password</label>
-    <input type="password" required value={confirmPassword} onChange={(e)=>setConfirmPass(e.target.value)} className="form-control" id="exampleInputUsername" aria-describedby="emailHelp" placeholder="Confirm password" />
+    <label htmlFor="confirmPassword" style={{'font-weight':'bold'}}>Confirm Password</label>
+    <input type="password" required value={confirmPassword} onChange={(e)=>setConfirmPass(e.target.value)} className="form-control" id="exampleInputUsername" aria-describedby="emailHelp" placeholder="Confirm password" 
+    style={{'border':'2px solid #111'}}/>
   </div>
   <div className="form-group mt-3">
-    <label htmlFor="exampleInputUsername">Answer</label>
-    <input type="password" required value={answer} onChange={(e)=>setAnswer(e.target.value)} className="form-control" id="exampleInputAnswer" aria-describedby="emailHelp" placeholder="Enter answer" />
+    <label htmlFor="exampleInputUsername" style={{'font-weight':'bold'}}>Answer</label>
+    <input type="password" required value={answer} onChange={(e)=>setAnswer(e.target.value)} className="form-control" id="exampleInputAnswer" aria-describedby="emailHelp" placeholder="Enter answer"
+    style={{'border':'2px solid #111'}} />
   </div>
   <div className='text-center mt-3'>
-  <button type="submit" className="btn btn-primary">Reset Password</button>
+  <button type="submit" className="btn btn-primary" style={{'font-weight':'bold','border':'2px solid #111'}}>Reset Password</button>
   </div>
 </form>
 </div>

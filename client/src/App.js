@@ -5,7 +5,6 @@ import About from "./pages/About";
 import Policy from "./pages/Policy";
 import PageNotFound from "./pages/PageNotFound";
 import Register from "./pages/Auth/Register";
-import Login from "./pages/Auth/Login";
 import Dashboard from "./pages/user/Dashboard";
 import GetCategory from './pages/admin/Category/GetCategory.jsx'
 // import PrivateRoute from "./components/Routes/Private";

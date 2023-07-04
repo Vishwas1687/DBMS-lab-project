@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React from 'react'
 import Layout from '../components/Layout/Layout'
-import { useParams } from 'react-router-dom';
+import { useParams,Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import PageNotFound from './PageNotFound'
 import Header from '../components/Layout/Header';

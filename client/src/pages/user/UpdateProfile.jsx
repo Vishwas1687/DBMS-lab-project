@@ -93,13 +93,13 @@ const UpdateProfilePage = () => {
     <Layout title={`Dashboard - ${user.username} update profile`}>
         
     <div className="container-fluid">
-    <div className="row">
+    <div className="row" style={{'margin-top':'2rem'}}>
         <div className="col-md-3">
         <UserMenu/>
         </div>
     <div className="col-md-9 create-category-section">
-    <h1>Update Profile</h1>
-      <form onSubmit={(e)=>handleSubmit(e)}>
+    <h1 style={{'font-weight':'bold','margin-left':'20rem'}}>Update Profile</h1>
+      <form onSubmit={(e)=>handleSubmit(e)} style={{'padding-left':'18rem'}}>
       <div className="form-group text-left">
       <label style={{fontSize:'1.5rem'}}>
           Username:
@@ -150,11 +150,14 @@ const UpdateProfilePage = () => {
       </div>
       <br></br>
         <div className="btn-container">
-           <button type="button" className="btn btn-primary m-1" onClick={()=>setPasswordVisible(true)} >Update Password</button>
-           <button type="button" className="btn btn-outline-primary m-1" onClick={()=>setAnswerVisible(true)}>Update answer</button>
+           <button type="button" className="btn btn-primary m-1" onClick={()=>setPasswordVisible(true)}
+           style={{'font-weight':'bold','border':'2px solid #111'}} >Update Password</button>
+           <button type="button" className="btn btn-outline-primary m-1" 
+           style={{'font-weight':'bold','border':'2px solid #111'}} onClick={()=>setAnswerVisible(true)}>Update answer</button>
         </div>
         <br></br>
-        <button type="submit" className="btn btn-success ms-2 w-25">Save</button>
+        <button type="submit" className="btn btn-success ms-2"
+        style={{'font-weight':'bold','border':'2px solid #111','width':'20rem'}} >Save</button>
       </form>
       
 

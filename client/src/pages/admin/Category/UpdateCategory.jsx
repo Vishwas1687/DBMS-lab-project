@@ -71,16 +71,16 @@ const UpdateCategory = () => {
   return (
     <Layout title={'Dashboard - Update category'}>
        <div className="container-fluid m-3 p-3 dashboard">
-           <div className="row">
+           <div className="row" style={{'margin-top':'2rem'}}>
                <div className="col-md-3">
                 <AdminMenu/>
                </div>
                <div className="col-md-9">
-                <h1>Update Category</h1>
+                <h1 style={{'font-weight':'bold','padding-left':'17rem'}}>Update Category</h1>
                 <br></br>
-                <form onSubmit={handleSubmit} style={{width:'31rem'}}>
+                <form onSubmit={handleSubmit} style={{'padding-left':'14rem'}}>
                     <div className="form-group text-left">
-                        <label>Category name</label>
+                        <label style={{'font-weight':'bold'}}>Category name</label>
                         <input 
                           type="text"
                           className="form-control"
@@ -88,48 +88,50 @@ const UpdateCategory = () => {
                           name="category name"
                           value={catName}
                           onChange={handleChange}
+                          style={{'width':'25rem','border':'2px solid #111'}}
                          />
                     </div>
 
                     <br></br>
                     <div className="form-group text-left">
-                        <label>Category Id</label>
+                        <label style={{'font-weight':'bold'}}>Category Id</label>
                         <input 
                           type="text"
                           className="form-control"
                           name="category id"
                           placeholder="Enter category Id"
                           value={catId}
+                          style={{'width':'25rem','border':'2px solid #111'}}
                          />
                     </div>
 
                     <br></br>
-                    <h3>Sub categories cannot be edited</h3>
+                    <h3 style={{'color':'red'}}>Sub categories cannot be edited</h3>
                     {subcategories.map((subcat,index)=>{
                         return(
                             <>
                             <br></br>
                             <div className="form-group text-left">
-                            <label>{`Sub category id ${index+1}`}</label>
+                            <label style={{'font-weight':'bold'}}>{`Sub category id ${index+1}`}</label>
                             <input 
                              type="text"
                             className="form-control"
                              placeholder="Enter subcategory Id"
                              name="subcategory_id"
                             value={subcat.subcategory_id}
-                            
+                            style={{'width':'25rem','border':'2px solid #111'}}
                             />
                            </div>
                             <br></br>
                            <div className="form-group text-left">
-                            <label>{`Sub category name ${index+1}`}</label>
+                            <label style={{'font-weight':'bold'}}>{`Sub category name ${index+1}`}</label>
                             <input 
                              type="text"
                             className="form-control"
                              placeholder="Enter subcategory Name"
                              name="subcategory name"
                             value={subcat.subcategory_name}
-                            
+                            style={{'width':'25rem','border':'2px solid #111'}}
                             />
                            </div>
                            </>
@@ -137,7 +139,8 @@ const UpdateCategory = () => {
                     })}
                     <br></br>
                     <br></br>
-                    <button type="submit" className="btn btn-success" style={{'font-size':'1.5rem','width':'31rem'}}>
+                    <button type="submit" className="btn btn-primary" style={{'font-size':'1.5rem','width':'25rem'
+                 ,'font-weight':'bold','border':'2px solid #111'}}>
                          Update category
                     </button>
                 </form>

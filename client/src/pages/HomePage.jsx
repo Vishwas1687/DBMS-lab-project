@@ -113,8 +113,8 @@ const HomePage = () => {
       <div className="pagination-container" style={{ textAlign: 'center' }}>
         <button type="button" className="btn btn-success" onClick={()=>{
           handleBackward();window.scrollTo({top:window.innerHeight*0.65,behavior:'smooth'})}}>
-          <span style={{ textAlign: 'center', alignItems: 'center' }}>
-            <FaAngleLeft />
+          <span style={{ textAlign: 'center', alignItems: 'center','font-weight':'bold' }}>
+            <FaAngleLeft /> Previous 
           </span>
         </button>
         {!loading ? (
@@ -137,8 +137,8 @@ const HomePage = () => {
         )}
         <button type="button" className="btn btn-success" onClick={()=>{
           handleForward();window.scrollTo({top:window.innerHeight*0.65,behavior:'smooth'})}}>
-          <span style={{ textAlign: 'center', alignItems: 'center' }}>
-            <FaAngleRight />
+          <span style={{ textAlign: 'center', alignItems: 'center','font-weight':'bold' }}>
+            Next <FaAngleRight />
           </span>
         </button>
       </div>

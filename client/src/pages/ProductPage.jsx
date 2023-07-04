@@ -27,9 +27,10 @@ const ProductPage = () => {
   const [weightUnits,setWeightUnits]=useState('')
   const [sp, setSp] = useState('')
   const [mrp, setMrp] = useState('')
+  const [allBrandsOfSubCat,setAllBrandsOfSubCat]=useState([])
+  const [subcategoryId,setSubcategoryId]=useState(null)
 
   const [quantity, setQuantity] = useState('')
-
 
   useEffect(() => {
     const fetchData = async () => {
@@ -40,6 +41,7 @@ const ProductPage = () => {
         );
         const brand = data.existingProduct.brand._id;
         const subcat = data.existingProduct.subcategory;
+        
         const temp = await axios.get(
           `http://localhost:5000/api/products/get-related-products-of-the-subcategory/${slug}/`
         );
@@ -61,6 +63,7 @@ const ProductPage = () => {
           setWeightUnits(data.existingProduct.weights[0]?.weight_units)
           setSelectedWeight(data.existingProduct.weights[0]?.weight_id)
           setStock((data.existingProduct.weights[0]?.stock>0)?true:false)
+          setSubcategoryId(data.existingProduct.category.subcategories.find((subcat)=>subcat.subcategory_name===data.existingProduct.subcategory).subcategory_id)
           setQuantity(parseInt(quantityLocal.map((quant)=>{
             if(quant.product===data.existingProduct?._id && quant.selectedWeight===data.existingProduct?.weights[0].weight_id)
             return quant.quantity 
@@ -72,7 +75,12 @@ const ProductPage = () => {
       }
     };
     fetchData();
+    
   }, [slug]);
+
+  useEffect(()=>{
+    getAllBrandsOfSubCat();
+  },[info])
 
   useEffect(()=>{
     const selectedW = info.weights?.find((weight) => weight.weight_id === parseInt(selectedWeight));
@@ -91,6 +99,19 @@ const ProductPage = () => {
   const handleWeightChange = (e) => {
     setSelectedWeight(e.target.value);
   };
+
+
+  const getAllBrandsOfSubCat=async()=>{
+      try{
+          const {data}=await axios.get(`http://localhost:5000/api/brands/get-all-brands-by-subcat/${info.category.slug}/${subcategoryId}`)
+          if(data?.success)
+          setAllBrandsOfSubCat(data.brands)
+          else
+          toast.error('Brands could not be fetched')
+      }catch{
+        //  toast.error('Something went wrong')
+      }
+  }
 
   const handleDecrement=()=>{
         if(quantity>1)
@@ -201,15 +222,16 @@ const ProductPage = () => {
                 : ""}
               <div className='margin'></div>
               <h3>Brands</h3>
-              <p className='brand'>
-                {info.brand ? info.brand.brand_name : ""}
-              </p>
+                  {allBrandsOfSubCat!=null? allBrandsOfSubCat?.map((b,index)=>
+                  <p>{b.brand_name}</p>) :''
+                  } 
             </div>
             <div className='product'>
               <img
                 className='productImage'
                 src={`http://localhost:5000/api/products/get-photo/${info.slug}`}
                 alt='Product Image'
+                style={{'margin-right':'2rem'}}
               />
               <div className='details'>
                 <div className='brandName_'>{info.brand.brand_name}</div>
@@ -230,7 +252,7 @@ const ProductPage = () => {
                 <div className='weightS'>
                   <div style={{'font-size':'1.4rem'}}>Select quantity:</div>
                   <select onChange={handleWeightChange} 
-                  style={{width:'10rem','text-align':'center',height:'2.5rem',
+                  style={{width:'15rem','text-align':'center',height:'2.5rem',
                   'font-size':'1.2rem','background-color':'white','border':'1px solid #111','cursor':'pointer'}}>
                     {info
                       ? info.weights.map((weight) => (
@@ -278,7 +300,7 @@ const ProductPage = () => {
                                     (e)=>{setTemp(e.target.value)
                                   }}/>
                                  <button type="button" 
-                                className='add_to_cart_btn' style={{'height':'3rem'}}
+                                className='add_to_cart_btn' style={{'height':'3rem','width':'8rem'}}
                                 disabled={stock===0?true:false}
                                 onClick={() =>
                                     {
@@ -313,7 +335,7 @@ const ProductPage = () => {
             <div className='productSlider'>
               {relatedProducts.length ? (
                 relatedProducts.map((product, index) => (
-                  <div className='card__' key={index}>
+                  <div className='card__' key={index} style={{'border':'2px solid #111'}}>
                     <img
                       src={`http://localhost:5000/api/products/get-photo/${product.slug}`}
                       className='card-img_'
@@ -323,9 +345,10 @@ const ProductPage = () => {
                       <h5 className='card-title my-2' style={{ textTransform: 'capitalize' }}>
                         {product.product_name}
                       </h5>
-                      <a href={`/product/${product.slug}`} className='btn btn-primary my-2'>
+                      <Link to={`/product/${product.slug}`} className='btn btn-primary my-2' 
+                      style={{'width':'10rem','font-weight':'bold','border':'2px solid #111'}}>
                         Buy
-                      </a>
+                      </Link>
                     </div>
                   </div>
                 ))
@@ -340,7 +363,7 @@ const ProductPage = () => {
             <div className='productSlider'>
               {sameBrand.length ? (
                 sameBrand.map((product, index) => (
-                  <div className='card__' key={index}>
+                  <div className='card__' key={index} style={{'border':'2px solid #111'}}>
                     <img
                       src={`http://localhost:5000/api/products/get-photo/${product.slug}`}
                       className='card-img_'
@@ -350,8 +373,11 @@ const ProductPage = () => {
                       <h5 className='card-title my-2' style={{ textTransform: 'capitalize' }}>
                         {product.product_name}
                       </h5>
-                      <Link to={`/product/${product.slug}`} className='btn btn-primary my-2'>
-                        Buy
+                      <Link to={`/product/${product.slug}`} className='btn btn-primary my-2' >
+                        <button style={{'width':'10rem','font-weight':'bold','border':'2px solid #111'}}>
+                           Buy
+                        </button>
+                       
                       </Link>
                     </div>
                   </div>

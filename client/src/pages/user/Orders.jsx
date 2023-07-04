@@ -166,7 +166,7 @@ const loadingCellStyle = {
                           <td style={tableCellStyle}>{c.delivery_date?`${new Date(c.delivery_date)?.getDate()}/${new Date(c.delivery_date)?.getMonth()}/${new Date(c.delivery_date)?.getFullYear()}    ${new Date(c.delivery_date)?.getHours()}:${new Date(c.delivery_date)?.getMinutes()}:${new Date(c.delivery_date)?.getSeconds()}`:''}</td>
                           <td style={tableCellStyle}>
                             <Link to={`/user/single-order/${c.order_id}`}>
-                            <button className="btn btn-info ms-2"  style={viewButtonStyle}>View</button>
+                            <button className="btn btn-info ms-2" style={viewButtonStyle}>View</button>
                             </Link>
                           </td>
                         </tr>

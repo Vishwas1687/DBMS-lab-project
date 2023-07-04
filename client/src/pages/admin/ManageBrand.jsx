@@ -19,6 +19,7 @@ const ManageBrand = () => {
     const [search__,setSearch__] = useState('');
     const [deleteModal,setDeleteModal]=useState(false)
     const [numberOfDeleteProducts,setNumberOfDeleteProducts]=useState(0)
+    const [selectUpdate,setSelectUpdate]=useState({})
 
 
     const getAllBrand = async() => {
@@ -72,7 +73,7 @@ const ManageBrand = () => {
           );
           if (data?.success) {
             toast.success(`${updatedName} is updated`);
-            setSelected(null);
+            setSelectUpdate({});
             setVisible(false)
             setUpdatedName("");
             getAllBrand();
@@ -231,7 +232,7 @@ const loadingCellStyle = {
                             onClick={() => {
                               setVisible(true);
                               setUpdatedName(c.brand_name);
-                              setSelected(c);
+                              setSelectUpdate(c);
                             }}
                             style={editButtonStyle}
                           >
@@ -266,7 +267,7 @@ Delete
   <CategoryForm
     value={updatedName}
     setValue={setUpdatedName}
-    handleSubmit={(e) => handleUpdateBrand(selected, e)}
+    handleSubmit={(e) => handleUpdateBrand(selectUpdate, e)}
   />
 </Modal>
     <Modal
