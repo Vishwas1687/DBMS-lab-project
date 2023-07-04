@@ -332,7 +332,7 @@ const CategoryProduct = () => {
         <button type="button" className="btn btn-success" onClick={()=>{
           handleBackward();window.scrollTo({top:0,behavior:'smooth'})}}>
         
-            <span style={{textAlign:"center",alignItems:"center"}}><FaAngleLeft/></span>
+            <span style={{textAlign:"center",alignItems:"center",'font-weight':'bold'}}><FaAngleLeft/> Previous</span>
         </button>
          
            
@@ -352,7 +352,7 @@ const CategoryProduct = () => {
          <button type="button" className="btn btn-success" onClick={()=>{
           handleForward();window.scrollTo({top:0,behavior:'smooth'})}}>
          
-          <span style={{textAlign:"center",alignItems:"center"}}><FaAngleRight/></span>
+          <span style={{textAlign:"center",alignItems:"center",'font-weight':'bold'}}>Next <FaAngleRight/> </span>
          </button>
       </div>
       </>): loading ? <div className='myLoad' style={{background:'lightgray',height:100+'%',width:100+'%',animation: 'flicker 1s infinite'}}>

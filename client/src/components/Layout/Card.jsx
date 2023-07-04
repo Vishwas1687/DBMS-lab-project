@@ -226,7 +226,7 @@ export default function(props){
                                 <span style={{display:'flex',"align-items":'center',
                                 'margin-left':"1rem",width:"30rem"}}>
                                 <label style={{border:"1px solid white",padding:"5px", "font-size":"1.2rem",
-                                "background-color":"black","border-radius":"15%"}}> Qty </label>  
+                                "background-color":"#ddd","border-radius":"15%"}}> Qty </label>  
 
                                 <input type="text" value={temp} style={{padding:"5px",width:"3rem",height:'2.5rem',
                                 "font-size":'1.2rem','font-weight':'bold','color':'black',

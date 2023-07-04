@@ -68,16 +68,16 @@ const EditWeight = () => {
 
   return (
     <Layout title={`Edit Weight`}>
-      <div className="container-fluid m-3 p-3 dashboard">
+      <div className="container-fluid dashboard">
         <div className="row">
           <div className="col-md-3 p-5">
             <AdminMenu />
           </div>
           <div className="col-md-9 p-5">
-            <h1>Edit Weight</h1>
-            <form onSubmit={handleSubmit}>
+            <h1 style={{'font-weight':'bold','padding-left':'20rem'}}>Edit Weight</h1>
+            <form onSubmit={handleSubmit} style={{'padding-left':'17rem'}}>
               <div className="mb-3">
-                <label htmlFor="weight" className="form-label" >
+                <label htmlFor="weight" className="form-label" style={{'font-weight':'bold'}}>
                   Weight
                 </label>
                 <input
@@ -86,10 +86,11 @@ const EditWeight = () => {
                   name="weight"
                    value={weight}
                   onChange={(e)=>setWeight(e.target.value)} 
+                  style={{'border':'2px solid #111','width':'20rem'}}
                 />
               </div>
               <div className="mb-3">
-                <label htmlFor="weight_units" className="form-label">
+                <label htmlFor="weight_units" className="form-label" style={{'font-weight':'bold'}}>
                   Weight Units
                 </label>
                 <input
@@ -99,10 +100,11 @@ const EditWeight = () => {
                   name="weight_units"
                    value={weight_units}
                    onChange={(e)=>setWeightUnits(e.target.value)} 
+                   style={{'border':'2px solid #111','width':'20rem'}}
                 />
               </div>
               <div className="mb-3">
-                <label htmlFor="mrp" className="form-label" >
+                <label htmlFor="mrp" className="form-label" style={{'font-weight':'bold'}}>
                   MRP
                 </label>
                 <input
@@ -112,10 +114,11 @@ const EditWeight = () => {
                   name="mrp"
                   value={mrp}
                   onChange={(e)=>setMrp(e.target.value)} 
+                  style={{'border':'2px solid #111','width':'20rem'}}
                 />
               </div>
               <div className="mb-3">
-                <label htmlFor="sp" className="form-label" >
+                <label htmlFor="sp" className="form-label" style={{'font-weight':'bold'}}>
                   SP
                 </label>
                 <input
@@ -125,10 +128,11 @@ const EditWeight = () => {
                   name="sp"
                   value={sp}
                   onChange={(e)=>setSp(e.target.value)} 
+                  style={{'border':'2px solid #111','width':'20rem'}}
                 />
                 </div>
                 <div className="mb-3">
-                <label htmlFor="stock" className="form-label">
+                <label htmlFor="stock" className="form-label" style={{'font-weight':'bold'}}>
                   Stock
                 </label>
                 <input
@@ -138,9 +142,11 @@ const EditWeight = () => {
                   name="stock"
                    value={stock}
                    onChange={(e)=>setStock(e.target.value)} 
+                   style={{'border':'2px solid #111','width':'20rem'}}
                 />
                 </div>
-                <button type="submit" className="btn btn-primary" style={{'font-size':'1.5rem','width':'31rem'}}>
+                <button type="submit" className="btn btn-primary" style={{'font-size':'1.5rem','width':'20rem',
+              'font-weight':'bold','border':'2px solid #111'}}>
                     Update weight
                 </button>
                 </form>
