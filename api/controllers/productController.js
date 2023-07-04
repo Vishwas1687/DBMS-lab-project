@@ -48,6 +48,15 @@ const createProductController=async(req,res)=>{
         })
     }
 
+    for(const weigh of weights)
+    {
+        if(parseInt(weigh.sp)>parseInt(weigh.mrp))
+        return res.send({
+            message:'Selling Price is more than cost price',
+            success:false
+        })
+    }
+
     const newProduct=await new ProductModel({
         product_name:product_name,
         slug:slugify(product_name),
@@ -134,6 +143,15 @@ const updateProductController=async(req,res)=>{
             success:false
         })
     }
+
+    for(const weigh of weights)
+    {
+        if(parseInt(weigh.sp)>parseInt(weigh.mrp))
+        return res.send({
+            message:'Selling Price is more than cost price',
+            success:false
+        })
+    }
     
       const updatedProduct=await ProductModel.findByIdAndUpdate(existingProduct._id,{
         product_id:existingProduct.product_id,
@@ -210,7 +228,7 @@ const deleteProductController=async(req,res)=>{
 
 const getAllProductsController=async(req,res)=>{
      try{
-        const products=await ProductModel.find({}).select("-photo").populate('category').populate('brand')
+        const products=await ProductModel.find({}).select("-photo").populate('category').populate('brand').sort('product_name')
 
         res.send({
             message:'All products are fetched',
@@ -342,6 +360,8 @@ const createWeightsController=async(req,res)=>{
        return res.send({message:'Enter the stock'})
        if(!slug)
        return res.send({message:'Enter the slug'})
+       if(parseInt(mrp)<parseInt(sp))
+       return res.send({message:'Selling price is greater than mrp'})
 
        const existingProduct=await ProductModel.findOne({slug})
        if(!existingProduct)
@@ -407,6 +427,8 @@ const updateWeightController=async(req,res)=>{
        return res.send({message:'Enter the stock'})
        if(!slug)
        return res.send({message:'Enter the slug'})
+       if(parseInt(mrp)<parseInt(sp))
+       return res.send({message:'Selling price is greater than mrp'})
 
        const existingProduct=await ProductModel.findOne({slug})
        if(!existingProduct)
@@ -682,7 +704,6 @@ const getAllProductsByFiltersController=async(req,res)=>{
             })
             products=sortedWeightProducts
         }
-        
         res.send({
             message:'Products fetched',
             success:true,
@@ -732,7 +753,7 @@ const getProductsByCategoryController=async(req,res)=>{
 const getPaginatedProductsController=async(req,res)=>{
     try{
        const {page,perPage}=req.query;
-       const products=await ProductModel.find({}).select("-photo").populate('brand').populate('category')
+       const products=await ProductModel.find({}).select("-photo").populate('brand').populate('category').sort('product_name')
        .skip(perPage*(page-1)).limit(perPage)
        if(products.length===0)
        return res.send({
@@ -849,8 +870,8 @@ const getProductsByCategoryPaginatedController=async(req,res)=>{
             
         }
         const products=await ProductModel.find({category:category._id}).
-        select('-photo').populate('brand').populate('category').
-        skip((currentPage-1)*perPage).limit(perPage)
+        select('-photo').populate('brand').populate('category')
+        .skip((currentPage-1)*perPage).limit(perPage)
         res.send({
             message:'Products are fetched',
             success:true,

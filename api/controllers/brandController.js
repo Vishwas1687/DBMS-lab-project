@@ -11,7 +11,7 @@ const createBrandController=async(req,res)=>{
         if(brand)
         return res.send({
             message:'Brand already exists',
-            success:true
+            success:false
         })
 
         const newBrand=await new BrandModel({
@@ -47,8 +47,8 @@ const updateBrandController=async(req,res)=>{
         const brand=await BrandModel.findOne({brand_id})
         if(!brand)
         return res.send({
-            message:'Brand name does not exist',
-            success:true
+            message:'Brand name exist does not exist',
+            success:false
         })
 
         const updatedBrand=await BrandModel.findByIdAndUpdate(brand._id,{
@@ -82,7 +82,7 @@ const deleteBrandController=async(req,res)=>{
         if(!brand)
         return res.send({
             message:'Brand name does not exist',
-            success:true
+            success:false
         })
          const products=await ProductModel.find({brand:brand._id})
         if(products.length!==0)
@@ -116,7 +116,7 @@ const deleteBrandController=async(req,res)=>{
 
 const getAllBrandsController=async(req,res)=>{
       try{
-           const brands=await BrandModel.find({})
+           const brands=await BrandModel.find({}).sort('brand_name')
            if(brands.length===0)
            {
             return res.send({

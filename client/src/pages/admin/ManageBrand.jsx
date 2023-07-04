@@ -56,6 +56,7 @@ const ManageBrand = () => {
             getAllBrand();
           } else {
             toast.error(data.message);
+            setBrand('')
           }
         } catch (error) {
           console.log(error);
@@ -79,6 +80,7 @@ const ManageBrand = () => {
             getAllBrand();
           } else {
             toast.error(data.message);
+            setUpdatedName('')
           }
         } catch (error) {
           console.log(error);
@@ -91,7 +93,7 @@ const ManageBrand = () => {
             `http://localhost:5000/api/brands/delete-brand/${brand_id}`
           );
           if (data.success) {
-            toast.success(`brand is deleted`);
+            toast.success(data.message);
             getAllBrand();
           } else {
             toast.error(data.message);

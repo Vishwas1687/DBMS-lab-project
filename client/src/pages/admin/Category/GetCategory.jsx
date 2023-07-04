@@ -97,9 +97,12 @@ const GetCategory = () => {
           getCategory()
           toast.success(data.message)
         }
+        else{
+          toast.error(data.message)
+        }
       }catch(error)
       {
-           console.log(error)
+           toast.error('Something went wrong')
       }
   }
 
@@ -221,7 +224,8 @@ const loadingCellStyle = {
                   else if (c.subcategory_name.toLowerCase().includes(search__.toLowerCase())){
                     return c;
                   }
-                }).map((subcat,index)=>{
+                }).sort((a, b) => a.subcategory_name.localeCompare(b.subcategory_name))
+                .map((subcat,index)=>{
                     return (
                       <>
                          <tr key={index} style={{backgroundColor:index%2==1?'#4CAF50':'#3CB371'}}>

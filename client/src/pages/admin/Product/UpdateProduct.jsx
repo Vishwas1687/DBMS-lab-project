@@ -159,6 +159,7 @@ useEffect(()=>{
         navigate('/admin/manage-product')
       } else {
         toast.error(data.message);
+        setLoading(false)
       }
     } catch (error) {
       console.log(error)

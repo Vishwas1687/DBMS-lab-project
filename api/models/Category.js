@@ -37,12 +37,23 @@ const CategorySchema=new Schema({
           // Iterate over all subcategories and ensure that each subcategory_id
           // is unique within this category
           const subcategoryIds = new Set();
+          const subcategoryNames = new Set();
           for (const subcategory of subcategories) {
             if (subcategoryIds.has(subcategory.subcategory_id)) {
               return false;
             }
             subcategoryIds.add(subcategory.subcategory_id);
           }
+
+          for(const subcategory of subcategories)
+          {
+            if(subcategoryNames.has(subcategory.subcategory_name))
+            {
+              return false;
+            }
+            subcategoryNames.add(subcategory.subcategory_name)
+          }
+
           return true;
         },
         message: 'Subcategory IDs must be unique within a category',

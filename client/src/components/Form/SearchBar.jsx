@@ -12,28 +12,30 @@ const SearchBar = () => {
 
     const [input,setInput] = useState('');
     const [results,setResults] = useState([]);
+    const [searchTimeout,setSearchTimeout]=useState(null)
 
-    const handleSearch = async (e) =>{
-        setInput(e.target.value);
-        if (input === '') setResults([]);
+    const handleSearch = async (e) => {
+  setInput(e.target.value);
+  if (input === '') setResults([]);
+  if (searchTimeout) {
+    clearTimeout(searchTimeout);
+  }
+  if (e.target.value.trim() !== '') {
 
-        if (e.target.value.trim() !== ""){
-            try{
-                const {data} = await axios.get(`http://localhost:5000/api/products/get-products-by-search/${e.target.value}`)
-                if (data.products) 
-                {
-                    setResults(data.products);
-                } 
-                else 
-                {
-                    setResults([]);
-                }
-                
-            }catch (error){
-                console.log(error);
-            }
+    setSearchTimeout(setTimeout(async () => {
+      try {
+        const { data } = await axios.get(`http://localhost:5000/api/products/get-products-by-search/${e.target.value}`);
+        if (data.products) {
+          setResults(data.products);
+        } else {
+          setResults([]);
         }
-    }
+      } catch (error) {
+        console.log(error);
+      }
+    }, 500));
+  }
+};
 
   return (
     <div className='search'>

@@ -313,7 +313,7 @@ const CategoryProduct = () => {
            
                 <h1>Products</h1>  
                 <div className="row no-gutters">
-                 {!loading && products.length!==0 && products.map((product,index)=>(
+                 {!loading && products.length!==0 &&products.map((product,index)=>(
                        <>
                           <div className="col-md-4">
                             <Card {...product}/>
