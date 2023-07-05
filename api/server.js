@@ -72,11 +72,3 @@ app.listen(PORT,()=>{
 })
 
 
-//now I have to show in orders that product is deleted if a product is deleted. Order should exist. 
-
-//stripe secret key: sk_test_51N81SASH9kRgRQHTXYRSIFadrQWy691oIlyTNlZ9goa4PGsl3HSSxXrGZsp8qF4lPoSbXuHw384MyWjjoccqKk4y00QO7dZWCP
-
-//colgate max fresh spicy : price_1N81VKSH9kRgRQHTKSY8iqae
-//pepsodent : price_1N81WqSH9kRgRQHTmQkf8ymD
-//colgate fresh mint: price_1N81YESH9kRgRQHTbOBmybax
-
