@@ -127,13 +127,17 @@ const CartPage = () => {
         shipping_address:user?.address,
         total_price:totalPrice()
       });
+      if(data?.success)
+      toast.success("Payment Completed Successfully ");
+      else
+      toast.error('This is the error')
       setLoading(false);
       localStorage.removeItem("cart");
       setCart([]);
       localStorage.removeItem('quantityLocal')
       setQuantityLocal([])
       navigate("/user/orders");
-      toast.success("Payment Completed Successfully ");
+      
     } catch (error) {
       console.log(error);
       setLoading(false);
