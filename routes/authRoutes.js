@@ -15,7 +15,7 @@ dotenv.config()
 router.get('/google',passport.authenticate('google',{scope:['profile','email']}),async(req,res)=>{ 
 })
 // google auth callback
-router.get('/google/callback',passport.authenticate('google',{failureRedirect:'http://localhost:3000'}),
+router.get('/google/callback',passport.authenticate('google',{failureRedirect:'https://easy-gold-ladybug-wig.cyclic.app'}),
   async(req,res)=>{
     const token = jwt.sign({ _id: req.user._id }, process.env.JWT_TOKEN, { expiresIn: '365d' });
     // const existingUser=await UserModel.findById(req.user._id)
@@ -25,7 +25,7 @@ router.get('/google/callback',passport.authenticate('google',{failureRedirect:'h
     //    address: encodeURIComponent(existingUser.address),
     //     phone_number: encodeURIComponent(existingUser.phone_number)
     // }
-     res.redirect(`${process.env.FRONTEND_URL}/sample?token=${token}`);
+     res.redirect(`https://easy-gold-ladybug-wig.cyclic.app/sample?token=${token}`);
     //  res.status(200).send({
     //   success: true,
     //   token: token,
