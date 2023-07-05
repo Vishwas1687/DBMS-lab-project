@@ -12,8 +12,8 @@ const router=express.Router()
 
 dotenv.config()
 // auth with google
-router.get('/google',passport.authenticate('google',{scope:['profile','email']}))
-
+router.get('/google',passport.authenticate('google',{scope:['profile','email']}),async(req,res)=>{ 
+})
 // google auth callback
 router.get('/google/callback',passport.authenticate('google',{failureRedirect:'http://localhost:3000'}),
   async(req,res)=>{
@@ -25,14 +25,22 @@ router.get('/google/callback',passport.authenticate('google',{failureRedirect:'h
     //    address: encodeURIComponent(existingUser.address),
     //     phone_number: encodeURIComponent(existingUser.phone_number)
     // }
-
-    //  res.redirect(`http://localhost:3000/sample?user=${JSON.stringify(user)}&token=${token}`);
      res.redirect(`http://localhost:3000/sample?token=${token}`);
     //  res.status(200).send({
     //   success: true,
     //   token: token,
     // });
   })
+
+// router.get('/test/google', async (req, res) => {
+//   // Access the token from the query parameter
+//   const token = req.query.token;
+  
+//   // Do any necessary processing with the token in the backend
+
+//   // Send the token back to the frontend
+//   res.send({ token });
+// });
 
 router.post('/login',loginController)
 
