@@ -55,10 +55,10 @@ app.use('/api/categories',categoryRoutes)
 app.use('/api/brands',brandRoutes)
 
 
-app.use(express.static(path.join(__dirname,'client/build')))
+app.use(express.static(path.join(__dirname,'../client/build')))
 app.get('*',function(_,res){
     res.sendFile(
-       path.join(__dirname,'client/build/index.html'),
+       path.join(__dirname,'../client/build/index.html'),
        function(error){
         res.status(500).send(error)
        }
