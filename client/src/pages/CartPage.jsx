@@ -249,7 +249,7 @@ const CartPage = () => {
                     
 
                 <div >
-                {!clientToken || !auth?.token || !cart?.length ||user?.address==='undefined' ? (
+                {!clientToken || auth?.token || !cart?.length ||user?.address==='undefined' ? (
                   ""
                 ) : (
                   <>
@@ -266,7 +266,7 @@ const CartPage = () => {
                     <button
                       className="btn btn-primary"
                       onClick={handlePayment}
-                      disabled={loading || !instance || !auth?.user?.address}
+                      disabled={loading || !instance || user?.address}
                     >
                       {loading ? "Processing ...." : "Make Payment"}
                     </button>
