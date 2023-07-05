@@ -3,6 +3,7 @@ import { useAuth } from "../../context/auth";
 import { Outlet } from "react-router-dom";
 import axios from "axios";
 import Spinner from "../Spinner";
+import {baseUrl} from '../../baseUrl'
 
 export default function PrivateRoute() {
   const [ok, setOk] = useState(false);
@@ -10,7 +11,7 @@ export default function PrivateRoute() {
 
   useEffect(() => {
     const authCheck = async () => {
-      const res = await axios.get("http://localhost:5000/api/auth/user-auth");
+      const res = await axios.get(`${baseUrl}/api/auth/user-auth`);
       if (res.data.ok) {
         setOk(true);
       } else {

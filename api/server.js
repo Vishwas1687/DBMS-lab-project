@@ -32,7 +32,7 @@ connect.then((db) => {
 //middlewares
 app.use(express.json())
 app.use(morgan('dev'))
-app.use(cors({credentials:true,origin:'http://localhost:3000'}))
+app.use(cors({credentials:true,origin:process.env.FRONTEND_URL}))
 
 // Sessions
 app.use(session({

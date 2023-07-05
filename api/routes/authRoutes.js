@@ -25,7 +25,7 @@ router.get('/google/callback',passport.authenticate('google',{failureRedirect:'h
     //    address: encodeURIComponent(existingUser.address),
     //     phone_number: encodeURIComponent(existingUser.phone_number)
     // }
-     res.redirect(`http://localhost:3000/sample?token=${token}`);
+     res.redirect(`${process.env.FRONTEND_URL}/sample?token=${token}`);
     //  res.status(200).send({
     //   success: true,
     //   token: token,

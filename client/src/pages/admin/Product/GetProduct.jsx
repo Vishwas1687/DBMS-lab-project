@@ -8,6 +8,7 @@ import { useParams ,useNavigate} from "react-router-dom";
 import { AiOutlineClose } from "react-icons/ai";
 import { BiSearch } from "react-icons/bi";
 import { Link } from "react-router-dom";
+import {baseUrl} from '../../../baseUrl'
 
 
 const GetProduct = () => {
@@ -17,7 +18,7 @@ const GetProduct = () => {
 
   const getProduct = async () => {
       try {
-        const { data } = await axios.get(`http://localhost:5000/api/products/get-single-product/${params.slug}`);
+        const { data } = await axios.get(`${baseUrl}/api/products/get-single-product/${params.slug}`);
         if (data?.success) {
           setProd(data.existingProduct);
         } else {
@@ -36,7 +37,7 @@ const GetProduct = () => {
   const handleDeleteWeight = async (weight_id) => {
     try {
       const { data } = await axios.delete(
-        `http://localhost:5000/api/products/get-single-product/${params.slug}/${weight_id}/delete`
+        `${baseUrl}/api/products/get-single-product/${params.slug}/${weight_id}/delete`
       );
       if (data?.success) {
         toast.success(data.message);
@@ -149,7 +150,7 @@ const loadingCellStyle = {
             </table>
 
             <div className="text-left">
-                 <img src={`http://localhost:5000/api/products/get-photo/${params.slug}`}
+                 <img src={`${baseUrl}/api/products/get-photo/${params.slug}`}
                   className="img img-responsive"
                     alt="photo"
                   height={"300px"}/>

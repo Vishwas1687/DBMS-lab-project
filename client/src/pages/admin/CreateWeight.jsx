@@ -5,7 +5,7 @@ import axios from 'axios'
 import {toast} from 'react-hot-toast'
 import { useState } from 'react'
 import { useParams,useNavigate} from 'react-router-dom'
-
+import {baseUrl} from '../../baseUrl'
 
 const CreateWeight = ({ weightId, weight , weightUnits , mrp, sp, stock }) => {
 
@@ -33,7 +33,7 @@ const CreateWeight = ({ weightId, weight , weightUnits , mrp, sp, stock }) => {
             stock:formData.stock
           }
           const { data } = await axios.post(
-            `http://localhost:5000/api/products/get-single-product/${params.slug}/create-weights`,
+            `${baseUrl}/api/products/get-single-product/${params.slug}/create-weights`,
             formDataWithWeights
           );
           if (data?.success) {

@@ -7,6 +7,7 @@ import CategoryForm from '../../components/Form/CategoryForm';
 import Modal from 'antd/es/modal/Modal';
 import { AiOutlineClose } from "react-icons/ai";
 import { BiSearch } from "react-icons/bi";
+import {baseUrl} from '../../baseUrl.js'
 
 const ManageBrand = () => {
 
@@ -26,7 +27,7 @@ const ManageBrand = () => {
 
         try{
     
-          const {data} = await axios.get("http://localhost:5000/api/brands/get-all-brands");
+          const {data} = await axios.get(`${baseUrl}/api/brands/get-all-brands`);
           if(data?.success){
     
             setBrands(data?.brands)
@@ -46,7 +47,7 @@ const ManageBrand = () => {
         e.preventDefault();
         try {
           const { data } = await axios.post(
-            `http://localhost:5000/api/brands/create-brand`,
+            `${baseUrl}/api/brands/create-brand`,
             { brand_name }
           );
           if (data?.success) {
@@ -69,7 +70,7 @@ const ManageBrand = () => {
         e.preventDefault();
         try {
           const { data } = await axios.put(
-            `http://localhost:5000/api/brands/update-brand/${brand_id}`,
+            `${baseUrl}/api/brands/update-brand/${brand_id}`,
             { brand_name:updatedName }
           );
           if (data?.success) {
@@ -90,7 +91,7 @@ const ManageBrand = () => {
       const handleDeleteBrand = async (brand_id) => {
         try {
           const { data } = await axios.delete(
-            `http://localhost:5000/api/brands/delete-brand/${brand_id}`
+            `${baseUrl}/api/brands/delete-brand/${brand_id}`
           );
           if (data.success) {
             toast.success(data.message);
@@ -106,7 +107,7 @@ const ManageBrand = () => {
 
  const getDocumentProducts=async(brand_id)=>{
        try{
-          const {data}=await axios.get(`http://localhost:5000/api/products/get-total-products-by-brand/${brand_id}`)
+          const {data}=await axios.get(`${baseUrl}/api/products/get-total-products-by-brand/${brand_id}`)
           if(data?.success)
           {
             setNumberOfDeleteProducts(data.count)

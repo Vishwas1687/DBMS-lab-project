@@ -7,6 +7,7 @@ import {useParams,Link} from 'react-router-dom';
 import { Modal } from "antd";
 import { AiOutlineClose } from "react-icons/ai";
 import { BiSearch } from "react-icons/bi";
+import {baseUrl} from '../../../baseUrl'
 
 
 const GetCategory = () => {
@@ -26,7 +27,7 @@ const GetCategory = () => {
     
      const getCategory = async () => {
             try {
-                const { data } = await axios.get(`http://localhost:5000/api/categories/get-category/${params.slug}`);
+                const { data } = await axios.get(`${baseUrl}/api/categories/get-category/${params.slug}`);
                 if(data?.success)
                 {
                    setCat(data.category)
@@ -45,7 +46,7 @@ const GetCategory = () => {
   const handleUpdate=async(e)=>{
       e.preventDefault()
       try{
-           const {data}=await axios.put(`http://localhost:5000/api/categories/get-category/${cat.slug}/${selected.subcategory_id}/edit`,
+           const {data}=await axios.put(`${baseUrl}/api/categories/get-category/${cat.slug}/${selected.subcategory_id}/edit`,
            {
             subcategory_name:selected.subcategory_name
            })
@@ -65,7 +66,7 @@ const GetCategory = () => {
     e.preventDefault()
       try{
         
-        const {data}=await axios.delete(`http://localhost:5000/api/categories/get-category/${cat.slug}/${subcat.subcategory_id}/delete`) 
+        const {data}=await axios.delete(`${baseUrl}/api/categories/get-category/${cat.slug}/${subcat.subcategory_id}/delete`) 
         if(data?.success)
         {
             console.log(data.message)
@@ -88,7 +89,7 @@ const GetCategory = () => {
   const handleCreate=async(e)=>{
       e.preventDefault()
       try{
-        const {data}=await axios.post(`http://localhost:5000/api/categories/get-category/${cat.slug}/new`,{
+        const {data}=await axios.post(`${baseUrl}/api/categories/get-category/${cat.slug}/new`,{
             subcategory_id:newSubCat.subcategory_id,subcategory_name:newSubCat.subcategory_name
         })
         if(data?.success)
@@ -113,7 +114,7 @@ const GetCategory = () => {
 
     const getDocumentProducts=async(e,subcat)=>{
        try{
-          const {data}=await axios.get(`http://localhost:5000/api/products/get-total-products-in-subcategory-page/${params.slug}/${subcat.subcategory_id}`)
+          const {data}=await axios.get(`${baseUrl}/api/products/get-total-products-in-subcategory-page/${params.slug}/${subcat.subcategory_id}`)
           if(data?.success)
           {
             setNumberOfDeleteProducts(data.count)

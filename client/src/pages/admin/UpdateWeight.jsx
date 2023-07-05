@@ -4,6 +4,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import Layout from "../../components/Layout/Layout";
 import AdminMenu from "../../components/AdminMenu";
+import {baseUrl} from '../../baseUrl'
 
 const EditWeight = () => {
     const params=useParams()
@@ -17,7 +18,7 @@ const EditWeight = () => {
 
     const getWeight=async()=>{
          try{ 
-            const {data}=await axios.get(`http://localhost:5000/api/products/get-single-product/get-single-weight/${params.slug}/${params.weight_id}`)
+            const {data}=await axios.get(`${baseUrl}/api/products/get-single-product/get-single-weight/${params.slug}/${params.weight_id}`)
             console.log(data)
             if(data.success)
             {
@@ -39,7 +40,7 @@ const EditWeight = () => {
     const handleSubmit=async(e)=>{
         e.preventDefault()
         try{ 
-            const {data}=await axios.put(`http://localhost:5000/api/products/get-single-product/${params.slug}/${params.weight_id}/edit`,{
+            const {data}=await axios.put(`${baseUrl}/api/products/get-single-product/${params.slug}/${params.weight_id}/edit`,{
                 weight:weight,
                 weight_units:weight_units,
                 mrp:mrp,

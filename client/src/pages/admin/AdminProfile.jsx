@@ -7,6 +7,7 @@ import PasswordForm from '../../components/Form/PasswordForm';
 import {useNavigate} from 'react-router-dom'
 import Modal from 'antd/es/modal/Modal';
 import AdminMenu from "../../components/AdminMenu";
+import {baseUrl} from '../../baseUrl'
 
 
 const UpdateAdminProfile = () => {
@@ -42,7 +43,7 @@ const UpdateAdminProfile = () => {
   const handleSubmit = async(e) => {
     e.preventDefault();
     try{
-       const {data}=await axios.put('http://localhost:5000/api/auth/update-profile',{
+       const {data}=await axios.put(`${baseUrl}/api/auth/update-profile`,{
            username:user.username,
            address:user.address,
            phone_number:user.phone_number,
@@ -72,7 +73,7 @@ const UpdateAdminProfile = () => {
 
   const getUserData=async()=>{
      try{
-        const {data}=await axios.get(`http://localhost:5000/api/auth/get-single-user/${auth.token}`)
+        const {data}=await axios.get(`${baseUrl}/api/auth/get-single-user/${auth.token}`)
         if(data?.success)
      {
         setUser(data.user)

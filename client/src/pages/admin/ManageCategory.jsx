@@ -8,6 +8,7 @@ import { AiOutlineClose } from "react-icons/ai";
 import { BiSearch } from "react-icons/bi";
 import Modal from "antd/es/modal/Modal";
 import CategoryForm from "../../components/Form/CategoryForm";
+import {baseUrl} from '../../baseUrl'
 
 const ManageCategory = () => {
   const [categories, setCategories] = useState([]);
@@ -23,7 +24,7 @@ const ManageCategory = () => {
   const handleDelete = async (slug) => {
     try {
       const { data } = await axios.delete(
-        `http://localhost:5000/api/categories/delete-category/${slug}`
+        `${baseUrl}/api/categories/delete-category/${slug}`
       );
       if (data.success) {
         toast.success(`category is deleted`);
@@ -39,7 +40,7 @@ const ManageCategory = () => {
   const getAllCategory = async () => {
     try {
       const { data } = await axios.get(
-        "http://localhost:5000/api/categories/get-all-categories"
+        `${baseUrl}/api/categories/get-all-categories`
       );
       if (data?.success) {
         setCategories(data?.categories);
@@ -52,7 +53,7 @@ const ManageCategory = () => {
 
   const getDocumentProducts=async(slug)=>{
        try{
-          const {data}=await axios.get(`http://localhost:5000/api/products/get-total-products-in-category-page/${slug}`)
+          const {data}=await axios.get(`${baseUrl}/api/products/get-total-products-in-category-page/${slug}`)
           if(data?.success)
           {
             setNumberOfDeleteProducts(data.count)

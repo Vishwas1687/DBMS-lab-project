@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import axios from "axios";
 import toast from "react-hot-toast"
 import '../styles/DropdownCat.css'
+import {baseUrl} from '../../baseUrl'
 const DropdownCategories = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [hoveredCategory, setHoveredCategory] = useState(null);
@@ -20,7 +21,7 @@ const DropdownCategories = () => {
   const getAllCategory = async () => {
     try {
       const { data } = await axios.get(
-        "http://localhost:5000/api/categories/get-all-categories"
+        `${baseUrl}/api/categories/get-all-categories`
       );
       if (data?.success) {
         setCategories(data?.categories);

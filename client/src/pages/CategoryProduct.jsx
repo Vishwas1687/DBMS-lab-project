@@ -13,11 +13,13 @@ import {AiOutlineClose} from 'react-icons/ai'
 import { BiSearch } from 'react-icons/bi'
 import '../components/styles/ProductPage.css'
 import './styles/CategoryProduct.css'
+import {baseUrl} from '../baseUrl.js'
 
 
 const CategoryProduct = () => {
    const [category,setCategory]=useState('')
    const [loading,setLoading]=useState(true)
+   const [productLoading,setProductLoading]=useState(true)
    const [totalProducts,setTotalProducts]=useState(null)
    const location=useLocation()
    const perPage=9;
@@ -35,7 +37,7 @@ const CategoryProduct = () => {
    const getCategory=async()=>{
     try{
       setLoading(true)
-       const {data}=await axios.get(`http://localhost:5000/api/categories/get-category/${params.slug}`)
+       const {data}=await axios.get(`${baseUrl}/api/categories/get-category/${params.slug}`)
        if(data.success)
        {
           setCategory(data.category)
@@ -54,7 +56,7 @@ const CategoryProduct = () => {
    const getAllCategoryProducts=async()=>{
     try{
       setLoading(true)
-       const {data}=await axios.get(`http://localhost:5000/api/products/get-products-by-category-paginated/${params.slug}`,{
+       const {data}=await axios.get(`${baseUrl}/api/products/get-products-by-category-paginated/${params.slug}`,{
         params:{
           perPage:perPage,
           currentPage:currentPage
@@ -80,7 +82,7 @@ const CategoryProduct = () => {
     const getAllBrands=async()=>{
     try{
 
-      const {data}=await axios.get(`http://localhost:5000/api/brands/get-all-brands-by-cat/${params.slug}`)
+      const {data}=await axios.get(`${baseUrl}/api/brands/get-all-brands-by-cat/${params.slug}`)
       if(data.success)
       setBrands(data.brands)
 
@@ -93,7 +95,7 @@ const CategoryProduct = () => {
   const getFilterProducts=async()=>{
     try{
       setLoading(true)
-       const {data}=await axios.get('http://localhost:5000/api/products/get-all-products-based-on-category-filters',
+       const {data}=await axios.get(`${baseUrl}/api/products/get-all-products-based-on-category-filters`,
        {
         params:{
          priceFilters:JSON.stringify(priceFilters),
@@ -120,7 +122,7 @@ const CategoryProduct = () => {
 
   const getTotalProducts=async()=>{
     try{
-      const {data}=await axios.get(`http://localhost:5000/api/products/get-total-products-in-category-page/${params.slug}`)
+      const {data}=await axios.get(`${baseUrl}/api/products/get-total-products-in-category-page/${params.slug}`)
       if(data.success)
       {
         setTotalProducts(data.count)
@@ -167,11 +169,12 @@ const CategoryProduct = () => {
    }
 
    useEffect(()=>{
-    setLoading(true)
+    setProductLoading(true)
+    setProducts([])
     getCategory()
     getAllCategoryProducts()
     getAllBrands()
-    setLoading(false)
+    setProductLoading(false)
    },[params.slug])
 
    useEffect(() => {
@@ -292,6 +295,9 @@ const CategoryProduct = () => {
                 <div className="cont">
                   <h3 style={{'color':'white','border-bottom':'1px solid white'}}>Price Filters</h3>
                   <Radio.Group>
+                     <Radio value={null} onChange={(e)=>setPriceFilters([0,100000])}>
+                    <span className="h5 text-white">No Filter</span>
+                     </Radio>
                    {prices.map((price,index)=>(
                     <div key={index}>
                       <Radio key={index} value={price.array} onChange={(e)=>setPriceFilters(e.target.value)}
@@ -302,11 +308,6 @@ const CategoryProduct = () => {
                    </Radio.Group>
                 </div>
                 <br></br>
-                <button type="button" className="btn btn-success" onClick={()=>{
-                  window.location.href = window.location.pathname;
-                }}>
-                      Reset Filters
-                </button>
             </div>
 
             <div className="col-md-10 text-left">
@@ -355,12 +356,15 @@ const CategoryProduct = () => {
           <span style={{textAlign:"center",alignItems:"center",'font-weight':'bold'}}>Next <FaAngleRight/> </span>
          </button>
       </div>
-      </>): loading ? <div className='myLoad' style={{background:'lightgray',height:100+'%',width:100+'%',animation: 'flicker 1s infinite'}}>
-      </div> : <div>
-        <h5>
-          No products found...
-        </h5>
-        </div>}
+      </>):(productLoading && products.length===0)?(<div>
+            <h1 style={{'margin-left':'45%'}}> Loading ... </h1>
+          <div className="loader">
+          <div className="loader-inner">
+          </div>
+           </div>
+           </div>):(
+             <h1>No Products Found if shown for more than 5 seconds...</h1>
+           )}   
 
       <br></br>
        <br></br>

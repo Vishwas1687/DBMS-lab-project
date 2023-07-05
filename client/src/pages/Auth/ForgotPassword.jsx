@@ -5,6 +5,7 @@ import axios from 'axios';
 import toast, { Toaster } from 'react-hot-toast'
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
+import {baseUrl} from '../../baseUrl'
 
 const ForgotPassword = () => {
     const [password, setPassword] = useState('');
@@ -25,7 +26,7 @@ const ForgotPassword = () => {
     
     
         try {
-          const res = await axios.put('http://localhost:5000/api/auth/forgot-password',data);
+          const res = await axios.put(`${baseUrl}/api/auth/forgot-password`,data);
           if (res.data.success){
             toast.success('Password reset!\nLog in to continue');
             navigate('/');

@@ -1,4 +1,3 @@
-
 import { useState,useRef,useEffect} from 'react';
 import axios from 'axios'
 import { NavLink , Link} from 'react-router-dom';
@@ -8,6 +7,7 @@ import { useNavigate,useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/auth';
 import '../styles/Modal.css'
 import { GoogleChromeLogo, GoogleLogo } from 'phosphor-react';
+import {baseUrl} from '../../baseUrl'
 
 export default function Modal() {
 
@@ -27,7 +27,7 @@ export default function Modal() {
     };
 
     try {
-      const res = await axios.post('http://localhost:5000/api/auth/login',data);
+      const res = await axios.post(`${baseUrl}/api/auth/login`,data);
       if (res.data.success){
         toast.success(res.data.message);
         setAuth({
@@ -87,7 +87,7 @@ export default function Modal() {
   <button type="submit" className="btn btn-success" style={{'margin-left':'8rem','font-weight':'bold','border':'2px solid #111'}}>Log In</button>
   <button className="btn btn-danger" style={{'height':'2.5rem',padding:"0",'position':'absolute','margin-left':'1rem',
    'font-weight':'bold','border':'2px solid #111'}}>
-  <a href="http://localhost:5000/api/auth/google" style={{display:'block',width:"100%",
+  <a href={`${baseUrl}/api/auth/google`} style={{display:'block',width:"100%",
   height:"100%",'position':'relative','top':'17%','font-weight':'bold'}}>
      Google Login
      <GoogleLogo size="25"/>

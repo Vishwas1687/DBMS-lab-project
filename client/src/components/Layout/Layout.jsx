@@ -2,6 +2,7 @@ import React from "react";
 // import Footer from "./Footer";
 import { Helmet } from "react-helmet";
 import Header from "./Header";
+import {baseUrl} from '../../baseUrl'
 const Layout = ({ children,title,description,keywords,author }) => {
   return (
     <div>

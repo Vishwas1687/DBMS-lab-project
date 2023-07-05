@@ -7,6 +7,7 @@ import { useAuth } from '../../context/auth';
 import { useNavigate,useLocation } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import axios from 'axios';
+import {baseUrl} from '../../baseUrl'
 
 export default function Dropdown() {
 
@@ -19,7 +20,7 @@ export default function Dropdown() {
 
     useEffect(() => {
       const authCheck = async () => {
-        const res = await axios.get("http://localhost:5000/api/auth/admin-auth");
+        const res = await axios.get(`${baseUrl}/api/auth/admin-auth`);
         if (res.data.ok) {
           setIsAdmin(true);
         } else {

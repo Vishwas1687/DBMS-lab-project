@@ -4,7 +4,7 @@ import AdminMenu from "./../../../components/AdminMenu";
 import toast from 'react-hot-toast';
 import axios from "axios";
 import {useParams,useNavigate} from 'react-router-dom';
-
+import {baseUrl} from '../../../baseUrl'
 
 const UpdateCategory = () => {
    const [catName,setCatName]=useState('')
@@ -15,7 +15,7 @@ const UpdateCategory = () => {
 
     const getSingleCategory=async()=>{
         try{
-        const {data}=await axios.get(`http://localhost:5000/api/categories/get-category/${params.slug}`)
+        const {data}=await axios.get(`${baseUrl}/api/categories/get-category/${params.slug}`)
         console.log(data)
         if(data?.success)
         {
@@ -47,7 +47,7 @@ const UpdateCategory = () => {
    const handleSubmit=async(e)=>{
         e.preventDefault()
         try{
-            const {data}=await axios.put(`http://localhost:5000/api/categories/update-category/${params.slug}`,{
+            const {data}=await axios.put(`${baseUrl}/api/categories/update-category/${params.slug}`,{
                 category_name:catName,
                 category_id:catId,
                 subcategories:subcategories

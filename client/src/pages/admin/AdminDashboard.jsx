@@ -5,6 +5,7 @@ import AdminMenu from '../../components/AdminMenu'
 import { useAuth } from '../../context/auth'
 import toast from 'react-hot-toast'
 import axios from 'axios';
+import {baseUrl} from '../../baseUrl'
 
 const AdminDashboard = () => {
 
@@ -12,7 +13,7 @@ const AdminDashboard = () => {
   const [user,setUser]=useState([])
   const getUserData=async()=>{
      try{
-        const {data}=await axios.get(`http://localhost:5000/api/auth/get-single-user/${auth.token}`)
+        const {data}=await axios.get(`${baseUrl}/api/auth/get-single-user/${auth.token}`)
         if(data?.success)
      {
         setUser(data.user)

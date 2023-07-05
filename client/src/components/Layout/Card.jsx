@@ -9,6 +9,8 @@ import { useQuantityLocal } from '../../context/quantity'
 import { toast } from 'react-hot-toast'
 import { FaShoppingBasket } from 'react-icons/fa'
 import {Link, useNavigate} from 'react-router-dom'
+import {Buffer} from 'buffer'
+import {baseUrl} from '../../baseUrl'
 
 
 export default function(props){
@@ -164,7 +166,7 @@ export default function(props){
 
     <div className="card">
         <div className="wrapper">
-            <img className="card_img" src = {`http://localhost:5000/api/products/get-photo/${props.slug}` } 
+            <img className="card_img" src = {`data:${props.photo.contentType};base64,${Buffer.from(props.photo.data).toString('base64')}` } 
             style={{cursor:'pointer',backgroundColor: imgLoad ? '' : 'lightgray',animation: !imgLoad ? 'flicker 1s infinite' : 'none'}}
             onLoad={handleImageLoad}
              onClick={()=>navigate(`/product/${props.slug}`)}/>
