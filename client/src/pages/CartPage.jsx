@@ -249,7 +249,7 @@ const CartPage = () => {
                     
 
                 <div >
-                {!clientToken || auth?.token || !cart?.length ||user?.address==='undefined' ? (
+                {!clientToken || !auth?.token || !cart?.length ||user?.address==='undefined' ? (
                   ""
                 ) : (
                   <>
