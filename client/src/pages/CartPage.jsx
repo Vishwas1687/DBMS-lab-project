@@ -124,7 +124,7 @@ const CartPage = () => {
       const { data } = await axios.post(`${baseUrl}/api/orders/create-order`, {
         nonce,
         products:updatedOrder,
-        shipping_address:auth?.user?.address,
+        shipping_address:user?.address,
         total_price:totalPrice()
       });
       setLoading(false);
