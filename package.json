@@ -12,10 +12,10 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-     "start": "concurrently \"npm run server\" \"npm run client\"",
-  "server": "node server.js --prefix ./api",
-  "client": "npm start --prefix ./client"
-  },
+  "start": "concurrently \"npm run api\" \"npm run client\"",
+  "api": "cd api && npm run devStart",
+  "client": "cd client && npm start"
+},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Vishwas1687/DBMS-lab-project.git"
