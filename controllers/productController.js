@@ -5,7 +5,7 @@ const OrderModel=require('../models/Order')
 const CategoryModel=require('../models/Category')
 const fs=require('fs')
 const ProductModel=require('../models/Product')
-const sharp = require('sharp');
+
 
 
 const createProductController=async(req,res)=>{
