@@ -34,7 +34,7 @@ export default function Modal() {
           ...auth,
           token: res.data.token,
         });
-        localStorage.setItem('auth',JSON.stringify(auth));
+        localStorage.setItem('auth',JSON.stringify(res.data.token));
         setPassword('');
         setEmail('');
         closeRef.current.click();
