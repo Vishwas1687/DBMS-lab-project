@@ -1,62 +1,98 @@
-import "./App.css";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { Navbar } from "./components/navbar";
-import { Shop } from "./pages/shop/shop";
-import { Contact } from "./pages/contact";
-import { Cart } from "./pages/cart/cart";
-import { ShopContextProvider } from "./context/shop-context";
-import { SearchBar } from "./components/searchbar";
-import {ImageSlider} from "./components/ImageSlider";
+import { Routes, Route } from "react-router-dom";
+import HomePage from "./pages/HomePage";
+import About from "./pages/About";
+// import Contact from "./pages/Contact";
+import Policy from "./pages/Policy";
+import PageNotFound from "./pages/PageNotFound";
+import Register from "./pages/Auth/Register";
+import Dashboard from "./pages/user/Dashboard";
+import GetCategory from './pages/admin/Category/GetCategory.jsx'
+// import PrivateRoute from "./components/Routes/Private";
+// import AdminRoute from "./components/Routes/AdminRoute";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import ManageCategory from "./pages/admin/ManageCategory";
+import CreateProduct from "./pages/admin/CreateProduct";
+import Users from "./pages/admin/Users";
+import Orders from "./pages/user/Orders";
+import UpdateProfile from "./pages/user/UpdateProfile";
+import UpdateCategory from './pages/admin/Category/UpdateCategory.jsx'
+import CreateCategory from "./pages/admin/CreateCategory";
+// import ViewCategory from "./pages/admin/ViewCategory";
+import { Toaster } from "react-hot-toast";
+import ManageProduct from "./pages/admin/ManageProduct";
+import PrivateRoute from "./components/Routes/Private";
+import ForgotPassword from "./pages/Auth/ForgotPassword";
+import AdminRoute from "./components/Routes/AdminRoute";
+import ManageBrand from "./pages/admin/ManageBrand";
+import GetProduct from "./pages/admin/Product/GetProduct";
+import UpdateProduct from './pages/admin/Product/UpdateProduct'
+import CreateWeight from './pages/admin/CreateWeight'
+import UpdateWeight from './pages/admin/UpdateWeight'
+import CategoryProduct from './pages/CategoryProduct'
+import SubCategoryProduct from './pages/SubCategoryProduct'
+import ProductPage from './pages/ProductPage'
+import UpdateAdminProfile from "./pages/admin/AdminProfile";
+import CartPage from "./pages/CartPage";
+import SingleOrder from "./pages/SingleOrder";
+import AdminOrders from "./pages/admin/AdminOrders";
+import Sample from "./pages/SamplePage";
+import AdminSingleOrder from './pages/admin/AdminSingleOrder';
+import GetSubCategory from './pages/admin/Category/GetSubCategory';
+import './App.css';
+
+
 
 function App() {
-
-  const slides = [
-    { url: "https://dealroup.com/wp-content/uploads/2020/05/Grocery-Offers.jpg", title: "rice" },
-    { url: "https://img.freepik.com/premium-psd/vegetable-grocery-delivery-promotion-web-banner-instagram-social-media-post-template_502896-62.jpg", title: "boat" },
-    { url: "https://st3.depositphotos.com/7341970/33687/v/1600/depositphotos_336878556-stock-illustration-grocery-shopping-promotional-sale-advertisement.jpg", title: "forest" },
-    { url: "https://blogger.googleusercontent.com/img/a/AVvXsEgYfPkQhIhftLH0uCFDB8uQUzSR6yl7DWtRdmdONETTZkcHr0u5atbrx5yOBPw0iBgpNWhELFTjHCdp1BZg_uVkApVFoaQS7bC20bwp38SaTaPG8hlz_Q78V2F9JlY-HD_BEg3pjMLKRpj3J4q05PBZiN_voeMBvWOOXrETJTmfnf__BoyW64mzLv3h=s16000", title :"offer"},
-    { url: "https://dailyshopp.in/dailyshop/assets/images/hot_product/grceries_Banner.png", title: "grocery"}
-  ];
-  const containerStyles = {
-    width: "1500px",
-    height: "600px",
-    margin: "0 auto",
-  };
   return (
-    <div className="App">
-      <div className="logo">
-        
-      </div>
-      <ShopContextProvider>
+    <>
+    <Toaster/>
+    <Routes>
+
+      <Route path = "/" element = {<HomePage />} />
       
-        <Router>
-          <Navbar />
-          <br></br>
-          <SearchBar />
-          <br></br>
+      <Route path='/user' element={<PrivateRoute />}>
+        <Route path = "" element = {<Dashboard />} />
+        <Route path = "orders" element = {<Orders/>} />
+        <Route path = "update-profile" element = {<UpdateProfile />} />
+        <Route path = "single-order/:slug" element = {<SingleOrder />} />
+      </Route>
 
-          <div style={containerStyles}>
-        <ImageSlider slides={slides} />
-      </div>
-          <Routes>
-            <Route path="/" element={<Shop />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/cart" element={<Cart />} />
-          </Routes>
-        </Router>
+      <Route path="/product/:slug" element={<ProductPage />} />
 
-        
+      <Route path='/admin' element={ <AdminRoute /> }>
+        <Route path = "" element = {<AdminDashboard />} />
+        <Route path = "/admin/update-profile" element = {<UpdateAdminProfile />} />
+        <Route path = "/admin/manage-category" element = {<ManageCategory />} />
+        <Route path = "/admin/get-category/:slug" element = {<GetCategory />} />
+        <Route path = "/admin/orders" element = {<AdminOrders />} />
+        <Route path = "/admin/users" element = {<Users />} />
+        <Route path = "/admin/create-category" element={<CreateCategory/>}></Route>
+        <Route path = "/admin/manage-product" element = {<ManageProduct />} /> 
+        <Route path = "/admin/manage-product/product/:slug" element = {<GetProduct />} />
+        <Route path = '/admin/get-subcategory-page/product/:slug/:subcategory_id' element={<GetSubCategory/>}/>
+        <Route path = "/admin/update-product/:slug" element = {<UpdateProduct/>} />
+        <Route path = "/admin/create-product" element = {<CreateProduct />} />
+        <Route path = "/admin/update-category/:slug" element = {<UpdateCategory/>}/>
+        <Route path = "/admin/get-product/create-weight/:slug" element = {<CreateWeight/>}/>
+        <Route path = "/admin/manage-brand" element = {<ManageBrand />} />
+        <Route path = '/admin/update-weight/:slug/:weight_id' element={<UpdateWeight/>}/>
+        <Route path = "/admin/single-order/:slug" element = {<AdminSingleOrder />} />
+      </Route>
 
-        
-        
-      </ShopContextProvider>
+      <Route path = '/category/:slug' element = {<CategoryProduct/>}/>
+      <Route path = '/subcategory/:slug/:subcategory_id' element ={<SubCategoryProduct/>}/>
 
-      
-        
-      
+      <Route path = "/register" element = {<Register />} />
+      <Route path = "/forgot-password" element = {<ForgotPassword />} />
+      <Route path = "/cart" element = {<CartPage />} />
 
-      
-    </div>
+      <Route path = "/about" element = {<About />} />
+      {/* <Route path = "/contact" element = {<Contact />} /> */}
+      <Route path = "/policy" element = {<Policy />} />
+      <Route path = "/*" element = {<PageNotFound />} />
+      <Route path = '/sample' element ={<Sample/>} />
+    </Routes>
+    </>
   );
 }
 

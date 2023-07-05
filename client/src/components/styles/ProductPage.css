@@ -1,0 +1,177 @@
+.main{
+    width:80vw;
+    background-color: white;
+    margin:auto;
+    height: 65vh;
+    margin-top:50px;
+    display:flex;
+}
+
+.side{
+    width:20%;
+    display:flex;
+    flex-direction: column;
+    border-right:1px solid black;
+
+}
+
+.side *{
+    margin:10px;
+}
+
+.side h3{
+    font-size: 2rem;
+    border-bottom: 1px solid black;
+}
+
+.product{
+    width:70%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.subcat{
+    margin-left:50px;
+    font-size: 0.9em;
+}
+
+.matchedSubCat{
+    font-weight: bold;
+}
+
+.margin{
+    height:50px;
+}
+
+.brand{
+    margin-left: 50px;
+}
+
+.currentCat{
+    font-size: 1.5rem;
+}
+
+.productImage{
+    width: 40%;
+    height: 60%;
+    margin-left:5vw;
+}
+
+.details{
+    height:60%;
+    display:flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.brandName_{
+    text-transform: uppercase;
+}
+
+.productName_{
+    font-size: 2rem;
+    font-weight: 700;
+    text-transform: capitalize;
+}
+
+.product_subcat{
+    margin-left:10px;
+}
+
+.product_cat{
+    margin-right: 10px;
+}
+
+.catSub{
+    padding-top:10px;
+}
+
+.mrp_{
+    margin-top:25px;
+    color:#8f8f8f;
+}
+
+.sp_{
+    margin-top: 10px;
+    font-weight: 500;
+}
+
+.weightS{
+    margin-top:20px;
+    display:flex;
+}
+
+.weightS select{
+    margin-left:1vw;
+    box-sizing: border-box;
+}
+
+select {
+    background-color:  #f1f3f3;
+    border:none;
+    display:inline-block;
+    width:100px;
+    padding-left:10px;
+    height:25px;
+}
+
+
+.addTC{
+    margin-top:15px;
+}
+
+.addTC button{
+    padding:7px;
+    background-color: #80ff80;
+    border:none;
+    color:darkslategray;
+    border-radius:5px;
+}
+
+
+.addTC button:hover {
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,.2);
+  }
+
+.related{
+    margin:40px auto;
+    width:80vw;
+}
+
+.productSlider{
+    display:flex;
+    margin-bottom:40px;
+    overflow: hidden;
+    gap: 12px;
+}
+
+.card__{
+    height:350px;
+    width:252px;
+    border: 1px solid rgba(0,0,0,.175);
+    border-radius:5px;
+}
+
+hr{
+    width:60vw;
+    margin:auto;
+    margin-top:40px;
+}
+
+.card-img_{
+    height:250px;
+    width:250px;
+}
+
+.card-body{
+    text-align: center;
+}
+
+.productSlider{
+    overflow: auto;
+}
+
+.myLoad{
+    border-radius: 10px;
+}
