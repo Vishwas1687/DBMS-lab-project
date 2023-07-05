@@ -8,6 +8,8 @@ import SearchBar from '../Form/SearchBar';
 import { useCart } from '../../context/cart';
 import { Badge } from 'antd'
 import {Menu,Dropdown as AntDropdown} from 'antd'
+import {baseUrl} from '../../baseUrl'
+import {Buffer} from 'buffer'
 
 const Header = () => {
 
@@ -31,7 +33,7 @@ const Header = () => {
     {cart.map((item, index) => (
       <Menu.Item key={index} style={{'font-size':'1.2rem','border':'2px solid #111','margin-bottom':'0.2rem'}}>
         <Link to={`/product/${item.product.slug}`}>
-          <img src={`http://localhost:5000/api/products/get-photo/${item.product.slug}`}
+          <img src={`data:${item.product.photo.contentType};base64,${Buffer.from(item.product.photo.data).toString('base64')}`}
           height={'50px'}/>
            {item.quantity} {item.product.product_name} -  {item.weight}{item.weightUnits} = {item.sp}*{item.quantity}={item.sp*item.quantity}
         </Link>

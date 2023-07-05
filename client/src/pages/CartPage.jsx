@@ -9,6 +9,8 @@ import { useNavigate ,Link,useLocation} from "react-router-dom"
 import { Trash } from 'phosphor-react'
 import "../components/styles/Cart.css"
 import { useQuantityLocal } from "../context/quantity";
+import {Buffer} from 'buffer'
+import {baseUrl} from '../baseUrl.js'
 
 const CartPage = () => {
     const [auth, setAuth] = useAuth()
@@ -36,7 +38,7 @@ const CartPage = () => {
     })
 
     const getUserData=async()=>{
-     const {data}=await axios.get(`http://localhost:5000/api/auth/get-single-user/${auth.token}`)
+     const {data}=await axios.get(`${baseUrl}/api/auth/get-single-user/${auth.token}`)
      if(data?.success)
      {
         setUser(data.user)
@@ -85,7 +87,7 @@ const CartPage = () => {
 
   const getToken = async () => {
     try {
-      const { data } = await axios.get("http://localhost:5000/api/orders/braintree/token");
+      const { data } = await axios.get(`${baseUrl}/api/orders/braintree/token`);
       console.log(data)
       setClientToken(data?.clientToken);
     } catch (error) {
@@ -119,7 +121,7 @@ const CartPage = () => {
 
       setLoading(true);
       const { nonce } = await instance.requestPaymentMethod();
-      const { data } = await axios.post("http://localhost:5000/api/orders/create-order", {
+      const { data } = await axios.post(`${baseUrl}/api/orders/create-order`, {
         nonce,
         products:updatedOrder,
         shipping_address:auth?.user?.address,
@@ -171,7 +173,7 @@ const CartPage = () => {
                               >
                                   <img style={{maxWidth: "100%", maxHeight: "100%"
                                   ,width:'350px',"height":'240px'} }
-                                  src = {`http://localhost:5000/api/products/get-photo/${p.product.slug}`}
+                                  src = {`data:${p.product.photo.contentType};base64,${Buffer.from(p.product.photo.data).toString('base64')}` }
                                    />
                               </div>
                               <div className="cart-item-details" style={{'text-align':"center"}}>

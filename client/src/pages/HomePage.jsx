@@ -8,8 +8,10 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import Layout from '../components/Layout/Layout'
 import { useNavigate } from 'react-router-dom';
+import './styles/Loading.css'
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import {baseUrl} from '../baseUrl.js'
 
 const HomePage = () => {
   const [products, setProducts] = useState([]);
@@ -23,13 +25,15 @@ const HomePage = () => {
 
   const getPaginatedProducts = async () => {
     try {
-      const { data } = await axios.get('http://localhost:5000/api/products/get-paginated-products-for-homepage', {
+      setLoading(true)
+      const { data } = await axios.get(`${baseUrl}/api/products/get-paginated-products-for-homepage`, {
         params: {
           perPage: perPage,
           page: currentPage
         }
       });
       setProducts(data.products);
+      setLoading(false)
     } catch (error) {
       toast.error(error);
     }
@@ -38,7 +42,7 @@ const HomePage = () => {
   const getTotalProducts = async () => {
     try {
       setLoading(true);
-      const { data } = await axios.get('http://localhost:5000/api/products/get-total-products-in-homepage');
+      const { data } = await axios.get(`${baseUrl}/api/products/get-total-products-in-homepage`);
       if (data.success) {
         setTotalProducts(data.count);
       }
@@ -101,15 +105,14 @@ const HomePage = () => {
       <div className="cards-list">
         {!loading ? products.map((item) => (
           <Card key={item.product_id} {...item} />
-        )) : <div style={{textAlign:'center'}}>
-          <h5 >Loading...</h5>
-          </div>}
+        )) : ''}
       </div>
 
       <br />
       <br />
       <br />
-
+      {!loading?(
+        <>
       <div className="pagination-container" style={{ textAlign: 'center' }}>
         <button type="button" className="btn btn-success" onClick={()=>{
           handleBackward();window.scrollTo({top:window.innerHeight*0.65,behavior:'smooth'})}}>
@@ -117,8 +120,6 @@ const HomePage = () => {
             <FaAngleLeft /> Previous 
           </span>
         </button>
-        {!loading ? (
-          <>
             {Array.from(Array(totalPages), (_, index) => (
               <button
                 key={index}
@@ -131,10 +132,7 @@ const HomePage = () => {
                 {index + 1}
               </button>
             ))}
-          </>
-        ) : (
-          ''
-        )}
+          
         <button type="button" className="btn btn-success" onClick={()=>{
           handleForward();window.scrollTo({top:window.innerHeight*0.65,behavior:'smooth'})}}>
           <span style={{ textAlign: 'center', alignItems: 'center','font-weight':'bold' }}>
@@ -142,6 +140,16 @@ const HomePage = () => {
           </span>
         </button>
       </div>
+      </>
+        ) : (
+          <div>
+            <h1 style={{'margin-left':'45%'}}> Loading ...</h1>
+          <div className="loader">
+          <div className="loader-inner">
+          </div>
+           </div>
+           </div>
+        )}
 
       <br />
       <br />

@@ -6,6 +6,7 @@ import { useState } from 'react'
 // import { useSearch } from '../../context/search'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
+import {baseUrl} from '../../baseUrl'
 
 const SearchBar = () => {
     // const [reply,setReply] = useSearch();
@@ -24,7 +25,7 @@ const SearchBar = () => {
 
     setSearchTimeout(setTimeout(async () => {
       try {
-        const { data } = await axios.get(`http://localhost:5000/api/products/get-products-by-search/${e.target.value}`);
+        const { data } = await axios.get(`${baseUrl}/api/products/get-products-by-search/${e.target.value}`);
         if (data.products) {
           setResults(data.products);
         } else {
@@ -33,7 +34,7 @@ const SearchBar = () => {
       } catch (error) {
         console.log(error);
       }
-    }, 500));
+    }, 1000));
   }
 };
 

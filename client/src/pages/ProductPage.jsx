@@ -9,6 +9,8 @@ import { useCart } from '../context/cart';
 import { useQuantityLocal } from '../context/quantity';
 import { ShoppingBagOpen } from 'phosphor-react';
 import toast from 'react-hot-toast'
+import {Buffer} from 'buffer'
+import {baseUrl} from '../baseUrl.js'
 
 const ProductPage = () => {
     const [cart, setCart] = useCart([])
@@ -37,16 +39,16 @@ const ProductPage = () => {
       try {
         setLoading(true);
         const { data } = await axios.get(
-          `http://localhost:5000/api/products/get-single-product/${slug}`
+          `${baseUrl}/api/products/get-single-product/${slug}`
         );
         const brand = data.existingProduct.brand._id;
         const subcat = data.existingProduct.subcategory;
         
         const temp = await axios.get(
-          `http://localhost:5000/api/products/get-related-products-of-the-subcategory/${slug}/`
+          `${baseUrl}/api/products/get-related-products-of-the-subcategory/${slug}/`
         );
         const tempBrand = await axios.get(
-          `http://localhost:5000/api/products/get-products-based-on-brand-and-subcategory-other-than-current-product/${brand}/${subcat}/${slug}`
+          `${baseUrl}/api/products/get-products-based-on-brand-and-subcategory-other-than-current-product/${brand}/${subcat}/${slug}`
         );
         setRelatedProducts(temp.data.products);
         setSameBrand(tempBrand.data.products);
@@ -103,7 +105,7 @@ const ProductPage = () => {
 
   const getAllBrandsOfSubCat=async()=>{
       try{
-          const {data}=await axios.get(`http://localhost:5000/api/brands/get-all-brands-by-subcat/${info.category.slug}/${subcategoryId}`)
+          const {data}=await axios.get(`${baseUrl}/api/brands/get-all-brands-by-subcat/${info.category.slug}/${subcategoryId}`)
           if(data?.success)
           setAllBrandsOfSubCat(data.brands)
           else
@@ -229,7 +231,7 @@ const ProductPage = () => {
             <div className='product'>
               <img
                 className='productImage'
-                src={`http://localhost:5000/api/products/get-photo/${info.slug}`}
+                src={`data:${info.photo.contentType};base64,${Buffer.from(info.photo.data).toString('base64')}`}
                 alt='Product Image'
                 style={{'margin-right':'2rem'}}
               />
@@ -335,9 +337,9 @@ const ProductPage = () => {
             <div className='productSlider'>
               {relatedProducts.length ? (
                 relatedProducts.map((product, index) => (
-                  <div className='card__' key={index} style={{'border':'2px solid #111'}}>
+                  <div className='card__' key={index} style={{'border':'2px solid #111','height':'25rem'}}>
                     <img
-                      src={`http://localhost:5000/api/products/get-photo/${product.slug}`}
+                      src={`data:${product.photo.contentType};base64,${Buffer.from(product.photo.data).toString('base64')}`}
                       className='card-img_'
                       alt='...'
                     />
@@ -363,9 +365,9 @@ const ProductPage = () => {
             <div className='productSlider'>
               {sameBrand.length ? (
                 sameBrand.map((product, index) => (
-                  <div className='card__' key={index} style={{'border':'2px solid #111'}}>
+                  <div className='card__' key={index} style={{'border':'2px solid #111','height':'25rem'}}>
                     <img
-                      src={`http://localhost:5000/api/products/get-photo/${product.slug}`}
+                      src={`data:${product.photo.contentType};base64,${Buffer.from(product.photo.data).toString('base64')}`}
                       className='card-img_'
                       alt='...'
                     />
@@ -374,7 +376,7 @@ const ProductPage = () => {
                         {product.product_name}
                       </h5>
                       <Link to={`/product/${product.slug}`} className='btn btn-primary my-2' >
-                        <button style={{'width':'10rem','font-weight':'bold','border':'2px solid #111'}}>
+                        <button style={{'width':'10rem','font-weight':'bold','border':'2px solid #111','color':'white','background-color':'blue','box-shadow':'none'}}>
                            Buy
                         </button>
                        

@@ -4,6 +4,7 @@ import Layout from "../../components/Layout/Layout";
 import AdminMenu from "../../components/AdminMenu";
 import toast from 'react-hot-toast'
 import {useNavigate} from 'react-router-dom'
+import {baseUrl} from '../../baseUrl'
 
 const CreateCategory = ({ categoryId, categoryName }) => {
   const [subCategories,setSubcategories]=useState([{
@@ -42,7 +43,7 @@ const CreateCategory = ({ categoryId, categoryName }) => {
         subcategories:subCategories
       }
       const { data } = await axios.post(
-        "http://localhost:5000/api/categories/create-category",
+        `${baseUrl}/api/categories/create-category`,
         formDataWithSubcategories
       );
       if (data?.success) {

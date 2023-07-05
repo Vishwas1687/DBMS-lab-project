@@ -6,16 +6,21 @@ import { toast } from 'react-hot-toast';
 import { Link,useNavigate } from 'react-router-dom';
 import { AiOutlineClose } from "react-icons/ai";
 import { BiSearch } from "react-icons/bi";
+import { Buffer } from 'buffer';
+import {baseUrl} from '../../baseUrl'
 
 const ManageProduct = () => {
   const [products, setProducts] = useState([]);
   const navigate=useNavigate()
+  const [loading,setLoading]=useState(true)
   const [search__,setSearch__] = useState('');
 
    const getAllProducts=async()=>{
     try{
-        const {data}=await axios.get('http://localhost:5000/api/products/all-products')
+        setLoading(true)
+        const {data}=await axios.get(`${baseUrl}/api/products/all-products`)
         setProducts(data.products)
+        setLoading(false)
         console.log(data)
     }
     catch(error)
@@ -34,7 +39,7 @@ const ManageProduct = () => {
   const handleDeleteProduct = async (slug) => {
     try {
       const { data } = await axios.delete(
-        `http://localhost:5000/api/products/delete-product/${slug}`
+        `${baseUrl}/api/products/delete-product/${slug}`
       );
       if (data.success) {
         toast.success(`product is deleted`);
@@ -137,14 +142,13 @@ const loadingCellStyle = {
               <table className="table">
                 <thead>
                   <tr>
-                    <th style={tableHeaderStyle} scope="col" className="col-md-1">Image</th>
                     <th style={tableHeaderStyle} scope="col">ID</th>
                     <th style={tableHeaderStyle} scope="col">Name</th>          
                     <th style={tableHeaderStyle} scope="col">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {products.filter((c)=>{
+                  {!loading?products.filter((c)=>{
                     if (search__ === '') return c;
                     else if (c.product_name.toLowerCase().includes(search__.toLowerCase())){
                       return c;
@@ -152,14 +156,6 @@ const loadingCellStyle = {
                   }).map((c,index) => (
                     <>
                     <tr key={c.slug} style={{backgroundColor:index%2==1?'#4CAF50':'#3CB371'}}>
-                        <td style={tableCellStyle}>
-                          <img
-                        src={`http://localhost:5000/api/products/get-photo/${c.slug}`}
-                        className="card-img-top"
-                        alt={c.name}
-                        height={"50px"}
-                        />
-                        </td>
                         <td style={tableCellStyle}>{c.product_id}</td>
                         <td style={tableCellStyle}>{c.product_name}</td>
                         <td style={tableCellStyle}><button className="btn btn-primary ms-2"
@@ -184,7 +180,9 @@ Delete
 
                     </tr>
                     </>
-                  ))}
+                  )): <tr>
+          <td colspan='8' className='myLoad'style={{height:100+'px',background:'lightgray',animation:'flicker 1s infinite'}}><div style={{display:'flex',height:100+'%',alignItems:'center',justifyContent:'center'}}>Loading...</div></td>
+          </tr>}
                 </tbody>
                 
 </table>

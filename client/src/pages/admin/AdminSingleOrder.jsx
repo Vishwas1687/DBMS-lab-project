@@ -8,6 +8,7 @@ import Header from '../../components/Layout/Header';
 import '../../components/styles/SingleOrder.css'
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/auth';
+import {baseUrl} from '../../baseUrl'
 
 const SingleOrder = () => {
   const { slug } = useParams();
@@ -24,7 +25,7 @@ const SingleOrder = () => {
     const fetchData = async () => {
         try{
             setLoading(true)
-            const {data} = await axios.get(`http://localhost:5000/api/orders/get-single-order/${slug}`);
+            const {data} = await axios.get(`${baseUrl}/api/orders/get-single-order/${slug}`);
             if (!data.success){
                 setFound(false);
                 setInfo({});
@@ -76,7 +77,7 @@ const SingleOrder = () => {
                 {info.items.length ? 
                 info.items.map((item,index)=>(
                     <div className='orderItem' key={index}>
-                <img src={`http://localhost:5000/api/products/get-photo/${item.product.slug}`} alt='..'/>
+                <img src={`${baseUrl}/api/products/get-photo/${item.product.slug}`} alt='..'/>
                 <span>{item.product.product_name}</span>
                 <span>Quantity: {item.quantity}</span>
                 <span>Weight: {item.weight} {item.weight_units}</span>

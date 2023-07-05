@@ -7,6 +7,7 @@ import { BiSearch } from "react-icons/bi";
 import { useAuth } from "../../context/auth";
 import axios from "axios";
 import toast from "react-hot-toast";
+import {baseUrl} from '../../baseUrl.js'
 
 const UserOrders = () => {
   const [orders, setOrders] = useState([]);
@@ -18,7 +19,7 @@ const UserOrders = () => {
     const fetchOrders = async () => {
       try {
         setLoading(true);
-        const { data } = await axios.get("http://localhost:5000/api/orders/get-order-by-user");
+        const { data } = await axios.get(`${baseUrl}/api/orders/get-order-by-user`);
         if (data?.success) {
           setOrders(data.order);
           console.log(data)
@@ -35,7 +36,7 @@ const UserOrders = () => {
 
   const getUserData=async()=>{
      try{
-        const {data}=await axios.get(`http://localhost:5000/api/auth/get-single-user/${auth.token}`)
+        const {data}=await axios.get(`${baseUrl}/api/auth/get-single-user/${auth.token}`)
         if(data?.success)
      {
         setUser(data.user)

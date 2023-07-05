@@ -5,6 +5,7 @@ import axios from 'axios';
 import toast, { Toaster } from 'react-hot-toast'
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
+import {baseUrl} from '../../baseUrl'
 
 const Register = () => {
   
@@ -30,7 +31,7 @@ const Register = () => {
 
 
     try {
-      const res = await axios.post('http://localhost:5000/api/auth/register',data);
+      const res = await axios.post(`${baseUrl}/api/auth/register`,data);
       if (res.data.success){
         toast.success('Registered Successfully!\nLog in to continue');
         navigate('/');

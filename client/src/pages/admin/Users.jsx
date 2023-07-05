@@ -7,6 +7,7 @@ import axios from 'axios'
 import { AiOutlineClose } from "react-icons/ai";
 import { BiSearch } from "react-icons/bi";
 import '../../components/styles/Users.css'
+import {baseUrl} from '../../baseUrl'
 
 const Users = () => {
 
@@ -16,7 +17,7 @@ const Users = () => {
 
   const getAllUsers = async ()=>{
     try{
-        const {data} = await axios.get('http://localhost:5000/api/auth/get-all-users/');
+        const {data} = await axios.get(`${baseUrl}/api/auth/get-all-users/`);
         setUsers(data.users);
         // setProducts(data);
     }

@@ -6,6 +6,8 @@ import { toast } from 'react-hot-toast';
 import { Link,useNavigate,useParams } from 'react-router-dom';
 import { AiOutlineClose,AiOutlineArrowLeft } from "react-icons/ai";
 import { BiSearch } from "react-icons/bi";
+import {baseUrl} from '../../../baseUrl'
+import { Buffer } from 'buffer';
 
 const GetSubCategory = () => {
   const [products, setProducts] = useState([]);
@@ -14,7 +16,7 @@ const GetSubCategory = () => {
   const params=useParams()
    const getAllProducts=async()=>{
     try{
-        const {data}=await axios.get(`http://localhost:5000/api/products/get-products-by-subcategory/${params.slug}/${params.subcategory_id}`)
+        const {data}=await axios.get(`${baseUrl}/api/products/get-products-by-subcategory/${params.slug}/${params.subcategory_id}`)
         setProducts(data.products)
         console.log(data)
     }
@@ -34,7 +36,7 @@ const GetSubCategory = () => {
   const handleDeleteProduct = async (slug) => {
     try {
       const { data } = await axios.delete(
-        `http://localhost:5000/api/products/delete-product/${slug}`
+        `${baseUrl}/api/products/delete-product/${slug}`
       );
       if (data.success) {
         toast.success(`product is deleted`);
@@ -140,7 +142,6 @@ const loadingCellStyle = {
               <table className="table">
                 <thead>
                   <tr>
-                    <th style={tableHeaderStyle} scope="col" className="col-md-1">Image</th>
                     <th style={tableHeaderStyle} scope="col">ID</th>
                     <th style={tableHeaderStyle} scope="col">Name</th>          
                     <th style={tableHeaderStyle} scope="col">Actions</th>
@@ -155,14 +156,6 @@ const loadingCellStyle = {
                   }).map((c,index) => (
                     <>
                     <tr key={c.slug} style={{backgroundColor:index%2==1?'#4CAF50':'#3CB371'}}>
-                        <td style={tableCellStyle}>
-                          <img
-                        src={`http://localhost:5000/api/products/get-photo/${c.slug}`}
-                        className="card-img-top"
-                        alt={c.name}
-                        height={"50px"}
-                        />
-                        </td>
                         <td style={tableCellStyle}>{c.product_id}</td>
                         <td style={tableCellStyle}>{c.product_name}</td>
                         <td style={tableCellStyle}><button className="btn btn-primary ms-2"

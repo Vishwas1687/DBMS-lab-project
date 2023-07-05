@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import axios from 'axios';
 import {useNavigate} from 'react-router-dom';
 import { toast } from 'react-hot-toast';
+import {baseUrl} from '../../baseUrl'
 
 const CreateProduct = () => {
   const navigate=useNavigate()
@@ -50,7 +51,7 @@ const CreateProduct = () => {
  const getAllCategory = async () => {
   try {
     setLoading(true)
-    const { data } = await axios.get(`http://localhost:5000/api/categories/get-all-categories`);
+    const { data } = await axios.get(`${baseUrl}/api/categories/get-all-categories`);
     console.log(data)
     if (data?.success) {
       setCategories(data?.categories);
@@ -66,7 +67,7 @@ const CreateProduct = () => {
  const getAllBrands = async () => {
   try {
     setLoading(true)
-    const { data } = await axios.get(`http://localhost:5000/api/brands/get-all-brands`);
+    const { data } = await axios.get(`${baseUrl}/api/brands/get-all-brands`);
     if (data?.success) {
       setBrands(data?.brands);
     }
@@ -126,7 +127,7 @@ useEffect(() => {
       newFormData.append("tags",JSON.stringify(tags))
       newFormData.append("photo",photo)
       const { data } = await axios.post(
-        "http://localhost:5000/api/products/create-product",
+        `${baseUrl}/api/products/create-product`,
         newFormData
       );
       if (data?.success) {

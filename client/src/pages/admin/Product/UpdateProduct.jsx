@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import axios from 'axios';
 import {useNavigate,useParams} from 'react-router-dom';
 import { toast } from 'react-hot-toast';
+import {baseUrl} from '../../../baseUrl'
 
 const CreateProduct = () => {
   const navigate=useNavigate()
@@ -54,7 +55,7 @@ const CreateProduct = () => {
  const getAllCategory = async () => {
   try {
     setLoading(true)
-    const { data } = await axios.get(`http://localhost:5000/api/categories/get-all-categories`);
+    const { data } = await axios.get(`${baseUrl}/api/categories/get-all-categories`);
     console.log(data)
     if (data?.success) {
       setCategories(data?.categories);
@@ -72,7 +73,7 @@ const CreateProduct = () => {
  const getAllBrands = async () => {
   try {
     setLoading(true)
-    const { data } = await axios.get(`http://localhost:5000/api/brands/get-all-brands`);
+    const { data } = await axios.get(`${baseUrl}/api/brands/get-all-brands`);
     if (data?.success) {
       setBrands(data?.brands);
     }
@@ -85,7 +86,7 @@ const CreateProduct = () => {
 
 const getSingleProduct=async()=>{
     try{
-        const {data}=await axios.get(`http://localhost:5000/api/products/get-single-product/${params.slug}`)
+        const {data}=await axios.get(`${baseUrl}/api/products/get-single-product/${params.slug}`)
         console.log(data)
         if(data?.success)
         {
@@ -142,7 +143,7 @@ useEffect(()=>{
       
 
       const { data } = await axios.put(
-  `http://localhost:5000/api/products/update-product/${params.slug}`,
+  `${baseUrl}/api/products/update-product/${params.slug}`,
   newFormData,
   {
     headers: {
@@ -231,7 +232,7 @@ useEffect(()=>{
               <div className="mb-3">
                 {!photo ? ( 
                 <div className="text-left">
-                  <img src={`http://localhost:5000/api/products/get-photo/${params.slug}`}
+                  <img src={`${baseUrl}/api/products/get-photo/${params.slug}`}
                     className="img img-responsive"
                     alt="photo"
                     height={"200px"}/>

@@ -4,14 +4,14 @@ import { useAuth } from '../../context/auth'
 import Layout from '../../components/Layout/Layout'
 import axios from 'axios'
 import toast from 'react-hot-toast'
-
+import {baseUrl} from '../../baseUrl.js'
 
 const Dashboard = () => {
   const [auth,setAuth] = useAuth();
   const [user,setUser] =useState([])
 
   const getUserData=async()=>{
-     const {data}=await axios.get(`http://localhost:5000/api/auth/get-single-user/${auth.token}`)
+     const {data}=await axios.get(`${baseUrl}/api/auth/get-single-user/${auth.token}`)
      if(data?.success)
      {
         setUser(data.user)

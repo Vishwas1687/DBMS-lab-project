@@ -9,6 +9,7 @@ import Modal from 'antd/es/modal/Modal';
 import toast from "react-hot-toast";
 import axios from "axios";
 import '../../components/styles/ProductPage.css'
+import {baseUrl} from '../../baseUrl'
 
 const AdminOrders = () => {
 
@@ -25,7 +26,7 @@ const AdminOrders = () => {
         try {
           setLoading(true);
           const { data } = await axios.get(
-            "http://localhost:5000/api/orders/get-all-orders"
+            `${baseUrl}/api/orders/get-all-orders`
           );
           if (data?.success) {
             setOrders(data?.orders);
@@ -44,7 +45,7 @@ const AdminOrders = () => {
       const handleDelete = async (order_id) => {
         try {
           const { data } = await axios.delete(
-            `http://localhost:5000/api/orders/delete-order/${order_id}`
+            `${baseUrl}/api/orders/delete-order/${order_id}`
           );
           if (data.success) {
             toast.success(`order is deleted`);
@@ -62,7 +63,7 @@ const AdminOrders = () => {
         e.preventDefault()
         try {
           const { data } = await axios.put(
-            `http://localhost:5000/api/orders/update-order/${selectedOrder.order_id}`,
+            `${baseUrl}/api/orders/update-order/${selectedOrder.order_id}`,
             { status: status,delivery_in_hours:parseInt(deliveryTime) }
           );
           if (data.success) {
