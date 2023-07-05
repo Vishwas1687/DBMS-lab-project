@@ -758,7 +758,7 @@ const getProductsByCategoryController=async(req,res)=>{
 const getPaginatedProductsController=async(req,res)=>{
     try{
        const {page,perPage}=req.query;
-       const products=await ProductModel.find({}).populate('brand').populate('category').sort('product_name')
+       const products=await ProductModel.find({}).populate('brand').populate('category')
        .skip(perPage*(page-1)).limit(perPage)
        res.set('Content-Type','multipart/form-data')
        if(products.length===0)
