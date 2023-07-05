@@ -17,7 +17,7 @@ const HomePage = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [totalProducts, setTotalProducts] = useState(null);
-  const perPage = 12;
+  const perPage = 8;
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(null);
   const navigate = useNavigate();
@@ -41,12 +41,12 @@ const HomePage = () => {
 
   const getTotalProducts = async () => {
     try {
-      setLoading(true);
+      // setLoading(true);
       const { data } = await axios.get(`${baseUrl}/api/products/get-total-products-in-homepage`);
       if (data.success) {
         setTotalProducts(data.count);
       }
-      setLoading(false);
+      // setLoading(false);
     } catch (error) {
       toast.error('Something went wrong');
     }

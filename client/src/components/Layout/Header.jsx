@@ -33,7 +33,7 @@ const Header = () => {
     {cart.map((item, index) => (
       <Menu.Item key={index} style={{'font-size':'1.2rem','border':'2px solid #111','margin-bottom':'0.2rem'}}>
         <Link to={`/product/${item.product.slug}`}>
-          <img src={`data:${item.product.photo.contentType};base64,${Buffer.from(item.product.photo.data).toString('base64')}`}
+          <img src={`${baseUrl}/api/products/get-photo/${item.product.slug}`}
           height={'50px'}/>
            {item.quantity} {item.product.product_name} -  {item.weight}{item.weightUnits} = {item.sp}*{item.quantity}={item.sp*item.quantity}
         </Link>

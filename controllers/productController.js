@@ -128,7 +128,7 @@ const updateProductController=async(req,res)=>{
     // if(!photo)
     // return res.send({message:'Enter the photo'})
 
-    const existingProduct=await ProductModel.findOne({slug}).populate('brand')
+    const existingProduct=await ProductModel.findOne({slug}).select("-photo").populate('brand')
     if(!existingProduct)
     {
         return res.send({
@@ -230,7 +230,7 @@ const deleteProductController=async(req,res)=>{
 
 const getAllProductsController=async(req,res)=>{
      try{
-        const products=await ProductModel.find({}).select('-photo').populate('category').populate('brand').sort('product_name')
+        const products=await ProductModel.find({}).select('-photo').populate('category').populate('brand')
         res.send({
             message:'All products are fetched',
             success:true,
@@ -249,8 +249,7 @@ const getAllProductsController=async(req,res)=>{
 const getSingleProductController=async(req,res)=>{
     try{
         const {slug}=req.params
-        const existingProduct=await ProductModel.findOne({slug}).populate('category').populate('brand')
-        res.set('Content-Type','multipart/form-data')
+        const existingProduct=await ProductModel.findOne({slug}).select("-photo").populate('category').populate('brand')
         if(!existingProduct)
         {
             return res.send({
@@ -319,7 +318,7 @@ const getProductsBySubCategoryController=async(req,res)=>{
             })
           }
 
-          const products=await ProductModel.find({subcategory:subcategory.subcategory_name})
+          const products=await ProductModel.find({subcategory:subcategory.subcategory_name}).select("-photo")
           .populate('category').populate('brand')
 
           if(!products)
@@ -329,7 +328,6 @@ const getProductsBySubCategoryController=async(req,res)=>{
                 success:true
             })
           }
-          res.set('Content-Type','multipart/form-data')
 
           res.send({
             message:`Products of the subcategory ${subcategory.subcategory_name} is successfully fetched`,
@@ -528,10 +526,9 @@ const getProductsByBrandController=async(req,res)=>{
          if(!slug)
          return res.send({message:'Slug is not entered'})
 
-         let products=await ProductModel.find({brand,subcategory}).populate('category').populate('brand')
+         let products=await ProductModel.find({brand,subcategory}).select("-photo").populate('category').populate('brand')
 
          products=products.filter((pro)=>pro.slug!==slug)
-        res.set('Content-Type','multipart/form-data')
          res.send({
             message:`Products successfully fetched`,
             success:true,
@@ -594,7 +591,7 @@ const getRelatedProductsController=async(req,res)=>{
         if(!slug)
         res.send({message:'Enter the slug'})
 
-        const existingProduct=await ProductModel.findOne({slug}).populate('brand')
+        const existingProduct=await ProductModel.findOne({slug}).select("-photo").populate('brand')
 
         if(!existingProduct)
         return res.send(
@@ -606,7 +603,6 @@ const getRelatedProductsController=async(req,res)=>{
         const subcategory=existingProduct.subcategory
         let products=await ProductModel.find({subcategory}).populate('brand').populate('category')
         products=products.filter((pro)=>pro.slug!==slug)
-        res.set('Content-Type','multipart/form-data')
         res.send({
             message:'Related products of the products fetched',
             success:true,
@@ -679,7 +675,7 @@ const getAllProductsByFiltersController=async(req,res)=>{
             }
                         
         }
-            ).populate('category').populate('brand')
+            ).select("-photo").populate('category').populate('brand')
             products=priceProducts
         }
 
@@ -707,7 +703,6 @@ const getAllProductsByFiltersController=async(req,res)=>{
             })
             products=sortedWeightProducts
         }
-        res.set('Content-Type','multipart/form-data')
         res.send({
             message:'Products fetched',
             success:true,
@@ -738,8 +733,7 @@ const getProductsByCategoryController=async(req,res)=>{
             })
             
         }
-        const products=await ProductModel.find({category:category._id}).populate('brand').populate('category')
-        res.set('Content-Type','multipart/form-data')
+        const products=await ProductModel.find({category:category._id}).select("-photo").populate('brand').populate('category')
         res.send({
             message:'Products are fetched',
             success:true,
@@ -758,9 +752,8 @@ const getProductsByCategoryController=async(req,res)=>{
 const getPaginatedProductsController=async(req,res)=>{
     try{
        const {page,perPage}=req.query;
-       const products=await ProductModel.find({}).populate('brand').populate('category')
+       const products=await ProductModel.find({}).select("-photo").populate('brand').populate('category')
        .skip(perPage*(page-1)).limit(perPage)
-       res.set('Content-Type','multipart/form-data')
        if(products.length===0)
        return res.send({
         message:'No products left',
@@ -875,10 +868,9 @@ const getProductsByCategoryPaginatedController=async(req,res)=>{
             })
             
         }
-        const products=await ProductModel.find({category:category._id})
+        const products=await ProductModel.find({category:category._id}).select("-photo")
         .populate('brand').populate('category')
         .skip((currentPage-1)*perPage).limit(perPage)
-        res.set('Content-Type','multipart/form-data')
         res.send({
             message:'Products are fetched',
             success:true,
@@ -918,10 +910,9 @@ const getProductsBySubCategoryPaginatedController=async(req,res)=>{
             })
           }
 
-          const products=await ProductModel.find({subcategory:subcategory.subcategory_name})
+          const products=await ProductModel.find({subcategory:subcategory.subcategory_name}).select("-photo")
           .populate('category').populate('brand')
           .skip((currentPage-1)*perPage).limit(perPage)
-          res.set('Content-Type','multipart/form-data')
           if(!products)
           {
             return res.send({
@@ -976,7 +967,7 @@ const getAllProductsByCategoryFiltersController=async(req,res)=>{
             }
                         
         }
-            ).populate('category').populate('brand')
+            ).select("-photo").populate('category').populate('brand')
             products=priceProducts
         }
 
@@ -997,7 +988,7 @@ const getAllProductsByCategoryFiltersController=async(req,res)=>{
             }
                         
         }
-            ).populate('category').populate('brand')
+            ).select("-photo").populate('category').populate('brand')
             products=priceProducts
         }
 
@@ -1018,7 +1009,7 @@ const getAllProductsByCategoryFiltersController=async(req,res)=>{
             }
                         
         }
-            ).populate('category').populate('brand')
+            ).select("-photo").populate('category').populate('brand')
             products=priceProducts
         }
         
@@ -1030,7 +1021,7 @@ const getAllProductsByCategoryFiltersController=async(req,res)=>{
                 brand:{$in:brandFilters},
                 subcategory:{$in:subcategoryFilters}        
         }
-            ).populate('category').populate('brand')
+            ).select("-photo").populate('category').populate('brand')
             products=priceProducts
         }
 
@@ -1043,7 +1034,7 @@ const getAllProductsByCategoryFiltersController=async(req,res)=>{
                 category:category._id,
                 brand:{$in:brandFilters},       
         }
-            ).populate('category').populate('brand')
+            ).select("-photo").populate('category').populate('brand')
             products=priceProducts
         }
 
@@ -1055,7 +1046,7 @@ const getAllProductsByCategoryFiltersController=async(req,res)=>{
                 category:category._id,
                 subcategory:{$in:subcategoryFilters},       
         }
-            ).populate('category').populate('brand')
+            ).select("-photo").populate('category').populate('brand')
             products=priceProducts
         }
 
@@ -1075,7 +1066,7 @@ const getAllProductsByCategoryFiltersController=async(req,res)=>{
             }
                         
         }
-            ).populate('category').populate('brand')
+            ).select("-photo").populate('category').populate('brand')
             products=priceProducts
         }
 
@@ -1107,7 +1098,6 @@ const getAllProductsByCategoryFiltersController=async(req,res)=>{
         const endIndex = startIndex + perPage;
         const newproducts = products.slice(startIndex, endIndex);
         const size=products.length
-        res.set('Content-Type','multipart/form-data')
         res.send({
             message:'Products fetched',
             success:true,
@@ -1165,7 +1155,7 @@ const getAllProductsBySubCategoryFiltersController=async(req,res)=>{
             }
                         
         }
-            ).populate('category').populate('brand')
+            ).select("-photo").populate('category').populate('brand')
             products=priceProducts
         }
 
@@ -1185,7 +1175,7 @@ const getAllProductsBySubCategoryFiltersController=async(req,res)=>{
             }
                         
         }
-            ).populate('category').populate('brand')
+            ).select("-photo").populate('category').populate('brand')
             products=priceProducts
         }
 
@@ -1198,7 +1188,7 @@ const getAllProductsBySubCategoryFiltersController=async(req,res)=>{
                 subcategory:subcategory.subcategory_name,
                 brand: {$in:brandFilters}              
         }
-            ).populate('category').populate('brand')
+            ).select("-photo").populate('category').populate('brand')
             products=priceProducts
         }
 
@@ -1228,7 +1218,6 @@ const getAllProductsBySubCategoryFiltersController=async(req,res)=>{
         const endIndex = startIndex + perPage;
         const newproducts = products.slice(startIndex, endIndex);
         const size=products.length
-        res.set('Content-Type','multipart/form-data')
         res.send({
             message:'Products fetched',
             success:true,

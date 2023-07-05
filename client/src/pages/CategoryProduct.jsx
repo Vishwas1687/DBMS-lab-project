@@ -22,7 +22,7 @@ const CategoryProduct = () => {
    const [productLoading,setProductLoading]=useState(true)
    const [totalProducts,setTotalProducts]=useState(null)
    const location=useLocation()
-   const perPage=9;
+   const perPage=6;
    const [brands,setBrands]=useState([])
    const [brandFilters,setBrandFilters]=useState([])
    const [priceFilters,setPriceFilters]=useState([0,100000])

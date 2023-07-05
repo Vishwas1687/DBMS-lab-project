@@ -17,7 +17,7 @@ import {baseUrl} from '../baseUrl.js'
 
 const SubCategoryProduct = () => {
    const [category,setCategory]=useState('')
-   const perPage=9;
+   const perPage=6;
    const [auth,setAuth]=useAuth()
    const [totalProducts,setTotalProducts]=useState(null)
    const [loading,setLoading]=useState(true)

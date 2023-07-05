@@ -231,7 +231,7 @@ const ProductPage = () => {
             <div className='product'>
               <img
                 className='productImage'
-                src={`data:${info.photo.contentType};base64,${Buffer.from(info.photo.data).toString('base64')}`}
+                src={`${baseUrl}/api/products/get-photo/${info.slug}`}
                 alt='Product Image'
                 style={{'margin-right':'2rem'}}
               />

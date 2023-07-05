@@ -84,7 +84,7 @@ const SingleOrder = () => {
                 {info.items.length ? 
                 info.items.map((item,index)=>(
                     <div className='orderItem' key={index}>
-                <img src={`data:${item.product.photo.contentType};base64,${Buffer.from(item.product.photo.data).toString('base64')}`} alt='..'/>
+                <img src={`${baseUrl}/api/products/get-photo/${item.slug}`} alt='..'/>
                 <span>{item.product.product_name}</span>
                 <span>Quantity: {item.quantity}</span>
                 <span>Weight: {item.weight} {item.weight_units}</span>

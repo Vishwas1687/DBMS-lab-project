@@ -166,7 +166,7 @@ export default function(props){
 
     <div className="card">
         <div className="wrapper">
-            <img className="card_img" src = {`data:${props.photo.contentType};base64,${Buffer.from(props.photo.data).toString('base64')}` } 
+            <img className="card_img" src = {`${baseUrl}/api/products/get-photo/${props.slug}`}
             style={{cursor:'pointer',backgroundColor: imgLoad ? '' : 'lightgray',animation: !imgLoad ? 'flicker 1s infinite' : 'none'}}
             onLoad={handleImageLoad}
              onClick={()=>navigate(`/product/${props.slug}`)}/>

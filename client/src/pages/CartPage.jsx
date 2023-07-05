@@ -171,9 +171,11 @@ const CartPage = () => {
                               <div className="cart-item-image"
                                 style={{textAlign: "center", width: "100%", height: "250px", overflow: "hidden"}}
                               >
-                                  <img style={{maxWidth: "100%", maxHeight: "100%"
+                                  <img 
+                                  src = {`${baseUrl}/api/products/get-photo/${p.product.slug}`}
+                                  style={{maxWidth: "100%", maxHeight: "100%"
                                   ,width:'350px',"height":'240px'} }
-                                  src = {`data:${p.product.photo.contentType};base64,${Buffer.from(p.product.photo.data).toString('base64')}` }
+                                  
                                    />
                               </div>
                               <div className="cart-item-details" style={{'text-align':"center"}}>
