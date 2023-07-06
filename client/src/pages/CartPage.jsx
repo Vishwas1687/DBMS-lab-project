@@ -127,7 +127,7 @@ const CartPage = () => {
         shipping_address:user?.address,
         total_price:totalPrice()
       });
-      if(data?.success)
+      if(data?.ok)
       toast.success("Payment Completed Successfully ");
       else
       toast.error('This is the error')

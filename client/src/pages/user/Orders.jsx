@@ -144,8 +144,8 @@ const loadingCellStyle = {
                         
                     if (orderSearch === '') return c;
                    else {
-                    const formattedOrderDate = `${new Date(c.order_date).getDate()}/${new Date(c.order_date).getMonth()}/${new Date(c.order_date).getFullYear()} ${new Date(c.order_date).getHours()}:${new Date(c.order_date).getMinutes()}:${new Date(c.order_date).getSeconds()}`;
-                    const deliveredOrderDate = `${new Date(c.delivery_date).getDate()}/${new Date(c.delivery_date).getMonth()}/${new Date(c.delivery_date).getFullYear()} ${new Date(c.delivery_date).getHours()}:${new Date(c.delivery_date).getMinutes()}:${new Date(c.delivery_date).getSeconds()}`;
+                    const formattedOrderDate = `${new Date(c.order_date).getDate()}/${new Date(c.order_date).getMonth()+1}/${new Date(c.order_date).getFullYear()} ${new Date(c.order_date).getHours()}:${new Date(c.order_date).getMinutes()}:${new Date(c.order_date).getSeconds()}`;
+                    const deliveredOrderDate = `${new Date(c.delivery_date).getDate()}/${new Date(c.delivery_date).getMonth()+1}/${new Date(c.delivery_date).getFullYear()} ${new Date(c.delivery_date).getHours()}:${new Date(c.delivery_date).getMinutes()}:${new Date(c.delivery_date).getSeconds()}`;
                    return (
                   c.status.toLowerCase().includes(orderSearch.toLowerCase()) ||
                   deliveredOrderDate.toLowerCase().includes(orderSearch.toLowerCase()) ||
@@ -163,8 +163,8 @@ const loadingCellStyle = {
                           <td style={tableCellStyle}>{c.status}</td>
                           <td style={tableCellStyle}>{c.shipping_address}</td>
                           <td style={tableCellStyle}>{c.total_amount}</td>
-                          <td style={tableCellStyle}>{`${new Date(c.order_date).getDate()}/${new Date(c.order_date).getMonth()}/${new Date(c.order_date).getFullYear()}   ${new Date(c.order_date)?.getHours()}:${new Date(c.order_date)?.getMinutes()}:${new Date(c.order_date)?.getSeconds()}`}</td>
-                          <td style={tableCellStyle}>{c.delivery_date?`${new Date(c.delivery_date)?.getDate()}/${new Date(c.delivery_date)?.getMonth()}/${new Date(c.delivery_date)?.getFullYear()}    ${new Date(c.delivery_date)?.getHours()}:${new Date(c.delivery_date)?.getMinutes()}:${new Date(c.delivery_date)?.getSeconds()}`:''}</td>
+                          <td style={tableCellStyle}>{`${new Date(c.order_date).getDate()}/${new Date(c.order_date).getMonth()+1}/${new Date(c.order_date).getFullYear()}   ${new Date(c.order_date)?.getHours()}:${new Date(c.order_date)?.getMinutes()}:${new Date(c.order_date)?.getSeconds()}`}</td>
+                          <td style={tableCellStyle}>{c.delivery_date?`${new Date(c.delivery_date)?.getDate()}/${new Date(c.delivery_date)?.getMonth()+1}/${new Date(c.delivery_date)?.getFullYear()}    ${new Date(c.delivery_date)?.getHours()}:${new Date(c.delivery_date)?.getMinutes()}:${new Date(c.delivery_date)?.getSeconds()}`:''}</td>
                           <td style={tableCellStyle}>
                             <Link to={`/user/single-order/${c.order_id}`}>
                             <button className="btn btn-info ms-2" style={viewButtonStyle}>View</button>

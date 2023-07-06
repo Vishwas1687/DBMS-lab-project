@@ -84,7 +84,7 @@ const SingleOrder = () => {
                 {info.items.length ? 
                 info.items.map((item,index)=>(
                     <div className='orderItem' key={index}>
-                <img src={`${baseUrl}/api/products/get-photo/${item.slug}`} alt='..'/>
+                <img src={`${baseUrl}/api/products/get-photo/${item.product.slug}`} alt='..'/>
                 <span>{item.product.product_name}</span>
                 <span>Quantity: {item.quantity}</span>
                 <span>Weight: {item.weight} {item.weight_units}</span>
