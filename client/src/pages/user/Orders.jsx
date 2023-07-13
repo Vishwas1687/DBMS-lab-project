@@ -15,8 +15,9 @@ const UserOrders = () => {
   const [auth,setAuth]=useAuth()
   const [user,setUser]=useState([])
   const [loading,setLoading] = useState(false);
-  useEffect(() => {
-    const fetchOrders = async () => {
+
+
+  const fetchOrders = async () => {
       try {
         setLoading(true);
         const { data } = await axios.get(`${baseUrl}/api/orders/get-order-by-user`);
@@ -31,6 +32,8 @@ const UserOrders = () => {
         toast.error("Something went wrong");
       }
     };
+
+  useEffect(() => {
     fetchOrders();
   }, []);
 

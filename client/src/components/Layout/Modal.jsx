@@ -83,16 +83,18 @@ export default function Modal() {
   <NavLink style={{textAlign:'center'}} to="/forgot-password" className="nav-link mb-3 underline" onClick={()=>{closeRef.current.click();navigate('/forgot-password');}} >
             <button className='btn btn-primary' style={{'border':'2px solid #111','font-weight':'bold'}}>Forgot Password?</button>
   </NavLink>
+  
   <div>
-  <button type="submit" className="btn btn-success" style={{'margin-left':'8rem','font-weight':'bold','border':'2px solid #111'}}>Log In</button>
-  <button className="btn btn-danger" style={{'height':'2.5rem',padding:"0",'position':'absolute','margin-left':'1rem',
+    <button type="submit" className="btn btn-success" style={{'margin-left':'12rem','font-weight':'bold','border':'2px solid #111'}}>Log In</button>
+  
+  {/* <button className="btn btn-danger" style={{'height':'2.5rem',padding:"0",'position':'absolute','margin-left':'1rem',
    'font-weight':'bold','border':'2px solid #111'}}>
   <a href={`${baseUrl}/api/auth/google`} style={{display:'block',width:"100%",
   height:"100%",'position':'relative','top':'17%','font-weight':'bold'}}>
      Google Login
      <GoogleLogo size="25"/>
    </a>
-    </button>
+    </button> */}
   </div>
 </form>
       </div>
