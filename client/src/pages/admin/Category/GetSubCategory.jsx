@@ -142,6 +142,7 @@ const loadingCellStyle = {
               <table className="table">
                 <thead>
                   <tr>
+                    <th style={{'border':'2px solid #111','width':'4rem',backgroundColor: '#006400',color:'white'}} scope="col">Image</th>
                     <th style={tableHeaderStyle} scope="col">ID</th>
                     <th style={tableHeaderStyle} scope="col">Name</th>          
                     <th style={tableHeaderStyle} scope="col">Actions</th>
@@ -156,6 +157,10 @@ const loadingCellStyle = {
                   }).map((c,index) => (
                     <>
                     <tr key={c.slug} style={{backgroundColor:index%2==1?'#4CAF50':'#3CB371'}}>
+                      <td style={{'border':'2px solid #111'}}>
+                      <img src={`${baseUrl}/api/products/get-photo/${c.slug}` } 
+                      height={"50px"} object-fit="cover"/>
+                      </td>
                         <td style={tableCellStyle}>{c.product_id}</td>
                         <td style={tableCellStyle}>{c.product_name}</td>
                         <td style={tableCellStyle}><button className="btn btn-primary ms-2"

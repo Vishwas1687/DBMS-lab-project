@@ -16,6 +16,7 @@ import {baseUrl} from '../baseUrl.js'
 const HomePage = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [auth,setAuth] =useAuth()
   const [totalProducts, setTotalProducts] = useState(null);
   const perPage = 8;
   const [currentPage, setCurrentPage] = useState(1);
@@ -74,7 +75,9 @@ const HomePage = () => {
   }, [currentPage]);
 
   useEffect(() => {
+    setAuth({...auth,token:JSON.parse(localStorage.getItem('auth'))})
     getTotalProducts();
+    
   }, []);
 
   useEffect(() => {

@@ -16,7 +16,7 @@ const AuthProvider = ({ children }) => {
       const parseData = JSON.parse(data);
       setAuth({
         ...auth,
-        token: parseData.token,
+        token: parseData,
       });
     }
     //eslint-disable-next-line

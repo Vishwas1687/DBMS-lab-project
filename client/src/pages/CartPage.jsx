@@ -38,10 +38,10 @@ const CartPage = () => {
     })
 
     const getUserData=async()=>{
-     const {data}=await axios.get(`${baseUrl}/api/auth/get-single-user/${auth.token}`)
+     const {data}=await axios.get(`${baseUrl}/api/auth/get-single-user/${auth?.token}`)
      if(data?.success)
      {
-        setUser(data.user)
+        setUser(data?.user)
      }
      else
      {
@@ -50,6 +50,7 @@ const CartPage = () => {
 
   }
   useEffect(()=>{
+    if(auth?.token)
     getUserData() 
   },[])
     

@@ -33,6 +33,7 @@ export default function Dropdown() {
     const [returnPath,setReturnPath]=useState(null)
 
     useEffect(()=>{
+      setAuth({...auth,token:JSON.parse(localStorage.getItem('auth'))})
      setReturnPath(location.state?.returnPath||'/')
     //  if(location.state?.returnPath)
     //  anchorRef.current.click()

@@ -100,7 +100,7 @@ const tableHeaderStyle = {
 };
 
 const tableCellStyle = {
-  padding: '10px',
+  padding: '5px',
   borderBottom: '2px solid #000',
   borderRight: '2px solid #000',
   fontFamily: 'Arial, sans-serif',
@@ -218,7 +218,7 @@ const loadingCellStyle = {
             <>
             <tr key={c.order_id} style={{backgroundColor:index%2==1?'#4CAF50':'#3CB371'}}>
             <td style={tableCellStyle}>{c.order_id}</td>
-            <td style={tableCellStyle}>{c.customer.username}</td>
+            <td style={tableCellStyle}>{c?.customer?.username}</td>
             {/* <td>{c.payment}</td> */}
             <td style={tableCellStyle}>{c.status}</td>
             <td style={tableCellStyle}>{c.shipping_address}</td>
