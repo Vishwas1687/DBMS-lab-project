@@ -20,7 +20,9 @@ const UserOrders = () => {
   const fetchOrders = async () => {
       try {
         setLoading(true);
-        const { data } = await axios.get(`${baseUrl}/api/orders/get-order-by-user`);
+        axios.defaults.headers.common['Authorization'] = auth?.token;
+        const { data } = await axios.get(`${baseUrl}/api/orders/get-order-by-user`,
+        )
         if (data?.success) {
           setOrders(data.order);
           console.log(data)
@@ -39,7 +41,7 @@ const UserOrders = () => {
 
   const getUserData=async()=>{
      try{
-        const {data}=await axios.get(`${baseUrl}/api/auth/get-single-user/${auth.token}`)
+        const {data}=await axios.get(`${baseUrl}/api/auth/get-single-user/${auth?.token}`)
         if(data?.success)
      {
         setUser(data.user)

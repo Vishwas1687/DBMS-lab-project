@@ -22,7 +22,7 @@ const ProductPage = () => {
   const [selectedWeight, setSelectedWeight] = useState("");
   const [relatedProducts, setRelatedProducts] = useState([]);
   const [sameBrand, setSameBrand] = useState([]);
-  const [temp,setTemp]=useState('')
+  const [temp,setTemp]=useState(1)
   const [weights,setWeights]=useState([])
   const [stock, setStock] = useState('')
   const [weight,setWeight]=useState('')
@@ -64,7 +64,7 @@ const ProductPage = () => {
           setWeights(data.existingProduct?.weights)
           setWeightUnits(data.existingProduct.weights[0]?.weight_units)
           setSelectedWeight(data.existingProduct.weights[0]?.weight_id)
-          setStock((data.existingProduct.weights[0]?.stock>0)?true:false)
+          setStock(data.existingProduct.weights[0]?.stock)
           setSubcategoryId(data.existingProduct.category.subcategories.find((subcat)=>subcat.subcategory_name===data.existingProduct.subcategory).subcategory_id)
           setQuantity(parseInt(quantityLocal.map((quant)=>{
             if(quant.product===data.existingProduct?._id && quant.selectedWeight===data.existingProduct?.weights[0].weight_id)
@@ -283,7 +283,8 @@ const ProductPage = () => {
                                         {`${quantity} in basket`}
                                     </span>
                                     <span>
-                                        <button className='increment-btn' onClick={handleIncrement}>
+                                        <button className='increment-btn' onClick={handleIncrement}
+                                        disabled={quantity>=stock?true:false}>
                                             +
                                         </button>
                                     </span>
@@ -303,7 +304,8 @@ const ProductPage = () => {
                                   }}/>
                                  <button type="button" 
                                 className='add_to_cart_btn' style={{'height':'3rem','width':'8rem'}}
-                                disabled={stock===0?true:false}
+                                 disabled={((stock===0)||(Number(temp)>stock)||
+                                    (Number(temp)<=0)||(isNaN(Number(temp))))?true:false}
                                 onClick={() =>
                                     {
                                         setQuantity(temp||1)

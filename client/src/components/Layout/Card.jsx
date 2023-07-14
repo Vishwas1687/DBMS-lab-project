@@ -31,7 +31,7 @@ export default function(props){
     const [weightUnits,setWeightUnits]=useState(weights[0].weight_units)
     const [sp, setSp] = useState(weights[0].sp)
     const [mrp, setMrp] = useState(weights[0].mrp)
-    const [stock, setStock] = useState((weights[0].stock) > 0 ? true : false)
+    const [stock, setStock] = useState(weights[0].stock)
     const [temp,setTemp]=useState('')
     const [imgLoad,setImgLoad] = useState(false);
     const navigate=useNavigate()
@@ -61,7 +61,7 @@ export default function(props){
         //console.log(selectedWeight)
         const selectedW = weights.find((weight) => weight.weight_id === parseInt(selectedWeight));
         //console.log(selectedW)
-        setStock(selectedW.stock > 0 ? true : false) 
+        setStock(selectedW.stock) 
         setWeight(selectedW.weight)
         setWeightUnits(selectedW.weight_units)
 
@@ -218,7 +218,8 @@ export default function(props){
                                         {`${quantity} in basket`}
                                     </span>
                                     <span>
-                                        <button className='increment-btn' onClick={handleIncrement}>
+                                        <button className='increment-btn' onClick={handleIncrement}
+                                        disabled={quantity>=stock?true:false}>
                                             +
                                         </button>
                                     </span>
@@ -238,7 +239,8 @@ export default function(props){
                                   }}/>
                                  <button type="button" 
                                 className='add_to_cart_btn'
-                                disabled={stock===0?true:false}
+                                disabled={((stock===0)||(Number(temp)>stock)||
+                                    (Number(temp)<=0)||(isNaN(Number(temp))))?true:false}
                                 onClick={() =>
                                     {
                                         setQuantity(temp||1)

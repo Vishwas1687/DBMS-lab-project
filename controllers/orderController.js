@@ -63,6 +63,115 @@ const createOrderController=async(req,res)=>{
   }
 }
 
+
+
+// const createOrderController=async(req,res)=>{
+//  try {
+//     const { nonce, products,shipping_address,total_price} = req.body;
+//     let total = 0;
+//     products.map((i) => {
+//       total += i.price;
+//     });
+
+    
+
+//     const updatedProducts=products.map(async(product)=>{
+//         const weight=product.weight
+//         const weight_units=product.weight_units
+//         const quantity=product.quantity
+//         const product_id=product.product
+//         var flag=0
+//         const DBProduct=await ProductModel.findById(product_id).select('-photo')
+//         const selectedWeight=DBProduct.weights.map((w)=>{
+//              if(w.weight_units===weight_units && w.weight===weight)
+//              return w.weight_id
+//              else
+//              return 0
+//         })
+//         if(selectedWeight!==0)
+//         {
+//             const presentStock=DBProduct.weights.map((w)=>{
+//                 if(w.weight_id===selectedWeight)
+//                 return w.stock
+//             })
+//             if(presentStock>quantity)
+//             {
+//                 const currentStock=presentStock-quantity
+//                 const weights=weights.map((w)=>{
+//                     if(w.weight_id===selectedWeight)
+//                     {
+//                         const weight_object={
+//                             weight_id:w.weight_id,
+//                             weight:w.weight,
+//                             weight_units:w.weight,
+//                             mrp:w.mrp,
+//                             sp:w.sp,
+//                             stock:currentStock
+//                         }
+//                         return weight_object;
+//                     }
+//                     else
+//                     return w;
+//                 })
+//                 const updateStock=await ProductModel.findOneAndUpdate
+//                 ({_id:product_id,"weights.weight_id":selectedWeight},{
+//                       product_id:DBProduct.product_id,
+//                       product_name:DBProduct.product_name,
+//                       slug:DBProduct.slug,
+//                       seller_id:DBProduct.seller_id,
+//                       brand:DBProduct.brand,
+//                       weights:weights,
+//                       category:DBProduct.category,
+//                       subcategory:DBProduct.subcategory,
+//                       photo:DBProduct.photo,
+//                       tags:DBProduct.tags,
+//                  })
+//             }
+//             else
+//             flag=1;
+//         }
+//     })
+
+//     if(flag===1)
+//     {
+//         return res.send({
+//             message:'Product is out of stock',
+//             success:false
+//         })
+//     }
+
+
+
+//     let newTransaction = gateway.transaction.sale(
+//       {
+//         amount: total,
+//         paymentMethodNonce: nonce,
+//         options: {
+//           submitForSettlement: true,
+//         },
+//       },
+//       async function (error, result) {
+//         if (result) {
+//           const order =await new OrderModel({
+//             items: products,
+//             payment: result,
+//             customer: req.user._id,
+//             shipping_address:shipping_address,
+//             total_amount:total_price,
+//           }).save();
+//           res.json({ ok: true });
+//         } else {
+//           res.status(500).send(error);
+//         }
+//       }
+//     );
+//   } catch (error) {
+//     console.log(error);
+//   }
+// }
+
+
+
 const updateOrderController=async(req,res)=>{
     try{
         const {status,delivery_in_hours}=req.body
@@ -248,7 +357,7 @@ const getOrderByUserController=async(req,res)=>{
                 success:true
             })
         }
-        return res.send({
+        res.send({
             message:`All orders of the user ${user.username} is fetched`,
             success:true,
             order
