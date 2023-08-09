@@ -1,4 +1,5 @@
-# DBMS-lab-project
+# GroceryHut
+
 ## Introduction
 In recent years, online grocery shopping has become increasingly popular,
 and many consumers prefer to shop for their groceries online. To meet this
