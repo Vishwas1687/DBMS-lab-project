@@ -50,9 +50,7 @@ const DropdownCategories = () => {
         data-bs-toggle="dropdown"
         aria-expanded="false"
         style={{'border':'2px solid #111','padding':'0.5rem', 'font-size':'1.1rem',
-        'box-shadow':'2px 2px 2px 2px rgba(0,252,252,0.4)', 
-        'background-color':hover?'#111':'#32BB99','font-weight':'bold','color':'#FFF',
-         transition: 'background-color 0.3s', 
+        'font-weight':'bold','color':'#111', 
          }}
         >
         Categories

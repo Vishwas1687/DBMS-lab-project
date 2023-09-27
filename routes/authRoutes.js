@@ -67,6 +67,6 @@ router.put('/update-profile',requiresSignIn,updateProfileController)
 
 router.get('/get-all-users',requiresSignIn,isAdmin,getAllUsersController)
 
-router.get('/get-single-user/:token',getSingleUserController);
+router.get('/get-single-user',requiresSignIn,getSingleUserController);
 
 module.exports=router;

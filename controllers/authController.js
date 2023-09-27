@@ -254,9 +254,6 @@ const getAllUsersController=async(req,res)=>{
 
 const getSingleUserController=async(req,res)=>{
      try{
-       const {token}=req.params
-       const decode=jwt.verify(req.headers.authorization, process.env.JWT_TOKEN)
-       req.user=decode
        const User=await UserModel.findById(req.user._id)
        if(!User)
        {

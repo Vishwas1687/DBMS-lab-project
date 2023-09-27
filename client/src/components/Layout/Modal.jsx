@@ -80,12 +80,26 @@ export default function Modal() {
     <input type="password" value={password} onChange={(e)=>{setPassword(e.target.value)}} className="form-control my-2" id="exampleInputPassword1" placeholder="Password" 
     style={{'border':'2px solid #111'}}/>
   </div>
-  <NavLink style={{textAlign:'center'}} to="/forgot-password" className="nav-link mb-3 underline" onClick={()=>{closeRef.current.click();navigate('/forgot-password');}} >
-            <button className='btn btn-primary' style={{'border':'2px solid #111','font-weight':'bold'}}>Forgot Password?</button>
-  </NavLink>
+
+  <div style={{display:'flex','justifyContent':'space-around'}}>
   
+
   <div>
-    <button type="submit" className="btn btn-success" style={{'margin-left':'12rem','font-weight':'bold','border':'2px solid #111'}}>Log In</button>
+    <button type="submit" className="btn btn-success" style={{'font-weight':'bold','border':'2px solid #111'}}>Log In</button>
+ </div>
+  <div style={{justifyContent:'center'}} >
+        <NavLink to="/register" className="nav-link underline" onClick={()=>{closeRef.current.click();navigate('/register');}} >
+          <button className="btn btn-primary" style={{'font-weight':'bold','border':'2px solid #111'}}> Register </button>  
+          </NavLink>
+  </div>
+
+  <NavLink style={{textAlign:'center'}} to="/forgot-password" className="nav-link mb-3 underline" onClick={()=>{closeRef.current.click();navigate('/forgot-password');}} >
+            <button className='btn btn-warning' style={{'border':'2px solid #111','font-weight':'bold'}}>Forgot Password?</button>
+  </NavLink>      
+
+  </div>
+  
+  
   
   {/* <button className="btn btn-danger" style={{'height':'2.5rem',padding:"0",'position':'absolute','margin-left':'1rem',
    'font-weight':'bold','border':'2px solid #111'}}>
@@ -95,15 +109,10 @@ export default function Modal() {
      <GoogleLogo size="25"/>
    </a>
     </button> */}
-  </div>
+  
 </form>
       </div>
-      <div className="modal-footer" style={{justifyContent:'center'}} >
-        <NavLink to="/register" className="nav-link underline" onClick={()=>{closeRef.current.click();navigate('/register');}} >
-          <button className="btn btn-primary" style={{'font-weight':'bold','border':'2px solid #111'}}> New User? Click here to register. </button>
-            
-          </NavLink>
-        </div>
+      
     </div>
   </div>
 </div>

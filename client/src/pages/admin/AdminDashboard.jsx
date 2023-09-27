@@ -13,7 +13,7 @@ const AdminDashboard = () => {
   const [user,setUser]=useState([])
   const getUserData=async()=>{
      try{
-        const {data}=await axios.get(`${baseUrl}/api/auth/get-single-user/${auth.token}`)
+        const {data}=await axios.get(`${baseUrl}/api/auth/get-single-user`)
         if(data?.success)
      {
         setUser(data.user)

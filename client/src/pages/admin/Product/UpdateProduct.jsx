@@ -284,20 +284,18 @@ useEffect(()=>{
 
               <select className="w-50 p-2 h-25 "
               style={{'cursor':'pointer','font-size':'1.5rem','width':'23rem','font-weight':'bold','border':'2px solid #111'}} onChange={(e)=>{setCategory(e.target.value);
-                 setIndex(1)}}>
-                 <option value={category._id} name="category">
-                  {retreivedCat}
-                 </option>
-                 
-                  
+                 setIndex(1); setRetreivedCat(e.target.value)}}
+                 value={category}
+                 >
+              
                 {categories && categories.map((c) => {
                  return (
                   <>
-                   {c.category_name!==retreivedCat?(
+                   {(
               <option key={c._id} value={c._id} name="category" >
               {c.category_name}
               </option>
-                  ):''
+                  )
                   }
                 </> )})}
               </select>
@@ -310,6 +308,7 @@ useEffect(()=>{
                 <br></br> 
                   
                  <select className="w-50 p-2 h-25" onChange={(e)=>setSubcategory(e.target.value)}
+                 value={subcategory}
                  style={{'cursor':'pointer','font-size':'1.5rem','width':'23rem','font-weight':'bold','border':'2px solid #111'}}>
                 {!index?<option value={subcategory}>{subcategory}</option>:(<>
                 {catObj.subcategories.map((subcat) => (

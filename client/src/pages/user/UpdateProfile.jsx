@@ -63,24 +63,24 @@ const UpdateProfilePage = () => {
        }
        else
        {
-        toast.error(data.message)
+        // toast.error(data.message)
        }
     }catch(error)
     {
-        toast.error('Something went wrong')
+        // toast.error('Something went wrong')
     }
   };
 
   const getUserData=async()=>{
      try{
-        const {data}=await axios.get(`${baseUrl}/api/auth/get-single-user/${auth.token}`)
+        const {data}=await axios.get(`${baseUrl}/api/auth/get-single-user`)
         if(data?.success)
      {
         setUser(data.user)
      }
      else
      {
-      toast.error('Something went wrong')
+      // toast.error('Something went wrong')
      }
      }catch{
 

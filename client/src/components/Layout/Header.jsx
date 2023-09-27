@@ -47,7 +47,7 @@ const Header = () => {
 
   return (
     <>
-<nav className="navbar navbar-expand-lg" style={{backgroundColor: '#32CD00',color:'#FFF'}}>
+<nav className="navbar navbar-expand-lg">
   <div className="container-fluid">
     <button
       className="navbar-toggler"
@@ -62,7 +62,7 @@ const Header = () => {
     </button>
     <div className="collapse navbar-collapse" id="navbarTogglerDemo01">
       <Link to="/" className="navbar-brand">
-        <span style={{'font-weight':'bold','font-size':'1.5rem',color:'#FFF'}}>GroceryHut </span>
+        <span>GroceryHut </span>
         <ShoppingBag size={40} style={{'color':'#FFF'}}/>
       </Link>
       &nbsp;&nbsp;
@@ -80,7 +80,7 @@ const Header = () => {
     <Badge count={cart?.length} showZero>
       <AntDropdown overlay={menu} placement="bottomRight" arrow>
         <NavLink to="/cart" className="nav-link" href="#">
-          <ShoppingCart size={32} style={{ fontWeight: 'bold', color: 'white' }} />
+          <ShoppingCart size={32} />
         </NavLink>
       </AntDropdown>
     </Badge>

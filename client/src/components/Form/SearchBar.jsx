@@ -46,7 +46,6 @@ const SearchBar = () => {
              outline: 'none',
              border: '3px solid #111',
              color:'black',
-             'box-shadow':'2px 2px 2px 2px rgba(0,252,252,0.4)'
               }}  />
             <div className="searchIcon" style={{'border':'2px solid #111'}}>
                 {input ? <AiOutlineClose style={{'color':'black'}} id="clearBtn" onClick={()=>{setInput("")}}/> :  <BiSearch style={{'color':'black'}}/>}

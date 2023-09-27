@@ -38,7 +38,7 @@ const CartPage = () => {
     })
 
     const getUserData=async()=>{
-     const {data}=await axios.get(`${baseUrl}/api/auth/get-single-user/${auth?.token}`)
+     const {data}=await axios.get(`${baseUrl}/api/auth/get-single-user`)
      if(data?.success)
      {
         setUser(data?.user)

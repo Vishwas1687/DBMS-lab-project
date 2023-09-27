@@ -341,7 +341,7 @@ const ProductPage = () => {
                 relatedProducts.map((product, index) => (
                   <div className='card__' key={index} style={{'border':'2px solid #111','height':'25rem'}}>
                     <img
-                      src={`data:${product.photo.contentType};base64,${Buffer.from(product.photo.data).toString('base64')}`}
+                      src={`${baseUrl}/api/products/get-photo/${product.slug}`}
                       className='card-img_'
                       alt='...'
                     />
@@ -369,7 +369,7 @@ const ProductPage = () => {
                 sameBrand.map((product, index) => (
                   <div className='card__' key={index} style={{'border':'2px solid #111','height':'25rem'}}>
                     <img
-                      src={`data:${product.photo.contentType};base64,${Buffer.from(product.photo.data).toString('base64')}`}
+                      src={`${baseUrl}/api/products/get-photo/${product.slug}`}
                       className='card-img_'
                       alt='...'
                     />
@@ -377,11 +377,9 @@ const ProductPage = () => {
                       <h5 className='card-title my-2' style={{ textTransform: 'capitalize' }}>
                         {product.product_name}
                       </h5>
-                      <Link to={`/product/${product.slug}`} className='btn btn-primary my-2' >
-                        <button style={{'width':'10rem','font-weight':'bold','border':'2px solid #111','color':'white','background-color':'blue','box-shadow':'none'}}>
-                           Buy
-                        </button>
-                       
+                      <Link to={`/product/${product.slug}`} className='btn btn-primary my-2' 
+                      style={{'width':'10rem','font-weight':'bold','border':'2px solid #111'}}>
+                        Buy
                       </Link>
                     </div>
                   </div>

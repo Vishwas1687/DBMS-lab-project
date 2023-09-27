@@ -43,7 +43,7 @@ export default function Dropdown() {
     return (
     <div className="dropdown dropdown-hover">
         <NavLink className='nav-link'>
-        <User size={32} style={{'font-weight':'bold',color:'white'}}/>
+        <User size={32}/>
         </NavLink>
       
       { !(auth.token) ? (<>
