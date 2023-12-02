@@ -42,7 +42,7 @@ such as order tracking and feedback forms to enhance the user experience.
 - Order Processing and Management
 - Filtering and Search Bar for products
 
-## Schema Diagram
+
 
 ## Project deployed on
 <https://ecommerce-grocery.cyclic.app/>
