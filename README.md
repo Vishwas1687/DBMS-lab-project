@@ -45,4 +45,4 @@ such as order tracking and feedback forms to enhance the user experience.
 ## Schema Diagram
 
 ## Project deployed on
-<https://easy-gold-ladybug-wig.cyclic.app/>
+<https://ecommerce-grocery.cyclic.app/>
